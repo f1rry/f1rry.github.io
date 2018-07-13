@@ -3,15 +3,20 @@
 <head>
   <meta charset="utf-8">
   
-  <title>F1rry&#39;s blog</title>
+  <title>非法文件上传漏洞总结 | F1rry&#39;s blog</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta property="og:type" content="website">
-<meta property="og:title" content="F1rry&#39;s blog">
-<meta property="og:url" content="http://yoursite.com/index.html">
+  <meta name="description" content="非法文件上传漏洞总结 MIME类型绕过   文件拓展名绕过   文件内容检查绕过   空字节截断目录路径检测绕过   解析导致的上传漏洞">
+<meta name="keywords" content="ctf,渗透">
+<meta property="og:type" content="article">
+<meta property="og:title" content="非法文件上传漏洞总结">
+<meta property="og:url" content="http://yoursite.com/2018/07/13/非法文件上传漏洞总结/index.html">
 <meta property="og:site_name" content="F1rry&#39;s blog">
+<meta property="og:description" content="非法文件上传漏洞总结 MIME类型绕过   文件拓展名绕过   文件内容检查绕过   空字节截断目录路径检测绕过   解析导致的上传漏洞">
 <meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2018-07-13T15:15:04.107Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="F1rry&#39;s blog">
+<meta name="twitter:title" content="非法文件上传漏洞总结">
+<meta name="twitter:description" content="非法文件上传漏洞总结 MIME类型绕过   文件拓展名绕过   文件内容检查绕过   空字节截断目录路径检测绕过   解析导致的上传漏洞">
   
     <link rel="alternate" href="/atom.xml" title="F1rry&#39;s blog" type="application/atom+xml">
   
@@ -64,9 +69,7 @@
   </div>
 </div>
 
-        <section id="main">
-  
-    <article id="post-非法文件上传漏洞总结" class="wow slideInRight article article-type-post" itemscope itemprop="blogPost">
+        <section id="main"><article id="post-非法文件上传漏洞总结" class="wow slideInRight article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
     <a href="/2018/07/13/非法文件上传漏洞总结/" class="article-date">
   <time class="post-time" datetime="2018-07-13T13:21:00.000Z" itemprop="datePublished">
@@ -82,8 +85,8 @@
       <header class="article-header">
         
   
-    <h1 itemprop="name">
-      <a class="article-title" href="/2018/07/13/非法文件上传漏洞总结/">非法文件上传漏洞总结</a>
+    <h1 class="article-title" itemprop="name">
+      非法文件上传漏洞总结
     </h1>
   
 
@@ -105,11 +108,27 @@
 <li>空字节截断目录路径检测绕过  </li>
 <li>解析导致的上传漏洞  </li>
 </ol>
-        
-          <p class="article-more-link">
-            <a href="/2018/07/13/非法文件上传漏洞总结/#more">Read More</a>
-          </p>
-        
+<a id="more"></a>  
+<h2 id="MIME类型绕过"><a href="#MIME类型绕过" class="headerlink" title="MIME类型绕过"></a>MIME类型绕过</h2><p>当浏览器在上传文件到服务器端的时候，服务器对上传的文件Content-Type类型进行检测，如果是白名单允许的，则可以正常上传，否则上传失效。绕过Content-Type文件类型检测，就是用Burpsuite截取并修改数据包中文件的Content-Type类型，使其符合白名单的规则，达到上传的目的。  </p>
+<pre><code>通过修改content-type以符合上传条件来完成绕过  
+</code></pre><h2 id="文件拓展名绕过"><a href="#文件拓展名绕过" class="headerlink" title="文件拓展名绕过"></a>文件拓展名绕过</h2><p>php语言除了可以解析以.php为后缀名的文件外，还可以解析以.php2,.php3,.php4,.php5,.phps,.phpt,.phtml,.inc为后缀的文件</p>
+<h2 id="文件内容检测绕过"><a href="#文件内容检测绕过" class="headerlink" title="文件内容检测绕过"></a>文件内容检测绕过</h2><p>一般文件内容验证使用getimeagesize()函数检测，会判断文件是否一个有效的文件图片，如果是，则允许上传，否则的话不允许上传。  </p>
+<pre><code>例如图片木马：将木马代码附加在图片信息末尾，并利用burp将上传的文件名（filename）改为.php的文件  
+</code></pre><h2 id="空字节截断目录路径检测绕过"><a href="#空字节截断目录路径检测绕过" class="headerlink" title="空字节截断目录路径检测绕过"></a>空字节截断目录路径检测绕过</h2><p> 对于空字符截断目录路径检测类，可以使用BurpSuite修改上传保存的文件名，并且通过Hex进行空字符截断。00是一个截断字符的16进制，截断字符后面的都会被截断，也就是被忽略，所以对于uploading/1.php .jpg/xxx.jpg 就变成了uploadimg/1.php，也就是说原有的.jpg文件里的内容将被保存为.php格式的文件，从而实现了上传php文件的目的。  </p>
+<h2 id="解析导致的上传漏洞"><a href="#解析导致的上传漏洞" class="headerlink" title="解析导致的上传漏洞"></a>解析导致的上传漏洞</h2><h3 id="IIS6-0"><a href="#IIS6-0" class="headerlink" title="IIS6.0"></a>IIS6.0</h3><ul>
+<li><p>目录路径解析漏洞：在IIS 6.0目录路径检测解析中，文件名字为 “.asp/xxx.jpg” 或者 “.asa/xxx.jpg”，同样会被IIS当作 ASP 文件来解析并执行。  </p>
+<pre><code>说明：首先请求 /aaa.asp/xxx.jpg，从头部查找 &quot; . &quot;，获得了 .asp/xxx.jpg，查找 &quot; / &quot;，如果有这内存截断，所以 /aaa.asp/xxx.jpg 会当作 /aaa.asp 来进行解析  
+</code></pre></li>
+<li><p>解析缺陷：在IIS 6.0目录路径检测解析，文件的名字为 “.php;xxx.jpg”，也同样会被IIS当成 PHP 文件类解析并执行。 </p>
+<pre><code>说明：首先请求 /aaa.php;xxx.jpg，从头部查找 &quot; . &quot;，获得了 .php;xxx.jpg，查找 &quot; ; &quot;，如果有，则内存截断，所以 /aaa.php;xxx.jpg 会被当作 /aaa.php 来进行解析。  
+</code></pre></li>
+</ul>
+<h3 id="Apache"><a href="#Apache" class="headerlink" title="Apache"></a>Apache</h3><ul>
+<li>htaccess文件上传解析漏洞  <pre><code>.htaccess文件中定义了将上传的文件后缀名为 .jpg 格式的文件以 php 格式来解析文件。.htaccess 是apache服务器中的一个配置文件，不是上传的文件的黑名单之内，所以该类型文件可以上传成功。 
+</code></pre></li>
+<li>解析缺陷<br>Apache会从右至左解析文件后缀名，直至识别该后缀名，例如a.php.123，由于无法识别.123后缀继而向左，识别出.php后缀故以php解析</li>
+</ul>
+
       
     </div>
     <footer class="article-footer">
@@ -121,123 +140,21 @@
     </footer>
   </div>
   
-</article>
-
-
-
-
-  
-    <article id="post-markdown的简单使用" class="wow slideInRight article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2018/07/06/markdown的简单使用/" class="article-date">
-  <time class="post-time" datetime="2018-07-06T03:19:00.000Z" itemprop="datePublished">
-    <span class="post-month">7月</span><br/>
-    <span class="post-day">06</span>
-  </time>
-</a>
-   
-  </div>
-  <div class="article-inner">
     
-    
-      <header class="article-header">
-        
+<nav id="article-nav">
   
-    <h1 itemprop="name">
-      <a class="article-title" href="/2018/07/06/markdown的简单使用/">markdown的简单使用</a>
-    </h1>
   
+    <a href="/2018/07/06/markdown的简单使用/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">下一篇</strong>
+      <div class="article-nav-title">markdown的简单使用</div>
+    </a>
+  
+</nav>
 
-        <div>
-          
-          
-              
-
-          
-        </div>
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>Markdown 是一种轻量级的「标记语言」，优点在于</p>
-<ul>
-<li>专注你的文字内容而不是排版样式。</li>
-<li>轻松的导出 HTML、PDF 和本身的 .md 文件。</li>
-<li>纯文本内容，兼容所有的文本编辑器与字处理软件。</li>
-<li>可读，直观。适合所有人的写作语言
-        
-          <p class="article-more-link">
-            <a href="/2018/07/06/markdown的简单使用/#more">Read More</a>
-          </p>
-        
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="http://yoursite.com/2018/07/06/markdown的简单使用/" data-id="cjjk781zu0001f0vst88vcptp" class="article-share-link">分享</a>
-      
-      
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/hexo/">hexo</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/markdown/">markdown</a></li></ul>
-
-    </footer>
-  </div>
   
 </article>
 
 
-
-
-  
-    <article id="post-新的开始" class="wow slideInRight article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2018/07/05/新的开始/" class="article-date">
-  <time class="post-time" datetime="2018-07-05T13:01:55.000Z" itemprop="datePublished">
-    <span class="post-month">7月</span><br/>
-    <span class="post-day">05</span>
-  </time>
-</a>
-   
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2018/07/05/新的开始/">新的开始</a>
-    </h1>
-  
-
-        <div>
-          
-          
-              
-
-          
-        </div>
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>花了一个下午所搭建的个人博客，将于此记录我之后学习的点滴。</p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="http://yoursite.com/2018/07/05/新的开始/" data-id="cjjk781zz0003f0vsamz7rf9i" class="article-share-link">分享</a>
-      
-      
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ctf/">ctf</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-
-
-  
 
 </section>
         
