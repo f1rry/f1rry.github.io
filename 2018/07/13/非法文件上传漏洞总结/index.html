@@ -13,7 +13,7 @@
 <meta property="og:site_name" content="F1rry&#39;s blog">
 <meta property="og:description" content="非法文件上传漏洞总结 MIME类型绕过   文件拓展名绕过   文件内容检查绕过   空字节截断目录路径检测绕过   解析导致的上传漏洞">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2018-07-13T15:15:04.107Z">
+<meta property="og:updated_time" content="2018-07-16T11:38:44.111Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="非法文件上传漏洞总结">
 <meta name="twitter:description" content="非法文件上传漏洞总结 MIME类型绕过   文件拓展名绕过   文件内容检查绕过   空字节截断目录路径检测绕过   解析导致的上传漏洞">
@@ -114,7 +114,11 @@
 </code></pre><h2 id="文件拓展名绕过"><a href="#文件拓展名绕过" class="headerlink" title="文件拓展名绕过"></a>文件拓展名绕过</h2><p>php语言除了可以解析以.php为后缀名的文件外，还可以解析以.php2,.php3,.php4,.php5,.phps,.phpt,.phtml,.inc为后缀的文件</p>
 <h2 id="文件内容检测绕过"><a href="#文件内容检测绕过" class="headerlink" title="文件内容检测绕过"></a>文件内容检测绕过</h2><p>一般文件内容验证使用getimeagesize()函数检测，会判断文件是否一个有效的文件图片，如果是，则允许上传，否则的话不允许上传。  </p>
 <pre><code>例如图片木马：将木马代码附加在图片信息末尾，并利用burp将上传的文件名（filename）改为.php的文件  
-</code></pre><h2 id="空字节截断目录路径检测绕过"><a href="#空字节截断目录路径检测绕过" class="headerlink" title="空字节截断目录路径检测绕过"></a>空字节截断目录路径检测绕过</h2><p> 对于空字符截断目录路径检测类，可以使用BurpSuite修改上传保存的文件名，并且通过Hex进行空字符截断。00是一个截断字符的16进制，截断字符后面的都会被截断，也就是被忽略，所以对于uploading/1.php .jpg/xxx.jpg 就变成了uploadimg/1.php，也就是说原有的.jpg文件里的内容将被保存为.php格式的文件，从而实现了上传php文件的目的。  </p>
+</code></pre><h2 id="空字节截断目录路径检测绕过"><a href="#空字节截断目录路径检测绕过" class="headerlink" title="空字节截断目录路径检测绕过"></a>空字节截断目录路径检测绕过</h2><p> 对于空字符截断目录路径检测类，可以使用BurpSuite修改上传保存的文件名，并且通过Hex进行空字符截断。00是一个截断字符的16进制，截断字符后面的都会被截断，也就是被忽略，所以对于uploading/1.php .jpg/xxx.jpg 就变成了uploadimg/1.php，也就是说原有的.jpg文件里的内容将被保存为.php格式的文件，从而实现了上传php文件的目的。<br> 方法如下：  </p>
+<ul>
+<li>将文件名写成1.php .jpg的格式，然后用bp改包，将空格（即0x20）改成0x00  </li>
+<li>将文件名写成1.jpg,然后用bp改包，将上传目录地址由原来的/uploads改为/uploads/1.php (ps此处有空格)，然后将空格（0x20）改为0x00，这样上传完后合并了文件名就变成了1.php%001.jpg,由于空字符截断，所以即被解释为1.php</li>
+</ul>
 <h2 id="解析导致的上传漏洞"><a href="#解析导致的上传漏洞" class="headerlink" title="解析导致的上传漏洞"></a>解析导致的上传漏洞</h2><h3 id="IIS6-0"><a href="#IIS6-0" class="headerlink" title="IIS6.0"></a>IIS6.0</h3><ul>
 <li><p>目录路径解析漏洞：在IIS 6.0目录路径检测解析中，文件名字为 “.asp/xxx.jpg” 或者 “.asa/xxx.jpg”，同样会被IIS当作 ASP 文件来解析并执行。  </p>
 <pre><code>说明：首先请求 /aaa.asp/xxx.jpg，从头部查找 &quot; . &quot;，获得了 .asp/xxx.jpg，查找 &quot; / &quot;，如果有这内存截断，所以 /aaa.asp/xxx.jpg 会当作 /aaa.asp 来进行解析  
@@ -132,7 +136,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2018/07/13/非法文件上传漏洞总结/" data-id="cjjk78k8300057ovs0pfcw8ob" class="article-share-link">分享</a>
+      <a data-url="http://yoursite.com/2018/07/13/非法文件上传漏洞总结/" data-id="cjjo75q9r0005j0vse6336j7a" class="article-share-link">分享</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ctf/">ctf</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/渗透/">渗透</a></li></ul>
