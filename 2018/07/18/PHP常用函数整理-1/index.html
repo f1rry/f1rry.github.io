@@ -3,15 +3,19 @@
 <head>
   <meta charset="utf-8">
   
-  <title>归档: 2018 | F1rry&#39;s blog</title>
+  <title>PHP常用函数整理 | F1rry&#39;s blog</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta property="og:type" content="website">
-<meta property="og:title" content="F1rry&#39;s blog">
-<meta property="og:url" content="http://yoursite.com/archives/2018/index.html">
+  <meta name="description" content="PHP常用函数整理写下这些作为备忘录，这些函数是个人认为比较重要的。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="PHP常用函数整理">
+<meta property="og:url" content="http://yoursite.com/2018/07/18/PHP常用函数整理-1/index.html">
 <meta property="og:site_name" content="F1rry&#39;s blog">
+<meta property="og:description" content="PHP常用函数整理写下这些作为备忘录，这些函数是个人认为比较重要的。">
 <meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2018-07-18T14:00:12.930Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="F1rry&#39;s blog">
+<meta name="twitter:title" content="PHP常用函数整理">
+<meta name="twitter:description" content="PHP常用函数整理写下这些作为备忘录，这些函数是个人认为比较重要的。">
   
     <link rel="alternate" href="/atom.xml" title="F1rry&#39;s blog" type="application/atom+xml">
   
@@ -64,108 +68,101 @@
   </div>
 </div>
 
-        <section id="main">
-  
-  
-    
-    
-      
-      
-      <section class="archives-wrap animated rubberBand">
-        <div class="archive-year-wrap">
-          <a href="/archives/2018" class="archive-year">2018</a>
-        </div>
-        <div class="archives">
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      <a href="/2018/07/18/PHP常用函数整理-1/" class="archive-article-date">
+        <section id="main"><article id="post-PHP常用函数整理-1" class="wow slideInRight article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2018/07/18/PHP常用函数整理-1/" class="article-date">
   <time class="post-time" datetime="2018-07-18T13:05:02.000Z" itemprop="datePublished">
     <span class="post-month">7月</span><br/>
     <span class="post-day">18</span>
   </time>
 </a>
-      
+   
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
   
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2018/07/18/PHP常用函数整理-1/">PHP常用函数整理</a>
+    <h1 class="article-title" itemprop="name">
+      PHP常用函数整理
     </h1>
   
 
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      <a href="/2018/07/13/非法文件上传漏洞总结/" class="archive-article-date">
-  <time class="post-time" datetime="2018-07-13T13:21:00.000Z" itemprop="datePublished">
-    <span class="post-month">7月</span><br/>
-    <span class="post-day">13</span>
-  </time>
-</a>
-      
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2018/07/13/非法文件上传漏洞总结/">非法文件上传漏洞总结</a>
-    </h1>
-  
+        <div>
+          
+          
+              
 
-    </header>
-  </div>
-</article>
-  
+          
+        </div>
+      </header>
     
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      <a href="/2018/07/06/markdown的简单使用/" class="archive-article-date">
-  <time class="post-time" datetime="2018-07-06T03:19:00.000Z" itemprop="datePublished">
-    <span class="post-month">7月</span><br/>
-    <span class="post-day">06</span>
-  </time>
-</a>
+    <div class="article-entry" itemprop="articleBody">
       
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2018/07/06/markdown的简单使用/">markdown的简单使用</a>
-    </h1>
-  
+        <h1 id="PHP常用函数整理"><a href="#PHP常用函数整理" class="headerlink" title="PHP常用函数整理"></a>PHP常用函数整理</h1><p>写下这些作为备忘录，这些函数是个人认为比较重要的。<br><a id="more"></a></p>
+<h3 id="数组"><a href="#数组" class="headerlink" title="数组"></a>数组</h3><ul>
+<li><p>(r)sort ( )<br>对<strong>值</strong>进行(反)正向排序而不用考虑键的问题,值会被赋予新的键  </p>
+</li>
+<li><p>a(r)sort ( )<br>对<strong>值</strong>进行(反)正向排序的同时保持每个值同它键之间的对应关系  </p>
+</li>
+<li><p>k(r)sort ( )<br>对<strong>键</strong>进行(反)正向排序的同时保持每个键同它值之间的对应关系  </p>
+</li>
+</ul>
+<h3 id="字符串"><a href="#字符串" class="headerlink" title="字符串"></a>字符串</h3><ul>
+<li><p>nl2br ( )<br>在字符串 string 所有新行之前插入 ‘&lt;br /&gt;’ 或 ‘&lt;br&gt;’，并返回。  </p>
+</li>
+<li><p>htmlspecialchars( )<br>将<strong>特定</strong>的HTML标签转换为<strong>实体版本</strong>。  </p>
+</li>
+<li><p>htmlentities( )<br>将<strong>所有</strong>的HTML标签转换为<strong>实体版本</strong>.  </p>
+</li>
+<li><p>strip_tags( )<br>移除所有的HTML和PHP<strong>标签</strong>。  </p>
+</li>
+<li><p>urlencode( )<br>接受一个字符串，并对之编码（encode）（改变它的格式），以便它完全适合作为<br>URL的一部分传输。  </p>
+</li>
+<li><p>crypt( )<br>对数据进行加密(单向加密)  </p>
+</li>
+<li><p>strtok( )<br>string strtok ( string $str , string $token )<br>strtok() 将字符串 str 分割为若干子字符串，每个子字符串以 token 中的字符分割。  </p>
+</li>
+<li><p>substr( )<br>string substr ( string $string , int $start [, int $length ] )<br>返回字符串 string 由 start 和 length 参数指定的子字符串。  </p>
+</li>
+<li><p>strcmp( )<br>将用返回一个整数的方式返回两个字符串的比较结果   </p>
+</li>
+<li><p>strnatcmp( )<br>类似，但是从语言学上更加精确  </p>
+</li>
+<li><p>strcasecmp( )<br>不区分大小写的比较函数  </p>
+</li>
+<li><p>strnatcasecmp( )<br>不区分大小写的比较函数 </p>
+</li>
+<li><p>strstr( )<br>返回字符串中从被找寻的字符串第一次出现的位置开始直到字符串结束的所有字符  </p>
+</li>
+<li><p>str_ireplace( )<br>mixed str_ireplace ( mixed $search , mixed $replace , mixed $subject [, int &amp;$count ] )<br>该函数返回一个字符串或者数组。该字符串或数组是将 subject 中全部的 search 都被 replace 替换（忽略大小写）之后的结果。如果没有一些特殊的替换规则，你应该使用该函数替换带有 i 修正符的 preg_replace() 函数。  </p>
+</li>
+</ul>
 
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      <a href="/2018/07/05/新的开始/" class="archive-article-date">
-  <time class="post-time" datetime="2018-07-05T13:01:55.000Z" itemprop="datePublished">
-    <span class="post-month">7月</span><br/>
-    <span class="post-day">05</span>
-  </time>
-</a>
       
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2018/07/05/新的开始/">新的开始</a>
-    </h1>
-  
-
-    </header>
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2018/07/18/PHP常用函数整理-1/" data-id="cjjr74dm20007mwvseoerv56e" class="article-share-link">分享</a>
+      
+      
+    </footer>
   </div>
+  
+    
+<nav id="article-nav">
+  
+  
+    <a href="/2018/07/13/非法文件上传漏洞总结/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">下一篇</strong>
+      <div class="article-nav-title">非法文件上传漏洞总结</div>
+    </a>
+  
+</nav>
+
+  
 </article>
-  
-  
-    </div></section>
-  
+
 
 
 </section>
