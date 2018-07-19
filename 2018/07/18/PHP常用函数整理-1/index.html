@@ -12,7 +12,7 @@
 <meta property="og:site_name" content="F1rry&#39;s blog">
 <meta property="og:description" content="PHP常用函数整理写下这些作为备忘录，这些函数是个人认为比较重要的。">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2018-07-18T14:00:12.930Z">
+<meta property="og:updated_time" content="2018-07-18T15:29:41.496Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="PHP常用函数整理">
 <meta name="twitter:description" content="PHP常用函数整理写下这些作为备忘录，这些函数是个人认为比较重要的。">
@@ -106,7 +106,13 @@
 </li>
 <li><p>a(r)sort ( )<br>对<strong>值</strong>进行(反)正向排序的同时保持每个值同它键之间的对应关系  </p>
 </li>
-<li><p>k(r)sort ( )<br>对<strong>键</strong>进行(反)正向排序的同时保持每个键同它值之间的对应关系  </p>
+<li><p>k(r)sort ( )<br>对<strong>键</strong>进行(反)正向排序的同时保持每个键同它值之间的对应关系   </p>
+</li>
+<li><p>implode( )<br>它用来将数组转换为字符串<br>为了将一个数组转换为字符串，需要定义用什么作为分隔符（也就是之间的连接符），PHP将处理剩下的工作：<br>$string = implode($glue, $array)</p>
+</li>
+<li><p>explode( )<br>$array = explode($separator, $string);<br>separator分隔符指明了一个或多个字符，用来区分一个值的结束和另外一个值    开始。通常情况下分隔符是一个逗号、一个制表符或者一个空格。<br>用来将字符串转换为数组  </p>
+</li>
+<li><p>list()<br>函数用来将数组元素的值赋给单独的变量。<br>示例：<br>$date = array(‘Thursday’, 23, ‘October’);<br>list($weekday, $day, $month) = $date;<br>现在$weekday变量有了Thursday这个值，$day变量的值则为23，$month变量的值为October。<br>在使用list()时要注意两点。首先，list()只对数值型索引并从0开始索引的数组有用。其次，当使用list()函数时，必须确认接受每一个数组元素。<br>但是可以用空值的方式忽略元素：<br>list ($weekday, , $month) = $date;     </p>
 </li>
 </ul>
 <h3 id="字符串"><a href="#字符串" class="headerlink" title="字符串"></a>字符串</h3><ul>
@@ -136,14 +142,14 @@
 </li>
 <li><p>strstr( )<br>返回字符串中从被找寻的字符串第一次出现的位置开始直到字符串结束的所有字符  </p>
 </li>
-<li><p>str_ireplace( )<br>mixed str_ireplace ( mixed $search , mixed $replace , mixed $subject [, int &amp;$count ] )<br>该函数返回一个字符串或者数组。该字符串或数组是将 subject 中全部的 search 都被 replace 替换（忽略大小写）之后的结果。如果没有一些特殊的替换规则，你应该使用该函数替换带有 i 修正符的 preg_replace() 函数。  </p>
+<li><p>str_ireplace( )<br>mixed str_ireplace ( mixed $search , mixed $replace , mixed $subject [, int &amp;$count ] )<br>该函数返回一个字符串或者数组。该字符串或数组是将 subject 中全部的 search 都被 replace 替换（忽略大小写）之后的结果。如果没有一些特殊的替换规则，你应该使用该函数替换带有 i 修正符的 preg_replace() 函数。</p>
 </li>
 </ul>
 
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2018/07/18/PHP常用函数整理-1/" data-id="cjjr74dm20007mwvseoerv56e" class="article-share-link">分享</a>
+      <a data-url="http://yoursite.com/2018/07/18/PHP常用函数整理-1/" data-id="cjjraamo0000438vsfp3r33at" class="article-share-link">分享</a>
       
       
     </footer>
