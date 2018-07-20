@@ -12,7 +12,7 @@
 <meta property="og:site_name" content="F1rry&#39;s blog">
 <meta property="og:description" content="PHP常用函数整理写下这些作为备忘录，这些函数是个人认为比较重要的。">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2018-07-19T15:40:03.533Z">
+<meta property="og:updated_time" content="2018-07-20T07:33:52.398Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="PHP常用函数整理">
 <meta name="twitter:description" content="PHP常用函数整理写下这些作为备忘录，这些函数是个人认为比较重要的。">
@@ -163,13 +163,23 @@
 <li>header()<br>须在任何内容被发送到Web浏览器之前调用该函数——否则，会看到非常常见的“HTTP头已发送”错误消息（因此可以用到”输出缓冲”的方式）<br>header()函数的一种常见的用法：<br>将用户从一个页面重定向到另一个页面。要使用PHP来重定向用户的浏览器，需要发送一个location头：<br>header(‘Location: page.php’)</li>
 </ul>
 <h3 id="cookie和session"><a href="#cookie和session" class="headerlink" title="cookie和session"></a>cookie和session</h3><ul>
-<li>setcookie( )<br>setcookie(name, value, expiration, path, domain, secure,httponly);<br>和所有带有参数的函数一样，必须按顺序传递所有的参数值。在先前的示例中，如果不希望指定（或者限制）路径和域，需要使用空的引号。在path参数中，可以使用一个单独的斜线（/）表示根目录（即，无路径重定向）。通过这样做，可以保留适当数量的参数并且如果需要仍然能够指定使用HTTPS连接。</li>
+<li><p>setcookie( )<br>setcookie(name, value, expiration, path, domain, secure,httponly);<br>删除名为username的cookie，可以编写代码<br>setcookie(‘username’, ‘’);<br>或<br>setcookie(‘username’, FALSE);<br>和所有带有参数的函数一样，必须按顺序传递所有的参数值。在先前的示例中，如果不希望指定（或者限制）路径和域，需要使用空的引号。在path参数中，可以使用一个单独的斜线（/）表示根目录（即，无路径重定向）。通过这样做，可以保留适当数量的参数并且如果需要仍然能够指定使用HTTPS连接。  </p>
+</li>
+<li><p>session_start( )<br>创建、访问或删除session<br>一旦启用session，可以通过向数组$_SESSION赋值的方式记录数据  </p>
+</li>
+<li><p>session_name( )<br>可以修改session的名称（替代默认的PHPSESSID）,必须在session_start之前使用   </p>
+</li>
+<li><p>session_set_cookie_params( )<br>函数用来修改session  cookie的设置（如过期时间、路径和域）。</p>
+</li>
+<li><p>session_destroy( )<br>从服务器上删除session数据（保存在临时文件中）<br>$_SESSION = array()再次设置数组$_SESSION来删除session的值（在客户端上）（全部删除）<br>可以使用unset($_SESSION[‘var’])来删除一个单独的session值  </p>
+</li>
 </ul>
+<p>当session ID必须附加给站点中每个链接（以便让每个页面都能够接受到session ID）的情况下，可以让PHP使用session而不使用cookie  </p>
 
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2018/07/18/PHP常用函数整理-1/" data-id="cjjsq3rnv0002wcvsqinefje7" class="article-share-link">分享</a>
+      <a data-url="http://yoursite.com/2018/07/18/PHP常用函数整理-1/" data-id="cjjtnefpb0004k0vssi5pcw9z" class="article-share-link">分享</a>
       
       
     </footer>
