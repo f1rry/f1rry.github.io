@@ -12,7 +12,7 @@
 <meta property="og:site_name" content="F1rry&#39;s blog">
 <meta property="og:description" content="PHP常用函数整理写下这些作为备忘录，这些函数是个人认为比较重要的。">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2018-07-18T15:29:41.496Z">
+<meta property="og:updated_time" content="2018-07-19T15:40:03.533Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="PHP常用函数整理">
 <meta name="twitter:description" content="PHP常用函数整理写下这些作为备忘录，这些函数是个人认为比较重要的。">
@@ -142,14 +142,34 @@
 </li>
 <li><p>strstr( )<br>返回字符串中从被找寻的字符串第一次出现的位置开始直到字符串结束的所有字符  </p>
 </li>
-<li><p>str_ireplace( )<br>mixed str_ireplace ( mixed $search , mixed $replace , mixed $subject [, int &amp;$count ] )<br>该函数返回一个字符串或者数组。该字符串或数组是将 subject 中全部的 search 都被 replace 替换（忽略大小写）之后的结果。如果没有一些特殊的替换规则，你应该使用该函数替换带有 i 修正符的 preg_replace() 函数。</p>
+<li><p>str_ireplace( )<br>mixed str_ireplace ( mixed $search , mixed $replace , mixed $subject [, int &amp;$count ] )<br>该函数返回一个字符串或者数组。该字符串或数组是将 subject 中全部的 search 都被 replace 替换（忽略大小写）之后的结果。如果没有一些特殊的替换规则，你应该使用该函数替换带有 i 修正符的 preg_replace() 函数。  </p>
 </li>
+</ul>
+<h3 id="常量"><a href="#常量" class="headerlink" title="常量"></a>常量</h3><ul>
+<li>define()<br>为常量赋值，define(常量名称，值)  </li>
+</ul>
+<h3 id="输出缓冲"><a href="#输出缓冲" class="headerlink" title="输出缓冲"></a>输出缓冲</h3><p>利用输出缓冲，HTML和打印的数据（输出）将被放到缓冲（也就是内存）中。当脚本执行结束后，缓冲将被发送到Web浏览器，或者如果需要的话，缓冲可以清空而不发送到Web浏览器  </p>
+<ul>
+<li>ob_start()<br>在脚本中尽可能早地调用ob_start()函数  </li>
+</ul>
+<p>在脚本的结束位置，所有的HTML之后，添加:  </p>
+<ul>
+<li><p>ob_end_flush()<br>将积累下来的缓冲发送到Web浏览器  </p>
+</li>
+<li><p>ob_end_clean()<br>删除缓冲的数据而不进行传输  </p>
+</li>
+</ul>
+<h3 id="处理HTTP头"><a href="#处理HTTP头" class="headerlink" title="处理HTTP头"></a>处理HTTP头</h3><ul>
+<li>header()<br>须在任何内容被发送到Web浏览器之前调用该函数——否则，会看到非常常见的“HTTP头已发送”错误消息（因此可以用到”输出缓冲”的方式）<br>header()函数的一种常见的用法：<br>将用户从一个页面重定向到另一个页面。要使用PHP来重定向用户的浏览器，需要发送一个location头：<br>header(‘Location: page.php’)</li>
+</ul>
+<h3 id="cookie和session"><a href="#cookie和session" class="headerlink" title="cookie和session"></a>cookie和session</h3><ul>
+<li>setcookie( )<br>setcookie(name, value, expiration, path, domain, secure,httponly);<br>和所有带有参数的函数一样，必须按顺序传递所有的参数值。在先前的示例中，如果不希望指定（或者限制）路径和域，需要使用空的引号。在path参数中，可以使用一个单独的斜线（/）表示根目录（即，无路径重定向）。通过这样做，可以保留适当数量的参数并且如果需要仍然能够指定使用HTTPS连接。</li>
 </ul>
 
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2018/07/18/PHP常用函数整理-1/" data-id="cjjraamo0000438vsfp3r33at" class="article-share-link">分享</a>
+      <a data-url="http://yoursite.com/2018/07/18/PHP常用函数整理-1/" data-id="cjjsq3rnv0002wcvsqinefje7" class="article-share-link">分享</a>
       
       
     </footer>
