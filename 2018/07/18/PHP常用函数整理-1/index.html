@@ -6,13 +6,14 @@
   <title>PHP常用函数整理 | F1rry&#39;s blog</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
   <meta name="description" content="PHP常用函数整理写下这些作为备忘录，这些函数是个人认为比较重要的。">
+<meta name="keywords" content="PHP">
 <meta property="og:type" content="article">
 <meta property="og:title" content="PHP常用函数整理">
 <meta property="og:url" content="http://yoursite.com/2018/07/18/PHP常用函数整理-1/index.html">
 <meta property="og:site_name" content="F1rry&#39;s blog">
 <meta property="og:description" content="PHP常用函数整理写下这些作为备忘录，这些函数是个人认为比较重要的。">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2018-07-20T07:33:52.398Z">
+<meta property="og:updated_time" content="2018-08-10T11:48:12.720Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="PHP常用函数整理">
 <meta name="twitter:description" content="PHP常用函数整理写下这些作为备忘录，这些函数是个人认为比较重要的。">
@@ -44,7 +45,7 @@
     <div class="count-box">
       <a href="/archives"><div><strong>4</strong><br>文章</div></a>
       <a href="/categories"><div><strong>0</strong><br>分类</div></a>
-      <a href="/tags"><div><strong>4</strong><br>标签</div></a>
+      <a href="/tags"><div><strong>5</strong><br>标签</div></a>
     </div>
     <ul class="blog-link">
      
@@ -71,7 +72,7 @@
         <section id="main"><article id="post-PHP常用函数整理-1" class="wow slideInRight article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
     <a href="/2018/07/18/PHP常用函数整理-1/" class="article-date">
-  <time class="post-time" datetime="2018-07-18T13:05:02.000Z" itemprop="datePublished">
+  <time class="post-time" datetime="2018-07-18T13:05:00.000Z" itemprop="datePublished">
     <span class="post-month">7月</span><br/>
     <span class="post-day">18</span>
   </time>
@@ -175,13 +176,62 @@
 </li>
 </ul>
 <p>当session ID必须附加给站点中每个链接（以便让每个页面都能够接受到session ID）的情况下，可以让PHP使用session而不使用cookie  </p>
+<h3 id="文件读写"><a href="#文件读写" class="headerlink" title="文件读写"></a>文件读写</h3><ul>
+<li><p>basename()<br>string basename ( string $path [, string $suffix ] )<br>basename — 返回路径中的文件名部分<br>如果文件名是以 suffix 结束的，那这一部分也会被去掉。</p>
+</li>
+<li><p>file_get_contents()<br>将整个文件读入一个字符串  </p>
+</li>
+<li><p>file_put_contents( )<br>file_put_contents($file, $data)<br>PHP5以上，打开文件并写入数据。第一个参数是文件名。可以使用绝对路径，也可以使用相对路径（参见框注“文件路径”）。第二个参数是要写入的数据，可以是字符串、数字或数组（只能是一维数组，不能使用多维数组）。<br>如果文件不存在，函数会尝试创建它。如果文件存在，文件的内容会被新的数据取代。如果需要将新内容追加到文件中，加入FILE_APPEND<br>常量作为第三个参数：<br>file_put_contents($file, $data, FILE_APPEND)<br>当多个PHP脚本试图在同一时刻写入同一个文件时，就会出现问题（文件会损坏）。解决方法是在PHP对文件进行写入时，暂时锁定该文件<br>file_put_contents($file, $data, LOCK_EX);<br>file_put_contents($file, $data, FILE_APPEND | LOCK_EX）<br>可以使用PHP专用的常量PHP_EOL，表示当前操作系统的换行符（即，\n或\r\n）   </p>
+</li>
+<li><p>is_writable()<br>这个函数返回布尔值，表示指定文件是否可被写入  </p>
+</li>
+<li><p>file( )<br>读取文件中的所有内容并将这些信息放置在一个数组中。数组的每个元素都包含了文件中的一行，这些行是用换行符（\n或\r\n）分隔的。  </p>
+</li>
+<li><p>move_uploaded_file()<br>当文件上传后，服务器会将其放置在一个临时目录中。之后可以使用<br>move_uploaded_file()<br>函数将文件存放在其最终目标位置：<br>move_uploaded_file($_FILES[‘picture’][‘tmp_name’], ‘/path/to/dest/filename’);<br>第一个参数是服务器中文件的临时名。第二个参数是移动目标的完整路径和文件名。  </p>
+</li>
+<li><p>unlink()<br>删除文件</p>
+</li>
+<li><p>scandir()<br>$stuff = scandir($dir);<br>列出指定路径中的文件和目录<br>该函数是PHP 5中添加的，用于返回一个数组，其中包含了从给定目录中找到的所有项——目录和文件。就这个与文件有关的函数来说，$dir（要被浏览的目录）的值可以是绝对路径也可以是相对路径。  </p>
+</li>
+<li><p>filesize()<br>检查文件大小  </p>
+</li>
+<li><p>filemtime()<br>函数用于检索文件的修改时间。  </p>
+</li>
+<li><p>glob()<br>函数可以搜索名字与模式相匹配的文件目录  </p>
+</li>
+<li><p>mkdir(‘directory_name’, permissions);<br>directory_name是要创建的目录的名字。这个值可以是以当前目录（即脚本所在的目录）为起点的相对路径，也可以是完整路径  </p>
+</li>
+<li><p>fgetcsv()<br>它使用给定的分隔符切分字符串，并返回一个数组：<br>$array = fgetcsv($fp, length, delimiter);<br>它使用默认的分隔符（逗号）对字符串进行切分，该分隔符用作元素位置的指示器<br>如果提供分隔符参数，就可以改变用于描述数据的分隔符。<br>因为这函数依赖于行尾指示符，所以最好采用额外的保护措施，即启用PHP的auto_detect_line_endings设置。可以使用ini_set()函数来完成：<br>ini_set(‘auto_detect_line_endings’, 1)  </p>
+</li>
+<li><p>rename()<br>bool rename ( string $oldname , string $newname [, resource $context ] )<br>尝试把 oldname 重命名为 newname。</p>
+</li>
+</ul>
+<p>要让表单接受文件上传，在form开始标签中应入enctype属性：<br>enctype=”multipart/form-data”<br>可以通过 $subdir = time() . rand(0, 4596)这样简单的方式为文件重命名且保证他的唯一性  </p>
+<h3 id="MySQL数据库"><a href="#MySQL数据库" class="headerlink" title="MySQL数据库"></a>MySQL数据库</h3><ul>
+<li><p>mysqli_connect( )<br>mysqil_connect(hostname, username, password)<br>用于连接数据库  </p>
+</li>
+<li><p>mysqli_close( )<br>用于关闭与数据库的连接  </p>
+</li>
+<li><p>mysqli_query()<br>执行MySQL语句</p>
+</li>
+<li><p>mysqli_select_db()<br>用于选中数据库<br>注意，任何时候一个数据库只需要创建一次，但每次在其上运行查询之前都需要选中它。换句话说，一些开发人员需要执行前述的第一步（指创建数据库），而每个人在每个PHP脚本中都需要执行前述第二步（指选中数据库）。  </p>
+</li>
+<li><p>mysqli_real_escape_ string()<br>该函数会对任何可能危险的字符进行转义，即在其前面添加一个反斜线，确保<br>查询中使用的数据是安全的：<br>string mysqli_real_escape_string ( mysqli $link , string $escapestr )<br>$link: 仅以过程化样式：由mysqli_connect() 或 mysqli_init() 返回的链接标识。<br>$escapestr : 需要进行转义的字符串,会被进行转义的字符包括： NUL （ASCII 0），\n，\r，\，’，” 和 Control-Z.  </p>
+</li>
+<li><p>mysqli_fetch_array()<br>函数从结果集中每次获取一行数据，并在这一过程中创建一个数组。例如从查询语句中：$result = mysql_query($query, $dbc);<br>这个数组会使用已选择的列名作为索引：$row[‘name’]、$row[‘email’]等。和使用其他数组一样，必须通过数据库中定义的确切列名来引用其中的列（列名是区分大小写的）。<br>如果查询会返回多行数据，在循环中执行mysql_fetch_array()函数，以获取所有的行</p>
+</li>
+<li><p>mysqli_affected_row()<br>该函数用于返回被INSERT、DELETE或UPDATE查询影响到的行数。</p>
+</li>
+</ul>
 
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2018/07/18/PHP常用函数整理-1/" data-id="cjjtnefpb0004k0vssi5pcw9z" class="article-share-link">分享</a>
+      <a data-url="http://yoursite.com/2018/07/18/PHP常用函数整理-1/" data-id="cjke6r0yy000hk8vsuy9xd9uy" class="article-share-link">分享</a>
       
       
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/PHP/">PHP</a></li></ul>
+
     </footer>
   </div>
   
@@ -242,7 +292,7 @@
     <div class="count-box">
       <a href="/archives"><div><strong>4</strong><br>文章</div></a>
       <a href="/categories"><div><strong>0</strong><br>分类</div></a>
-      <a href="/tags"><div><strong>4</strong><br>标签</div></a>
+      <a href="/tags"><div><strong>5</strong><br>标签</div></a>
     </div>
 
 
