@@ -13,7 +13,7 @@
 <meta property="og:site_name" content="F1rry&#39;s blog">
 <meta property="og:description" content="PHP常用函数整理写下这些作为备忘录，这些函数是个人认为比较重要的。">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2018-08-10T11:48:12.720Z">
+<meta property="og:updated_time" content="2018-08-11T06:57:13.159Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="PHP常用函数整理">
 <meta name="twitter:description" content="PHP常用函数整理写下这些作为备忘录，这些函数是个人认为比较重要的。">
@@ -43,7 +43,7 @@
     <h2 class="author">f1rry</h2>
     <h3 class="description"></h3>
     <div class="count-box">
-      <a href="/archives"><div><strong>4</strong><br>文章</div></a>
+      <a href="/archives"><div><strong>6</strong><br>文章</div></a>
       <a href="/categories"><div><strong>0</strong><br>分类</div></a>
       <a href="/tags"><div><strong>5</strong><br>标签</div></a>
     </div>
@@ -220,14 +220,22 @@
 </li>
 <li><p>mysqli_fetch_array()<br>函数从结果集中每次获取一行数据，并在这一过程中创建一个数组。例如从查询语句中：$result = mysql_query($query, $dbc);<br>这个数组会使用已选择的列名作为索引：$row[‘name’]、$row[‘email’]等。和使用其他数组一样，必须通过数据库中定义的确切列名来引用其中的列（列名是区分大小写的）。<br>如果查询会返回多行数据，在循环中执行mysql_fetch_array()函数，以获取所有的行</p>
 </li>
-<li><p>mysqli_affected_row()<br>该函数用于返回被INSERT、DELETE或UPDATE查询影响到的行数。</p>
+<li><p>mysqli_affected_row()<br>该函数用于返回被INSERT、DELETE或UPDATE查询影响到的行数。  </p>
+</li>
+</ul>
+<h3 id="网络查询函数"><a href="#网络查询函数" class="headerlink" title="网络查询函数"></a>网络查询函数</h3><ul>
+<li><p>parse_url()<br>解析url,返回一个包含url各部分的关联数组，url组成部分包括模式、用户、主机、端口、路径、查询以及分段 </p>
+</li>
+<li><p>gethostbyname()<br>输入主机，返回IP地址  </p>
+</li>
+<li><p>gethostbyadd()<br>输入IP地址，返回主机名称；</p>
 </li>
 </ul>
 
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2018/07/18/PHP常用函数整理-1/" data-id="cjke6r0yy000hk8vsuy9xd9uy" class="article-share-link">分享</a>
+      <a data-url="http://yoursite.com/2018/07/18/PHP常用函数整理-1/" data-id="cjkp257im000hbwvs1it1qc2y" class="article-share-link">分享</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/PHP/">PHP</a></li></ul>
@@ -237,6 +245,15 @@
   
     
 <nav id="article-nav">
+  
+    <a href="/2018/08/19/PHP+Mysql编写日常/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">上一篇</strong>
+      <div class="article-nav-title">
+        
+          PHP编写日常
+        
+      </div>
+    </a>
   
   
     <a href="/2018/07/13/非法文件上传漏洞总结/" id="article-nav-older" class="article-nav-link-wrap">
@@ -290,7 +307,7 @@
     <h2 class="author">f1rry</h2>
     <h3 class="description"></h3>
     <div class="count-box">
-      <a href="/archives"><div><strong>4</strong><br>文章</div></a>
+      <a href="/archives"><div><strong>6</strong><br>文章</div></a>
       <a href="/categories"><div><strong>0</strong><br>分类</div></a>
       <a href="/tags"><div><strong>5</strong><br>标签</div></a>
     </div>

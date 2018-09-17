@@ -3,20 +3,20 @@
 <head>
   <meta charset="utf-8">
   
-  <title>新的开始 | F1rry&#39;s blog</title>
+  <title>PHP编写日常 | F1rry&#39;s blog</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="花了一个下午所搭建的个人博客，将于此记录我之后学习的点滴。">
-<meta name="keywords" content="ctf">
+  <meta name="description" content="PHP编写日常在用PHP,MYSQL写网站的时候时常会碰到一些坑和一些在看到他人代码时恍然大悟的感觉，就想着用这篇文章记录一下">
+<meta name="keywords" content="PHP">
 <meta property="og:type" content="article">
-<meta property="og:title" content="新的开始">
-<meta property="og:url" content="http://yoursite.com/2018/07/05/新的开始/index.html">
+<meta property="og:title" content="PHP编写日常">
+<meta property="og:url" content="http://yoursite.com/2018/08/19/PHP+Mysql编写日常/index.html">
 <meta property="og:site_name" content="F1rry&#39;s blog">
-<meta property="og:description" content="花了一个下午所搭建的个人博客，将于此记录我之后学习的点滴。">
+<meta property="og:description" content="PHP编写日常在用PHP,MYSQL写网站的时候时常会碰到一些坑和一些在看到他人代码时恍然大悟的感觉，就想着用这篇文章记录一下">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2018-07-06T03:05:16.091Z">
+<meta property="og:updated_time" content="2018-08-19T15:22:26.951Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="新的开始">
-<meta name="twitter:description" content="花了一个下午所搭建的个人博客，将于此记录我之后学习的点滴。">
+<meta name="twitter:title" content="PHP编写日常">
+<meta name="twitter:description" content="PHP编写日常在用PHP,MYSQL写网站的时候时常会碰到一些坑和一些在看到他人代码时恍然大悟的感觉，就想着用这篇文章记录一下">
   
     <link rel="alternate" href="/atom.xml" title="F1rry&#39;s blog" type="application/atom+xml">
   
@@ -69,12 +69,12 @@
   </div>
 </div>
 
-        <section id="main"><article id="post-新的开始" class="wow slideInRight article article-type-post" itemscope itemprop="blogPost">
+        <section id="main"><article id="post-PHP+Mysql编写日常" class="wow slideInRight article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
-    <a href="/2018/07/05/新的开始/" class="article-date">
-  <time class="post-time" datetime="2018-07-05T13:01:55.000Z" itemprop="datePublished">
-    <span class="post-month">7月</span><br/>
-    <span class="post-day">05</span>
+    <a href="/2018/08/19/PHP+Mysql编写日常/" class="article-date">
+  <time class="post-time" datetime="2018-08-19T14:43:00.000Z" itemprop="datePublished">
+    <span class="post-month">8月</span><br/>
+    <span class="post-day">19</span>
   </time>
 </a>
    
@@ -86,7 +86,7 @@
         
   
     <h1 class="article-title" itemprop="name">
-      新的开始
+      PHP编写日常
     </h1>
   
 
@@ -101,15 +101,78 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <p>花了一个下午所搭建的个人博客，将于此记录我之后学习的点滴。</p>
+        <h1 id="PHP编写日常"><a href="#PHP编写日常" class="headerlink" title="PHP编写日常"></a>PHP编写日常</h1><p>在用PHP,MYSQL写网站的时候时常会碰到一些坑和一些在看到他人代码时恍然大悟的感觉，就想着用这篇文章记录一下<br><a id="more"></a></p>
+<h3 id="PHP-MYSQL用预处理执行批量删除"><a href="#PHP-MYSQL用预处理执行批量删除" class="headerlink" title="PHP+MYSQL用预处理执行批量删除"></a>PHP+MYSQL用预处理执行批量删除</h3><p>以下是自己之前在实现网站删除功能时的一段代码，但很坑的是其中的$del_arr[0]（在代码块中间）这一个变量，若将其里面的数字替换成其他的，或者是将中括号删除，这一段代码都将无法实现删除的功能，且保留也只能完成单条删除，但却能按照用户的需求删除（并不是删除第一条）这点很奇怪    </p>
+<pre><code>&lt;?php    
+    require_once &apos;bookmark_fns.php&apos;;  
+    require_once &apos;user_auth_fns.php&apos;;  
+    session_start();
+    check_valid_user();
 
+    $user= htmlspecialchars(trim($_SESSION[&apos;valid_user&apos;]));
+
+    if(empty($_POST[&apos;delete&apos;])){
+        throw new Exception(&apos;you have nothing to delete&apos;);
+    }
+     else {
+        $del_arr= array_filter($_POST[&apos;delete&apos;]);
+        $cot= count($del_arr);
+    }
+
+
+    $conn=db_connect();
+    $query=&quot;Delete from bookmark where username=? And bm_URL=?&quot;;
+    $stmt=$conn-&gt;prepare($query);
+    $stmt-&gt;bind_param(&apos;ss&apos;, $user,$del_arr[0]);
+    $stmt-&gt;execute();
+
+    $conn-&gt;close();
+
+    header(&apos;location:delete_form.php&apos;);  
+    ?&gt;  
+</code></pre><p>在经过网上查询资料后，发现由于预处理在绑定变量时，变量不能为数组，所以之前的代码并不能将整个数组传进去，而只能传进去里面的元素<br>而以下是修改后的代码，其能很好的完成批量删除这一功能，：  </p>
+<pre><code>&lt;?php
+    require_once &apos;bookmark_fns.php&apos;;
+    require_once &apos;user_auth_fns.php&apos;;
+    session_start();
+    check_valid_user();
+
+    $user= htmlspecialchars(trim($_SESSION[&apos;valid_user&apos;]));
+
+    if(empty($_POST[&apos;delete&apos;])){
+        throw new Exception(&apos;you have nothing to delete&apos;);
+    }
+     else {
+        $del_arr= array_filter($_POST[&apos;delete&apos;]);
+        $cot= count($del_arr);
+    }
+
+
+    $conn=db_connect();
+    $query=&quot;Delete from bookmark where username=? And bm_URL=?&quot;;
+    $stmt=$conn-&gt;prepare($query);
+    for($i=0;$i&lt;$cot;$i++){
+        $del=$del_arr[$i];
+        $stmt-&gt;bind_param(&apos;ss&apos;, $user,$del);
+        $stmt-&gt;execute();
+    }
+
+    if($stmt-&gt;affected_rows!==$cot){
+        throw new Exception(&apos;the operation is failed&apos;);
+    }
+
+    $conn-&gt;close();
+
+    header(&apos;location:delete_form.php&apos;);
+    ?&gt;
+</code></pre>
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2018/07/05/新的开始/" data-id="cjkp257gs0005bwvsz7uyi0d8" class="article-share-link">分享</a>
+      <a data-url="http://yoursite.com/2018/08/19/PHP+Mysql编写日常/" data-id="cjkp257gd0001bwvs9p8chp42" class="article-share-link">分享</a>
       
       
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ctf/">ctf</a></li></ul>
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/PHP/">PHP</a></li></ul>
 
     </footer>
   </div>
@@ -117,15 +180,20 @@
     
 <nav id="article-nav">
   
-    <a href="/2018/07/06/markdown的简单使用/" id="article-nav-newer" class="article-nav-link-wrap">
+    <a href="/2018/09/17/记一个parse-url的漏洞/" id="article-nav-newer" class="article-nav-link-wrap">
       <strong class="article-nav-caption">上一篇</strong>
       <div class="article-nav-title">
         
-          markdown的简单使用
+          记一个parse_url的漏洞
         
       </div>
     </a>
   
+  
+    <a href="/2018/07/18/PHP常用函数整理-1/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">下一篇</strong>
+      <div class="article-nav-title">PHP常用函数整理</div>
+    </a>
   
 </nav>
 

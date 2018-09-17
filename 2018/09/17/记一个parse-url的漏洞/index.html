@@ -3,20 +3,19 @@
 <head>
   <meta charset="utf-8">
   
-  <title>新的开始 | F1rry&#39;s blog</title>
+  <title>记一个parse_url的漏洞 | F1rry&#39;s blog</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="花了一个下午所搭建的个人博客，将于此记录我之后学习的点滴。">
-<meta name="keywords" content="ctf">
+  <meta name="description" content="记一个parse_url的漏洞前言这是在做moeCTF招新时所积累的一个知识，记下来以作为本菜鸡的一点知识储备，以下是原代码：  源码&amp;lt;?php     include &amp;quot;config.php&amp;quot;;     $number1 = rand(1,100000000000000);     $number2 = rand(1,100000000000);     $number">
 <meta property="og:type" content="article">
-<meta property="og:title" content="新的开始">
-<meta property="og:url" content="http://yoursite.com/2018/07/05/新的开始/index.html">
+<meta property="og:title" content="记一个parse_url的漏洞">
+<meta property="og:url" content="http://yoursite.com/2018/09/17/记一个parse-url的漏洞/index.html">
 <meta property="og:site_name" content="F1rry&#39;s blog">
-<meta property="og:description" content="花了一个下午所搭建的个人博客，将于此记录我之后学习的点滴。">
+<meta property="og:description" content="记一个parse_url的漏洞前言这是在做moeCTF招新时所积累的一个知识，记下来以作为本菜鸡的一点知识储备，以下是原代码：  源码&amp;lt;?php     include &amp;quot;config.php&amp;quot;;     $number1 = rand(1,100000000000000);     $number2 = rand(1,100000000000);     $number">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2018-07-06T03:05:16.091Z">
+<meta property="og:updated_time" content="2018-09-17T13:00:46.030Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="新的开始">
-<meta name="twitter:description" content="花了一个下午所搭建的个人博客，将于此记录我之后学习的点滴。">
+<meta name="twitter:title" content="记一个parse_url的漏洞">
+<meta name="twitter:description" content="记一个parse_url的漏洞前言这是在做moeCTF招新时所积累的一个知识，记下来以作为本菜鸡的一点知识储备，以下是原代码：  源码&amp;lt;?php     include &amp;quot;config.php&amp;quot;;     $number1 = rand(1,100000000000000);     $number2 = rand(1,100000000000);     $number">
   
     <link rel="alternate" href="/atom.xml" title="F1rry&#39;s blog" type="application/atom+xml">
   
@@ -69,12 +68,12 @@
   </div>
 </div>
 
-        <section id="main"><article id="post-新的开始" class="wow slideInRight article article-type-post" itemscope itemprop="blogPost">
+        <section id="main"><article id="post-记一个parse-url的漏洞" class="wow slideInRight article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
-    <a href="/2018/07/05/新的开始/" class="article-date">
-  <time class="post-time" datetime="2018-07-05T13:01:55.000Z" itemprop="datePublished">
-    <span class="post-month">7月</span><br/>
-    <span class="post-day">05</span>
+    <a href="/2018/09/17/记一个parse-url的漏洞/" class="article-date">
+  <time class="post-time" datetime="2018-09-17T12:27:41.000Z" itemprop="datePublished">
+    <span class="post-month">9月</span><br/>
+    <span class="post-day">17</span>
   </time>
 </a>
    
@@ -86,7 +85,7 @@
         
   
     <h1 class="article-title" itemprop="name">
-      新的开始
+      记一个parse_url的漏洞
     </h1>
   
 
@@ -101,31 +100,69 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <p>花了一个下午所搭建的个人博客，将于此记录我之后学习的点滴。</p>
+        <h1 id="记一个parse-url的漏洞"><a href="#记一个parse-url的漏洞" class="headerlink" title="记一个parse_url的漏洞"></a>记一个parse_url的漏洞</h1><h3 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h3><p>这是在做moeCTF招新时所积累的一个知识，记下来以作为本菜鸡的一点知识储备，以下是原代码： </p>
+<h3 id="源码"><a href="#源码" class="headerlink" title="源码"></a>源码</h3><pre><code>&lt;?php
+    include &quot;config.php&quot;;
+    $number1 = rand(1,100000000000000);
+    $number2 = rand(1,100000000000);
+    $number3 = rand(1,100000000);
+    $url = urldecode($_SERVER[&apos;REQUEST_URI&apos;]);
+    $url = parse_url($url, PHP_URL_QUERY);
+    if (preg_match(&quot;/_/i&quot;, $url))
+    {
+        die(&quot;...&quot;);
+    }
+    if (preg_match(&quot;/0/i&quot;, $url))
+    {
+        die(&quot;...&quot;);
+    }
+    if (preg_match(&quot;/\w+/i&quot;, $url))
+    {
+        die(&quot;...&quot;);
+    }
+    if(isset($_GET[&apos;_&apos;]) &amp;&amp; !empty($_GET[&apos;_&apos;]))
+    {
+        $control = $_GET[&apos;_&apos;];
+        if(!in_array($control, array(0,$number1)))
+        {
+            die(&quot;fail1&quot;);
+        }
+        if(!in_array($control, array(0,$number2)))
+        {
+            die(&quot;fail2&quot;);
+        }
+        if(!in_array($control, array(0,$number3)))
+        {
+            die(&quot;fail3&quot;);
+        }
+        echo $flag;
+    }
+    show_source(__FILE__);
+    ?&gt;
+</code></pre><h3 id="分析"><a href="#分析" class="headerlink" title="分析"></a>分析</h3><p>这里有两个关键点：  </p>
+<ol>
+<li>绕过前三个正则 -&gt;<em>运用parse_url()的漏洞</em></li>
+<li>绕过in_array的三个判断 -&gt; PHP弱类型 </li>
+</ol>
+<p>第二个关键点可以通过传入  <em>_=A</em>  来绕过，因为当传入为字符串时，由于PHP弱类型，会将字符串转换为数字0而满足条件<br>而第一个关键点则是需要运用parse_url()的漏洞来解决<br>查找资料后，翻到了chu师傅的博客，这是他博客的<a href="http://sh3ll.me/archives/201611031132.txt" target="_blank" rel="noopener">链接</a><br>简单的来说，就是如果url是以<em>//</em>开始的，则他会认为它是相对 url，而后认为 url 的部件从 url+2 开始<br>如果 url 为 ///x.php，则 p = e = s = s + 2(查chu师傅博客或者去查PHP手册)，函数将返回 NULL。<br>所以可以构造以下URL来完成绕过:<br><a href="http://120.77.152.169:8088///index.php?\_=a" target="_blank" rel="noopener">http://120.77.152.169:8088///index.php?\_=a</a></p>
 
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2018/07/05/新的开始/" data-id="cjkp257gs0005bwvsz7uyi0d8" class="article-share-link">分享</a>
+      <a data-url="http://yoursite.com/2018/09/17/记一个parse-url的漏洞/" data-id="cjm69lkt40000s4vss986coxq" class="article-share-link">分享</a>
       
       
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ctf/">ctf</a></li></ul>
-
     </footer>
   </div>
   
     
 <nav id="article-nav">
   
-    <a href="/2018/07/06/markdown的简单使用/" id="article-nav-newer" class="article-nav-link-wrap">
-      <strong class="article-nav-caption">上一篇</strong>
-      <div class="article-nav-title">
-        
-          markdown的简单使用
-        
-      </div>
-    </a>
   
+    <a href="/2018/08/19/PHP+Mysql编写日常/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">下一篇</strong>
+      <div class="article-nav-title">PHP编写日常</div>
+    </a>
   
 </nav>
 

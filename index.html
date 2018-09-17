@@ -38,7 +38,7 @@
     <h2 class="author">f1rry</h2>
     <h3 class="description"></h3>
     <div class="count-box">
-      <a href="/archives"><div><strong>4</strong><br>文章</div></a>
+      <a href="/archives"><div><strong>6</strong><br>文章</div></a>
       <a href="/categories"><div><strong>0</strong><br>分类</div></a>
       <a href="/tags"><div><strong>5</strong><br>标签</div></a>
     </div>
@@ -65,6 +65,154 @@
 </div>
 
         <section id="main">
+  
+    <article id="post-记一个parse-url的漏洞" class="wow slideInRight article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2018/09/17/记一个parse-url的漏洞/" class="article-date">
+  <time class="post-time" datetime="2018-09-17T12:27:41.000Z" itemprop="datePublished">
+    <span class="post-month">9月</span><br/>
+    <span class="post-day">17</span>
+  </time>
+</a>
+   
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2018/09/17/记一个parse-url的漏洞/">记一个parse_url的漏洞</a>
+    </h1>
+  
+
+        <div>
+          
+          
+              
+
+          
+        </div>
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="记一个parse-url的漏洞"><a href="#记一个parse-url的漏洞" class="headerlink" title="记一个parse_url的漏洞"></a>记一个parse_url的漏洞</h1><h3 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h3><p>这是在做moeCTF招新时所积累的一个知识，记下来以作为本菜鸡的一点知识储备，以下是原代码： </p>
+<h3 id="源码"><a href="#源码" class="headerlink" title="源码"></a>源码</h3><pre><code>&lt;?php
+    include &quot;config.php&quot;;
+    $number1 = rand(1,100000000000000);
+    $number2 = rand(1,100000000000);
+    $number3 = rand(1,100000000);
+    $url = urldecode($_SERVER[&apos;REQUEST_URI&apos;]);
+    $url = parse_url($url, PHP_URL_QUERY);
+    if (preg_match(&quot;/_/i&quot;, $url))
+    {
+        die(&quot;...&quot;);
+    }
+    if (preg_match(&quot;/0/i&quot;, $url))
+    {
+        die(&quot;...&quot;);
+    }
+    if (preg_match(&quot;/\w+/i&quot;, $url))
+    {
+        die(&quot;...&quot;);
+    }
+    if(isset($_GET[&apos;_&apos;]) &amp;&amp; !empty($_GET[&apos;_&apos;]))
+    {
+        $control = $_GET[&apos;_&apos;];
+        if(!in_array($control, array(0,$number1)))
+        {
+            die(&quot;fail1&quot;);
+        }
+        if(!in_array($control, array(0,$number2)))
+        {
+            die(&quot;fail2&quot;);
+        }
+        if(!in_array($control, array(0,$number3)))
+        {
+            die(&quot;fail3&quot;);
+        }
+        echo $flag;
+    }
+    show_source(__FILE__);
+    ?&gt;
+</code></pre><h3 id="分析"><a href="#分析" class="headerlink" title="分析"></a>分析</h3><p>这里有两个关键点：  </p>
+<ol>
+<li>绕过前三个正则 -&gt;<em>运用parse_url()的漏洞</em></li>
+<li>绕过in_array的三个判断 -&gt; PHP弱类型 </li>
+</ol>
+<p>第二个关键点可以通过传入  <em>_=A</em>  来绕过，因为当传入为字符串时，由于PHP弱类型，会将字符串转换为数字0而满足条件<br>而第一个关键点则是需要运用parse_url()的漏洞来解决<br>查找资料后，翻到了chu师傅的博客，这是他博客的<a href="http://sh3ll.me/archives/201611031132.txt" target="_blank" rel="noopener">链接</a><br>简单的来说，就是如果url是以<em>//</em>开始的，则他会认为它是相对 url，而后认为 url 的部件从 url+2 开始<br>如果 url 为 ///x.php，则 p = e = s = s + 2(查chu师傅博客或者去查PHP手册)，函数将返回 NULL。<br>所以可以构造以下URL来完成绕过:<br><a href="http://120.77.152.169:8088///index.php?\_=a" target="_blank" rel="noopener">http://120.77.152.169:8088///index.php?\_=a</a></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2018/09/17/记一个parse-url的漏洞/" data-id="cjm69lkt40000s4vss986coxq" class="article-share-link">分享</a>
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+
+
+  
+    <article id="post-PHP+Mysql编写日常" class="wow slideInRight article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2018/08/19/PHP+Mysql编写日常/" class="article-date">
+  <time class="post-time" datetime="2018-08-19T14:43:00.000Z" itemprop="datePublished">
+    <span class="post-month">8月</span><br/>
+    <span class="post-day">19</span>
+  </time>
+</a>
+   
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2018/08/19/PHP+Mysql编写日常/">PHP编写日常</a>
+    </h1>
+  
+
+        <div>
+          
+          
+              
+
+          
+        </div>
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="PHP编写日常"><a href="#PHP编写日常" class="headerlink" title="PHP编写日常"></a>PHP编写日常</h1><p>在用PHP,MYSQL写网站的时候时常会碰到一些坑和一些在看到他人代码时恍然大悟的感觉，就想着用这篇文章记录一下<br>
+        
+          <p class="article-more-link">
+            <a href="/2018/08/19/PHP+Mysql编写日常/#more">Read More</a>
+          </p>
+        
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2018/08/19/PHP+Mysql编写日常/" data-id="cjkp257gd0001bwvs9p8chp42" class="article-share-link">分享</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/PHP/">PHP</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+
+
   
     <article id="post-PHP常用函数整理-1" class="wow slideInRight article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
@@ -107,7 +255,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2018/07/18/PHP常用函数整理-1/" data-id="cjke6r0yy000hk8vsuy9xd9uy" class="article-share-link">分享</a>
+      <a data-url="http://yoursite.com/2018/07/18/PHP常用函数整理-1/" data-id="cjkp257im000hbwvs1it1qc2y" class="article-share-link">分享</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/PHP/">PHP</a></li></ul>
@@ -168,7 +316,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2018/07/13/非法文件上传漏洞总结/" data-id="cjke6r0yg0007k8vsioa5yhrw" class="article-share-link">分享</a>
+      <a data-url="http://yoursite.com/2018/07/13/非法文件上传漏洞总结/" data-id="cjkp257gk0003bwvsva4kakf5" class="article-share-link">分享</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ctf/">ctf</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/渗透/">渗透</a></li></ul>
@@ -228,7 +376,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2018/07/06/markdown的简单使用/" data-id="cjke6r0yd0005k8vsw5iyr514" class="article-share-link">分享</a>
+      <a data-url="http://yoursite.com/2018/07/06/markdown的简单使用/" data-id="cjkp257gf0002bwvsym0vv84k" class="article-share-link">分享</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/hexo/">hexo</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/markdown/">markdown</a></li></ul>
@@ -279,7 +427,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2018/07/05/新的开始/" data-id="cjke6r0ya0003k8vs9vof4lsx" class="article-share-link">分享</a>
+      <a data-url="http://yoursite.com/2018/07/05/新的开始/" data-id="cjkp257gs0005bwvsz7uyi0d8" class="article-share-link">分享</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ctf/">ctf</a></li></ul>
@@ -333,7 +481,7 @@
     <h2 class="author">f1rry</h2>
     <h3 class="description"></h3>
     <div class="count-box">
-      <a href="/archives"><div><strong>4</strong><br>文章</div></a>
+      <a href="/archives"><div><strong>6</strong><br>文章</div></a>
       <a href="/categories"><div><strong>0</strong><br>分类</div></a>
       <a href="/tags"><div><strong>5</strong><br>标签</div></a>
     </div>
