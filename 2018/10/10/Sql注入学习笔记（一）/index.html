@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>Sql注入学习笔记（一） | F1rry&#39;s blog</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="Sql注入学习笔记（一） SQL  约束攻击这是本菜鸡在bugctf上遇到的一道SQL注入题，也是我遇上的新知识，写下来学习一波   利用场景  常见于web开发者没有在期望具有唯一性的那些列（例如用户名）添加UNIQUE约束且将数据库设置成宽松模式（ps:在这种模式下插入数据如果不符合定义类型或长度，对数据类型调整或截断保存并警告)，使得该列的字段值有出现重复的可能性。所以就造成了虽然对sql注">
+<meta name="keywords" content="sql注入">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Sql注入学习笔记（一）">
+<meta property="og:url" content="http://yoursite.com/2018/10/10/Sql注入学习笔记（一）/index.html">
+<meta property="og:site_name" content="F1rry&#39;s blog">
+<meta property="og:description" content="Sql注入学习笔记（一） SQL  约束攻击这是本菜鸡在bugctf上遇到的一道SQL注入题，也是我遇上的新知识，写下来学习一波   利用场景  常见于web开发者没有在期望具有唯一性的那些列（例如用户名）添加UNIQUE约束且将数据库设置成宽松模式（ps:在这种模式下插入数据如果不符合定义类型或长度，对数据类型调整或截断保存并警告)，使得该列的字段值有出现重复的可能性。所以就造成了虽然对sql注">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2018-10-10T15:28:17.967Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Sql注入学习笔记（一）">
+<meta name="twitter:description" content="Sql注入学习笔记（一） SQL  约束攻击这是本菜鸡在bugctf上遇到的一道SQL注入题，也是我遇上的新知识，写下来学习一波   利用场景  常见于web开发者没有在期望具有唯一性的那些列（例如用户名）添加UNIQUE约束且将数据库设置成宽松模式（ps:在这种模式下插入数据如果不符合定义类型或长度，对数据类型调整或截断保存并警告)，使得该列的字段值有出现重复的可能性。所以就造成了虽然对sql注">
+  
+    <link rel="alternate" href="/atom.xml" title="F1rry&#39;s blog" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.ico">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link rel="stylesheet" href="/css/style.css">
+  <link rel="stylesheet" href="/plugin/bganimation/bg.css">
+  
+
+</head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <div class="outer">
+        <div class="widget-wrap mobile-header">
+  <h3 class="widget-title"></h3>
+  <div class="widget">
+    <img class="avatar" src="https://ws1.sinaimg.cn/large/007cmQxLgy1ft3ijjc4pdj30jg0lmn0c.jpg">
+    <h2 class="author">f1rry</h2>
+    <h3 class="description"></h3>
+    <div class="count-box">
+      <a href="/archives"><div><strong>8</strong><br>文章</div></a>
+      <a href="/categories"><div><strong>0</strong><br>分类</div></a>
+      <a href="/tags"><div><strong>6</strong><br>标签</div></a>
+    </div>
+    <ul class="blog-link">
+     
+          <a href="/" title="Home">
+            <li>主页</li>
+          </a>
+        
+          <a href="/archives" title="Archives">
+            <li>归档</li>
+          </a>
+        
+          <a href="/categories" title="Categories">
+            <li>分类</li>
+          </a>
+        
+          <a href="/tags" title="Tags">
+            <li>标签</li>
+          </a>
+        
+    </ul>
+  </div>
+</div>
+
+        <section id="main"><article id="post-Sql注入学习笔记（一）" class="wow slideInRight article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2018/10/10/Sql注入学习笔记（一）/" class="article-date">
+  <time class="post-time" datetime="2018-10-10T14:22:00.000Z" itemprop="datePublished">
+    <span class="post-month">10月</span><br/>
+    <span class="post-day">10</span>
+  </time>
+</a>
+   
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      Sql注入学习笔记（一）
+    </h1>
+  
+
+        <div>
+          
+          
+              
+
+          
+        </div>
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="Sql注入学习笔记（一）-SQL-约束攻击"><a href="#Sql注入学习笔记（一）-SQL-约束攻击" class="headerlink" title="Sql注入学习笔记（一） SQL  约束攻击"></a>Sql注入学习笔记（一） SQL  约束攻击</h1><p>这是本菜鸡在bugctf上遇到的一道SQL注入题，也是我遇上的新知识，写下来学习一波  </p>
+<h2 id="利用场景"><a href="#利用场景" class="headerlink" title="利用场景"></a>利用场景</h2><p>  常见于web开发者没有在期望具有唯一性的那些列（例如用户名）添加UNIQUE约束且将数据库设置成宽松模式（ps:在这种模式下插入数据如果不符合定义类型或长度，对数据类型调整或截断保存并警告)，使得该列的字段值有出现重复的可能性。所以就造成了虽然对sql注入有严格的过滤，但是依然给予了攻击者机会<br> <a id="more"></a> </p>
+<h2 id="原理分析"><a href="#原理分析" class="headerlink" title="原理分析"></a>原理分析</h2><p>  首先要理解的是，在SQL中执行字符串处理时，字符串末尾的空格符将会被删除。所以查询”user  “时等同于查询”user”. 例如</p>
+<pre><code>SELECT \* FROM users where user = &quot;f1rry&quot;;  
+SELECT \* FROM users where user = &quot;f1rry           &quot;
+两句等效     
+</code></pre><p>&nbsp;&nbsp;&nbsp;但也存在异常情况，最好的例子就是LIKE子句了。注意，对尾部空白符的这种修剪操作，主要是在字符串比较期间进行的。这是因为，SQL会在内部使用空格来填充字符串，以便在比较之前使其它们的长度保持一致。在所有的INSERT查询中，SQL都会根据varchar(n)来限制字符串的最大长度。也就是说，如果字符串的长度大于n个字符的话，那么仅使用字符串的前n个字符。比如特定列的长度约束为5个字符，那么在插入字符串”username”时，实际上只能插入字符串的前5个字符，即”usern”。<br>&nbsp;&nbsp;&nbsp;所以如果假设一个字段的长度限制为10，那么当你执行  </p>
+<pre><code>INSERT INTO users value(&apos;f1rry           1&apos;,&apos;123456&apos;)  
+</code></pre><p>&nbsp;&nbsp;&nbsp;由于长度限制为10，所以后面的1被截断，且在执行时空格被忽略，此时当表中还存有令一名id为f1rry的用户，就会造成数据表中含有2个f1rry的现象<br>&nbsp;&nbsp;&nbsp;那么当查询时又会如何呢？数据库会返回最先存在于数据表中用户，这样你便可以登录其他用户的账号啦。<br>&nbsp;&nbsp;&nbsp;例如，已知一个名为admin的用户，但密码位置，此时你可以注册一个名为admin&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;1的用户，然后你便可以用你注册的密码登录该admin的用户了<br>附个实战<a href="http://120.24.86.145:9001/sql/" target="_blank" rel="noopener">题目</a></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2018/10/10/Sql注入学习笔记（一）/" data-id="cjn3b9622000088vs5awf4530" class="article-share-link">分享</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/sql注入/">sql注入</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2018/10/10/Sql注入学习笔记（二）/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">上一篇</strong>
+      <div class="article-nav-title">
+        
+          Sql注入学习笔记（二）
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2018/09/17/记一个parse-url的漏洞/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">下一篇</strong>
+      <div class="article-nav-title">记一个parse_url的漏洞</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+
+</section>
+        
+          <aside id="sidebar">
+  
+    <div class="widget-wrap">
+  <h3 class="widget-title"></h3>
+  <div class="widget">
+    <h1 class="blog-title">F1rry&#39;s blog</h1>
+    <h2 class="blog-subtitle"></h2>
+    <ul class="blog-link">
+     
+          <a href="/" title="Home">
+            <li>主页</li>
+          </a>
+        
+          <a href="/archives" title="Archives">
+            <li>归档</li>
+          </a>
+        
+          <a href="/categories" title="Categories">
+            <li>分类</li>
+          </a>
+        
+          <a href="/tags" title="Tags">
+            <li>标签</li>
+          </a>
+        
+    </ul>
+  </div>
+</div>
+
+  
+    <div class="widget-wrap">
+  <h3 class="widget-title"></h3>
+  <div class="widget">
+    <img class="avatar" src="https://ws1.sinaimg.cn/large/007cmQxLgy1ft3ijjc4pdj30jg0lmn0c.jpg">
+    <h2 class="author">f1rry</h2>
+    <h3 class="description"></h3>
+    <div class="count-box">
+      <a href="/archives"><div><strong>8</strong><br>文章</div></a>
+      <a href="/categories"><div><strong>0</strong><br>分类</div></a>
+      <a href="/tags"><div><strong>6</strong><br>标签</div></a>
+    </div>
+
+
+
+    <div class="social-link">
+      
+        <a class="hvr-bounce-in" href="https://github.com/f1rry" target="_blank" title="Github">
+          Github
+        </a>
+      
+    </div>
+
+    <div class="friend-link">
+      <h2>友情链接</h2>
+      
+        <a class="hvr-bounce-in" href="https://brownfly.github.io/page/2/" target="_blank" title="brownfly">
+          brownfly
+        </a>
+      
+        <a class="hvr-bounce-in" href="http://blog.ckj123.com/" target="_blank" title="ckj123">
+          ckj123
+        </a>
+      
+        <a class="hvr-bounce-in" href="http://mki603.top/" target="_blank" title="Mki">
+          Mki
+        </a>
+      
+        <a class="hvr-bounce-in" href="http://blog.0e1.top/" target="_blank" title="Li4n0">
+          Li4n0
+        </a>
+      
+    </div>
+  </div>
+</div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy;2017 - 2018 f1rry<br>
+      由<a href="http://hexo.io/" target="_blank">Hexo</a>强力驱动 | 
+      主题-<a href="https://github.com/f1rry/f1rry.github.io">Christina</a>
+      
+    </div>
+    
+  </div>
+</footer>
+    </div>
+    
+
+<script src="//apps.bdimg.com/libs/jquery/2.1.4/jquery.min.js"></script>
+<script src="//apps.bdimg.com/libs/wow/0.1.6/wow.min.js"></script>
+<script>
+new WOW().init();
+</script>   
+
+
+  <link rel="stylesheet" href="/plugin/fancybox/jquery.fancybox.css">
+  <script src="/plugin/fancybox/jquery.fancybox.pack.js"></script>
+
+
+
+  <section class="hidden-xs"> 
+  <ul class="cb-slideshow"> 
+    <li><span>苟利</span></li> 
+    <li><span>国家</span></li> 
+    <li><span>生死以</span></li> 
+    <li><span>岂能</span></li> 
+    <li><span>祸福</span></li> 
+    <li><span>趋避之</span></li> 
+  </ul>
+</section>
+<script src="/js/script.js"></script>
+
+
+
+  </div>
+</body>
+</html>
