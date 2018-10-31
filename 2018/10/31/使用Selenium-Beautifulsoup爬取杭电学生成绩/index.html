@@ -1,0 +1,452 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>使用Selenium+Beautiful Soup爬取杭电学生成绩 | F1rry&#39;s blog</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="前言持续摸鱼的f1rry开始学习了爬虫，在学习了爬虫的基本知识后，准备实践一波，于是乎准备写一个爬虫爬取自己的成绩。在编写过程中发现Selenium是真滴好用，真滴强大，于是乎写下这篇，记录以下其常见用法。">
+<meta name="keywords" content="python,爬虫">
+<meta property="og:type" content="article">
+<meta property="og:title" content="使用Selenium+Beautiful Soup爬取杭电学生成绩">
+<meta property="og:url" content="http://yoursite.com/2018/10/31/使用Selenium-Beautifulsoup爬取杭电学生成绩/index.html">
+<meta property="og:site_name" content="F1rry&#39;s blog">
+<meta property="og:description" content="前言持续摸鱼的f1rry开始学习了爬虫，在学习了爬虫的基本知识后，准备实践一波，于是乎准备写一个爬虫爬取自己的成绩。在编写过程中发现Selenium是真滴好用，真滴强大，于是乎写下这篇，记录以下其常见用法。">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2018-10-31T13:25:30.437Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="使用Selenium+Beautiful Soup爬取杭电学生成绩">
+<meta name="twitter:description" content="前言持续摸鱼的f1rry开始学习了爬虫，在学习了爬虫的基本知识后，准备实践一波，于是乎准备写一个爬虫爬取自己的成绩。在编写过程中发现Selenium是真滴好用，真滴强大，于是乎写下这篇，记录以下其常见用法。">
+  
+    <link rel="alternate" href="/atom.xml" title="F1rry&#39;s blog" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.ico">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link rel="stylesheet" href="/css/style.css">
+  <link rel="stylesheet" href="/plugin/bganimation/bg.css">
+  
+
+</head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <div class="outer">
+        <div class="widget-wrap mobile-header">
+  <h3 class="widget-title"></h3>
+  <div class="widget">
+    <img class="avatar" src="https://ws1.sinaimg.cn/large/007cmQxLgy1ft3ijjc4pdj30jg0lmn0c.jpg">
+    <h2 class="author">f1rry</h2>
+    <h3 class="description"></h3>
+    <div class="count-box">
+      <a href="/archives"><div><strong>9</strong><br>文章</div></a>
+      <a href="/categories"><div><strong>0</strong><br>分类</div></a>
+      <a href="/tags"><div><strong>8</strong><br>标签</div></a>
+    </div>
+    <ul class="blog-link">
+     
+          <a href="/" title="Home">
+            <li>主页</li>
+          </a>
+        
+          <a href="/archives" title="Archives">
+            <li>归档</li>
+          </a>
+        
+          <a href="/categories" title="Categories">
+            <li>分类</li>
+          </a>
+        
+          <a href="/tags" title="Tags">
+            <li>标签</li>
+          </a>
+        
+    </ul>
+  </div>
+</div>
+
+        <section id="main"><article id="post-使用Selenium-Beautifulsoup爬取杭电学生成绩" class="wow slideInRight article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2018/10/31/使用Selenium-Beautifulsoup爬取杭电学生成绩/" class="article-date">
+  <time class="post-time" datetime="2018-10-31T08:22:00.000Z" itemprop="datePublished">
+    <span class="post-month">10月</span><br/>
+    <span class="post-day">31</span>
+  </time>
+</a>
+   
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      使用Selenium+Beautiful Soup爬取杭电学生成绩
+    </h1>
+  
+
+        <div>
+          
+          
+              
+
+          
+        </div>
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>持续摸鱼的f1rry开始学习了爬虫，在学习了爬虫的基本知识后，准备实践一波，于是乎准备写一个爬虫爬取自己的成绩。在编写过程中发现Selenium是真滴好用，真滴强大，于是乎写下这篇，记录以下其常见用法。<br><a id="more"></a></p>
+<h2 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h2><h3 id="Selenium"><a href="#Selenium" class="headerlink" title="Selenium"></a>Selenium</h3><p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Selenium 是什么？一句话，自动化测试工具。它支持各种浏览器，包括 Chrome，Safari，Firefox 等主流界面式浏览器，如果你在这些浏览器里面安装一个 Selenium 的插件，那么便可以方便地实现Web界面的测试。换句话说叫 Selenium 支持这些浏览器驱动。  </p>
+<h3 id="Beautiful-Soup"><a href="#Beautiful-Soup" class="headerlink" title="Beautiful Soup"></a>Beautiful Soup</h3><p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Beautiful Soup提供一些简单的、python式的函数用来处理导航、搜索、修改分析树等功能。它是一个工具箱，通过解析文档为用户提供需要抓取的数据，因为简单，所以不需要多少代码就可以写出一个完整的应用程序。</p>
+<p>Beautiful Soup自动将输入文档转换为Unicode编码，输出文档转换为utf-8编码。你不需要考虑编码方式，除非文档没有指定一个编码方式，这时，Beautiful Soup就不能自动识别编码方式了。然后，你仅仅需要说明一下原始编码方式就可以了。</p>
+<p>Beautiful Soup已成为和lxml、html6lib一样出色的python解释器，为用户灵活地提供不同的解析策略或强劲的速度。  </p>
+<p>那么在简单了解了他们是干嘛的后，我们就事不宜迟赶快爬一下吧</p>
+<h2 id="问题分析"><a href="#问题分析" class="headerlink" title="问题分析"></a>问题分析</h2><p>获取到成绩页面需要许多步骤：  </p>
+<ol>
+<li>需要登录自己的账号  </li>
+<li>在登录以后，出现的页面只是个中转页面，还需要继续操作，才能到达成绩查询系统  </li>
+<li>在登录到成绩查询系统后，还需要通过获取悬浮菜单，点击相关按钮，才能查看成绩  </li>
+<li>成绩单是位于iframe框架内，需要定位到框架内才能爬取相关数据<br>在获取到源码后，就需要爬取有用数据了，这里我用的是Beautiful Soup,其实我只是想练练手，估计是我太菜了的缘故，感觉Beautiful Soup对我并不友好233</li>
+</ol>
+<h2 id="逐步解决："><a href="#逐步解决：" class="headerlink" title="逐步解决："></a>逐步解决：</h2><h4 id="登录自己的账号："><a href="#登录自己的账号：" class="headerlink" title="登录自己的账号："></a>登录自己的账号：</h4><p>这个比较简单，其实可以直接post数据过去，不需要用Selenium，但出于强迫症，于是也用Selenium。对于Slenium，其实只要定位到username和password的输入框并模拟输入即可。<br>Selenium有多种定位元素的方法：  </p>
+<pre><code>选取单个元素：
+find_element_by_id                   //通过id属性来查找
+find_element_by_name                 //通过name属性来查找
+find_element_by_xpath                //通过xpath路径来查找
+find_element_by_link_text            //通过文本链接中的文本来查找
+find_element_by_partial_link_text    //跟上面一个类似，只是选取文本片段
+find_element_by_tag_name             //根据标签名称查找
+find_element_by_class_name           //通过类名来查找
+find_element_by_css_selector         //css定位可以分为四类：id、class、其他属性、路径。
+选取多个元素：
+find_elements_by_name                //同上
+find_elements_by_xpath
+find_elements_by_link_text
+find_elements_by_partial_link_text
+find_elements_by_tag_name
+find_elements_by_class_name
+find_elements_by_css_selecto
+</code></pre><p>以下是相关代码片段：  </p>
+<pre><code>driver.get(self.url)
+elem = driver.find_element_by_id(&quot;username&quot;)
+elem.send_keys(username)
+elem = driver.find_element_by_id(&quot;password&quot;)
+elem.send_keys(password)
+elem.send_keys(Keys.ENTER)  
+</code></pre><p>这里的elem.send_keys(Keys.ENTER)模拟的是输入完后的回车，这样就省去了再定位登录按钮并执行点击操作的部分了  </p>
+<h4 id="从中转页面转到成绩查询系统："><a href="#从中转页面转到成绩查询系统：" class="headerlink" title="从中转页面转到成绩查询系统："></a>从中转页面转到成绩查询系统：</h4><p>这里就需要用到Slenium,首先我们需要定位到“学生系统”这一按钮（这里我们运用xpath来定位），然后再执行点击操作，还是比较简单的，以下是相关代码片段：  </p>
+<pre><code>time.sleep(1)
+elem = driver.find_element_by_xpath(&apos;//*[@appid=&quot;1142&quot;]&apos;)
+elem.click()    
+</code></pre><p>PS：由于在查询的时候会偶尔出现定位不到元素的情况，所以这里使用time.sleep（）来是页面能完全加载完毕，以便更好的查找元素  </p>
+<h4 id="获取悬浮菜单并进入到查询功能"><a href="#获取悬浮菜单并进入到查询功能" class="headerlink" title="获取悬浮菜单并进入到查询功能"></a>获取悬浮菜单并进入到查询功能</h4><p>在这之前，需要认识到在进行完之前一部后，浏览器会新建一个窗口，并在其中加载，而我们此时仍会在原标签页中定位元素，所以如果我们不切换窗口，我们将无法定位到“成绩查询系统”页面中的任何元素。所以在做获取悬浮菜单之前，我们需要切换窗口。那么怎么来切换窗口呢？以下是相关代码：</p>
+<pre><code>#获取所有的窗口页面
+handles = driver.window_handles
+#切换到第二个窗口
+driver.switch_to_window(handles[1])    
+</code></pre><p>那么在切换窗口后，我们就开始获取悬浮菜单的操作了，要获取悬浮菜单，我们需要模拟鼠标停留在某个菜单栏的操作，以便获取其中的“信息查询”这一栏，然后模拟点击操作附上相关代码：  </p>
+<pre><code>#定位相应的菜单栏
+elem = driver.find_element_by_xpath(&apos;//*[@id=&quot;headDiv&quot;]/ul/li[6]&apos;)
+#模拟悬浮操作
+ActionChains(driver).move_to_element(elem).perform()
+#运用xpath查询该菜单栏下的“信息查询”这一项     
+elem=driver.find_element_by_xpath(&apos;//[@id=&quot;headDiv&quot;]/ul/li[6]/ul/li[4]/a&apos;)
+elem.click()   
+</code></pre><p>PS：这里需要引入以下库： </p>
+<pre><code>from selenium.webdriver.common.action_chains import ActionChains
+</code></pre><h4 id="进入框架内部并执行相应操作"><a href="#进入框架内部并执行相应操作" class="headerlink" title="进入框架内部并执行相应操作"></a>进入框架内部并执行相应操作</h4><p>在执行完点击操作后，我们会看到相应的成绩查询页，但蛋疼的是，他在iframe框架内，只有进入该框架内，我们才能定位其中的元素，要进入框架内部，我们可以执行以下代码：  </p>
+<pre><code>self.driver.switch_to.frame(&quot;iframeautoheight&quot;)
+</code></pre><p>PS:这里可以传入id、name、index以及selenium的WebElement对象以完成该操作  </p>
+<p>而进入框架内部后，由于我们是通过XX学年来查询成绩的，所以我们需要先定位到有着各个学年的下拉菜单。然后再定位下拉菜单中的选项。<br>对于如何定位下拉菜单中的选项。我们可以使用如下相关代码：</p>
+<pre><code>#获取下拉菜单中的所有选项
+select=Select(driver.find_element_by_id(&quot;ddlxn&quot;))
+#通过文字来选择相应选项
+select.select_by_visible_text(studyYear)
+#获取“查询按钮”元素
+elem = driver.find_element_by_id(&quot;btnCx&quot;)
+#模拟点击查询   
+elem.click()
+</code></pre><p>PS:除了可以根据文字来选择相应选项，还可以根据值、索引来选择对于的函数是  </p>
+<pre><code>select.select_by_index(index)
+select.select_by_value(value)  
+</code></pre><p>PPS：需要引入以下库：  </p>
+<pre><code>from selenium.webdriver.support.ui import Select   
+</code></pre><p>这样我们就抵达了该学年的成绩这一页了，我们只需用driver.page_source就可以返回该页的源代码了。     </p>
+<h4 id="爬取有用数据"><a href="#爬取有用数据" class="headerlink" title="爬取有用数据"></a>爬取有用数据</h4><p>在获得了源代码后，我们就需要爬取有用数据–成绩了。<br>Beautiful Soup 提供了很多查询元素的方法，我们这里用到的方法是 soup.select()，返回类型是 list。<br>Beautiful Soup提供了两种查询子节点的属性，一个是soup.children,他返回的是所有子节点的list 生成器对象，一个是soup.contents，他返回的包含所有直接子节点的列表。<br>再记一点比较坑的地方：<br>&nbsp;&nbsp;&nbsp;&nbsp;soup.contents里面的元素类型是NavigableString，他不能直接用操作string类型的函数来操作，如果真想这样，必须先转换，代码如下：</p>
+<pre><code>content = &quot;&quot;
+content = content.join(soup.contents[i])
+</code></pre><p>下面获取有用数据<br>相关代码如下：</p>
+<pre><code>def getGrade(page):
+    soup = BeautifulSoup(page)
+    i=1
+    j=1
+    listheads = soup.select(&apos;table[class=&quot;datelist&quot;]&apos;)[0].contents[1]
+    len1=len(listheads)-1
+    len2=len(listheads.contents[1])-1
+    gradeList=[]
+    while i&lt;len1:
+        gradeList.append([])
+        while j&lt;len2:
+            content = &quot;&quot;
+            content = content.join(listheads.contents[i].contents[j])
+            content = content.replace(u&apos;\xa0&apos;, u&apos; &apos;)
+            j=j+1
+            gradeList[i-1].append(content.encode(&apos;utf-8&apos;))
+        i=i+1
+        j=1
+    return gradeList
+</code></pre><h2 id="成型"><a href="#成型" class="headerlink" title="成型"></a>成型</h2><p>代码如下：</p>
+<pre><code># -*- coding:utf-8 -*-
+from selenium import webdriver
+from selenium.webdriver.common.keys import Keys
+from selenium.webdriver.common.action_chains import ActionChains
+from selenium.webdriver.support.ui import Select
+from bs4 import BeautifulSoup
+import re
+import time
+
+
+class Grade:
+    def __init__(self,username,password,studyYear):
+        self.url=&apos;http://cas.hdu.edu.cn/cas/login?service=http%3A%2F%2Fi.hdu.edu.cn%2Fdcp%2Findex.jsp&apos;
+        self.username=username
+        self.password=password
+        self.studyYear=studyYear
+        chrome_options = webdriver.ChromeOptions()
+        chrome_options.add_argument(&apos;--headless&apos;)
+        self.driver = webdriver.Chrome(chrome_options=chrome_options)
+
+    def getGradePage(self):
+        self.driver.get(self.url)
+        elem = self.driver.find_element_by_id(&quot;username&quot;)
+        elem.send_keys(self.username)
+        elem = self.driver.find_element_by_id(&quot;password&quot;)
+        elem.send_keys(self.password)
+        elem.send_keys(Keys.ENTER)
+        #使页面全部加载完成
+        time.sleep(1)
+        elem = self.driver.find_element_by_xpath(&apos;//*[@appid=&quot;1142&quot;]&apos;)
+        elem.click()
+        #跳转到第二个窗口
+        handles = self.driver.window_handles
+        self.driver.switch_to_window(handles[1])
+        elem = self.driver.find_element_by_xpath(&apos;//*[@id=&quot;headDiv&quot;]/ul/li[6]&apos;)
+        #使悬浮菜单显现
+        ActionChains(self.driver).move_to_element(elem).perform()
+        elem = self.driver.find_element_by_xpath(&apos;//*[@id=&quot;headDiv&quot;]/ul/li[6]/ul/li[4]/a&apos;)
+        elem.click()
+        #跳转到框架内部
+        self.driver.switch_to.frame(&quot;iframeautoheight&quot;)
+        select=Select(self.driver.find_element_by_id(&quot;ddlxn&quot;))
+        select.select_by_visible_text(self.studyYear)
+        elem = self.driver.find_element_by_id(&quot;btnCx&quot;)
+        elem.click()
+        return self.driver.page_source
+
+    def getGrade(self,page):
+        soup = BeautifulSoup(page)
+        i=1
+        j=1
+        listheads = soup.select(&apos;table[class=&quot;datelist&quot;]&apos;)[0].contents[1]
+        len1=len(listheads)-1
+        len2=len(listheads.contents[1])-1
+        gradeList=[]
+        while i&lt;len1:
+            gradeList.append([])
+            while j&lt;len2:
+                content = &quot;&quot;
+                content = content.join(listheads.contents[i].contents[j])
+                content = content.replace(u&apos;\xa0&apos;, u&apos; &apos;)
+                j=j+1
+                gradeList[i-1].append(content.encode(&apos;utf-8&apos;))
+            i=i+1
+            j=1
+        return gradeList
+
+    def printGrade(self,gradeList):
+        len1=len(gradeList)
+        len2=len(gradeList[0])
+        i=j=0
+        print u&quot;-----------------------------------------------------------------------------------------------------------------&quot;
+        while i&lt;len1:
+            elems=gradeList[i]
+            strs=&quot;|&quot;
+            j=0
+            while j&lt;len2:
+                elem=elems[j].decode(&apos;utf-8&apos;).ljust(10,&apos; &apos;)
+                strs=strs+elem+&quot;|&quot;
+                j=j+1
+            i=i+1    
+            print strs
+            print u&quot;-----------------------------------------------------------------------------------------------------------------&quot;
+
+    def start(self):
+        page=self.getGradePage()
+        gradeList=self.getGrade(page)
+        self.printGrade(gradeList)
+
+username=raw_input(&apos;please input your username:&apos;)
+password=raw_input(&apos;please input your password:&apos;)
+studyYear=raw_input(&apos;please input your studyyear:&apos;)
+
+a=Grade(username,password,studyYear)
+print a.start()
+</code></pre>
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2018/10/31/使用Selenium-Beautifulsoup爬取杭电学生成绩/" data-id="cjnx708fn000pvsvsc5gfkpe9" class="article-share-link">分享</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/python/">python</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/爬虫/">爬虫</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+  
+    <a href="/2018/10/10/Sql注入学习笔记（二）/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">下一篇</strong>
+      <div class="article-nav-title">Sql注入学习笔记（二）</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+
+</section>
+        
+          <aside id="sidebar">
+  
+    <div class="widget-wrap">
+  <h3 class="widget-title"></h3>
+  <div class="widget">
+    <h1 class="blog-title">F1rry&#39;s blog</h1>
+    <h2 class="blog-subtitle"></h2>
+    <ul class="blog-link">
+     
+          <a href="/" title="Home">
+            <li>主页</li>
+          </a>
+        
+          <a href="/archives" title="Archives">
+            <li>归档</li>
+          </a>
+        
+          <a href="/categories" title="Categories">
+            <li>分类</li>
+          </a>
+        
+          <a href="/tags" title="Tags">
+            <li>标签</li>
+          </a>
+        
+    </ul>
+  </div>
+</div>
+
+  
+    <div class="widget-wrap">
+  <h3 class="widget-title"></h3>
+  <div class="widget">
+    <img class="avatar" src="https://ws1.sinaimg.cn/large/007cmQxLgy1ft3ijjc4pdj30jg0lmn0c.jpg">
+    <h2 class="author">f1rry</h2>
+    <h3 class="description"></h3>
+    <div class="count-box">
+      <a href="/archives"><div><strong>9</strong><br>文章</div></a>
+      <a href="/categories"><div><strong>0</strong><br>分类</div></a>
+      <a href="/tags"><div><strong>8</strong><br>标签</div></a>
+    </div>
+
+
+
+    <div class="social-link">
+      
+        <a class="hvr-bounce-in" href="https://github.com/f1rry" target="_blank" title="Github">
+          Github
+        </a>
+      
+    </div>
+
+    <div class="friend-link">
+      <h2>友情链接</h2>
+      
+        <a class="hvr-bounce-in" href="https://brownfly.github.io/page/2/" target="_blank" title="brownfly">
+          brownfly
+        </a>
+      
+        <a class="hvr-bounce-in" href="http://blog.ckj123.com/" target="_blank" title="ckj123">
+          ckj123
+        </a>
+      
+        <a class="hvr-bounce-in" href="http://mki603.top/" target="_blank" title="Mki">
+          Mki
+        </a>
+      
+        <a class="hvr-bounce-in" href="http://blog.0e1.top/" target="_blank" title="Li4n0">
+          Li4n0
+        </a>
+      
+    </div>
+  </div>
+</div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy;2017 - 2018 f1rry<br>
+      由<a href="http://hexo.io/" target="_blank">Hexo</a>强力驱动 | 
+      主题-<a href="https://github.com/f1rry/f1rry.github.io">Christina</a>
+      
+    </div>
+    
+  </div>
+</footer>
+    </div>
+    
+
+<script src="//apps.bdimg.com/libs/jquery/2.1.4/jquery.min.js"></script>
+<script src="//apps.bdimg.com/libs/wow/0.1.6/wow.min.js"></script>
+<script>
+new WOW().init();
+</script>   
+
+
+  <link rel="stylesheet" href="/plugin/fancybox/jquery.fancybox.css">
+  <script src="/plugin/fancybox/jquery.fancybox.pack.js"></script>
+
+
+
+  <section class="hidden-xs"> 
+  <ul class="cb-slideshow"> 
+    <li><span>苟利</span></li> 
+    <li><span>国家</span></li> 
+    <li><span>生死以</span></li> 
+    <li><span>岂能</span></li> 
+    <li><span>祸福</span></li> 
+    <li><span>趋避之</span></li> 
+  </ul>
+</section>
+<script src="/js/script.js"></script>
+
+
+
+  </div>
+</body>
+</html>
