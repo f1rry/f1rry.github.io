@@ -12,7 +12,7 @@
 <meta property="og:site_name" content="F1rry&#39;s blog">
 <meta property="og:description" content="laradock 简介一套完整的基于Docker的PHP开发环境。 包含了预先打包的Docker镜像，所有预先配置都是为了提供一个完美的PHP开发环境。 Laradock是在laravel社区众所周知的，因为这个项目最开始只关注在Docker上运行的laravel项目。后来，由于PHP社区的大量使用，它开始支持比如Symfony、CodeIgniter、WordPress、Drupal等其他的PH">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2019-03-30T14:19:33.413Z">
+<meta property="og:updated_time" content="2019-03-30T14:38:08.529Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="使用laradock快速部署laravel应用">
 <meta name="twitter:description" content="laradock 简介一套完整的基于Docker的PHP开发环境。 包含了预先打包的Docker镜像，所有预先配置都是为了提供一个完美的PHP开发环境。 Laradock是在laravel社区众所周知的，因为这个项目最开始只关注在Docker上运行的laravel项目。后来，由于PHP社区的大量使用，它开始支持比如Symfony、CodeIgniter、WordPress、Drupal等其他的PH">
@@ -142,7 +142,13 @@ QUEUE_HOST=beanstalkd
 <pre><code>docker-compose up -d nginx php-fpm mysql
 </code></pre><p>6 - 转到该文件夹并开始工作 </p>
 <pre><code>cd my-cool-app
-</code></pre><h1 id="文档查找"><a href="#文档查找" class="headerlink" title="文档查找"></a>文档查找</h1><ul>
+</code></pre><h1 id="关于本地laravel应用上传到服务器"><a href="#关于本地laravel应用上传到服务器" class="headerlink" title="关于本地laravel应用上传到服务器"></a>关于本地laravel应用上传到服务器</h1><ul>
+<li><p>出现The stream or file “/storage/logs/laravel.log” could not be opened: failed to open stream: Permission denied错误的解决办法  </p>
+<pre><code>进入项目顶部文件，依次输入以下命令
+php artisan cache:clear
+chmod -R 777 storage
+composer dump-autoload
+</code></pre><h1 id="文档查找"><a href="#文档查找" class="headerlink" title="文档查找"></a>文档查找</h1></li>
 <li><a href="https://laradock-docs.linganmin.cn/" target="_blank" rel="noopener">中文文档</a></li>
 <li><a href="https://laradock.io/introduction/" target="_blank" rel="noopener">英文文档</a></li>
 </ul>
@@ -150,7 +156,7 @@ QUEUE_HOST=beanstalkd
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2019/03/30/使用laradock快速部署laravel应用/" data-id="cjtvi006e000b4svs87fhls4i" class="article-share-link">分享</a>
+      <a data-url="http://yoursite.com/2019/03/30/使用laradock快速部署laravel应用/" data-id="cjtvl2a2m000b30vs3g8m7czr" class="article-share-link">分享</a>
       
       
     </footer>
