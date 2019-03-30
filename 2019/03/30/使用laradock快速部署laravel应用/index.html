@@ -12,7 +12,7 @@
 <meta property="og:site_name" content="F1rry&#39;s blog">
 <meta property="og:description" content="laradock 简介一套完整的基于Docker的PHP开发环境。 包含了预先打包的Docker镜像，所有预先配置都是为了提供一个完美的PHP开发环境。 Laradock是在laravel社区众所周知的，因为这个项目最开始只关注在Docker上运行的laravel项目。后来，由于PHP社区的大量使用，它开始支持比如Symfony、CodeIgniter、WordPress、Drupal等其他的PH">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2019-03-30T07:10:31.074Z">
+<meta property="og:updated_time" content="2019-03-30T14:19:33.413Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="使用laradock快速部署laravel应用">
 <meta name="twitter:description" content="laradock 简介一套完整的基于Docker的PHP开发环境。 包含了预先打包的Docker镜像，所有预先配置都是为了提供一个完美的PHP开发环境。 Laradock是在laravel社区众所周知的，因为这个项目最开始只关注在Docker上运行的laravel项目。后来，由于PHP社区的大量使用，它开始支持比如Symfony、CodeIgniter、WordPress、Drupal等其他的PH">
@@ -138,7 +138,9 @@ QUEUE_HOST=beanstalkd
 </code></pre><p>4 - 编辑.env以映射新的应用程序路径：<br>默认情况下，Laradock假定Laravel应用程序位于laradock文件夹的父目录中。  </p>
 <p>由于新的Laravel应用程序位于my-cool-app文件夹中，我们需要替换../:/var/www为../my-cool-app/:/var/www，如下所示：</p>
 <pre><code>APP_CODE_PATH_HOST=../my-cool-app/
-</code></pre><p>5 - 转到该文件夹​​并开始工作  </p>
+</code></pre><p>5 - 重新构建环境  </p>
+<pre><code>docker-compose up -d nginx php-fpm mysql
+</code></pre><p>6 - 转到该文件夹并开始工作 </p>
 <pre><code>cd my-cool-app
 </code></pre><h1 id="文档查找"><a href="#文档查找" class="headerlink" title="文档查找"></a>文档查找</h1><ul>
 <li><a href="https://laradock-docs.linganmin.cn/" target="_blank" rel="noopener">中文文档</a></li>
@@ -148,7 +150,7 @@ QUEUE_HOST=beanstalkd
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2019/03/30/使用laradock快速部署laravel应用/" data-id="cjtv5q2cd000fz8vs8fkjx55s" class="article-share-link">分享</a>
+      <a data-url="http://yoursite.com/2019/03/30/使用laradock快速部署laravel应用/" data-id="cjtvi006e000b4svs87fhls4i" class="article-share-link">分享</a>
       
       
     </footer>
