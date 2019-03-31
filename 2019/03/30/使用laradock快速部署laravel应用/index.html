@@ -12,7 +12,7 @@
 <meta property="og:site_name" content="F1rry&#39;s blog">
 <meta property="og:description" content="laradock 简介一套完整的基于Docker的PHP开发环境。 包含了预先打包的Docker镜像，所有预先配置都是为了提供一个完美的PHP开发环境。 Laradock是在laravel社区众所周知的，因为这个项目最开始只关注在Docker上运行的laravel项目。后来，由于PHP社区的大量使用，它开始支持比如Symfony、CodeIgniter、WordPress、Drupal等其他的PH">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2019-03-30T14:38:08.529Z">
+<meta property="og:updated_time" content="2019-03-31T07:14:10.098Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="使用laradock快速部署laravel应用">
 <meta name="twitter:description" content="laradock 简介一套完整的基于Docker的PHP开发环境。 包含了预先打包的Docker镜像，所有预先配置都是为了提供一个完美的PHP开发环境。 Laradock是在laravel社区众所周知的，因为这个项目最开始只关注在Docker上运行的laravel项目。后来，由于PHP社区的大量使用，它开始支持比如Symfony、CodeIgniter、WordPress、Drupal等其他的PH">
@@ -142,6 +142,33 @@ QUEUE_HOST=beanstalkd
 <pre><code>docker-compose up -d nginx php-fpm mysql
 </code></pre><p>6 - 转到该文件夹并开始工作 </p>
 <pre><code>cd my-cool-app
+</code></pre><h1 id="Mysql配置"><a href="#Mysql配置" class="headerlink" title="Mysql配置"></a>Mysql配置</h1><p>laradock在默认情况下，是使用MySQL 8.0。</p>
+<p>MySQL 8.0是一个开发版本。而一般开发中可能更喜欢使用最新的稳定版本或更旧的版本，所以我们更改使用的MySQL映像。以下是步骤</p>
+<pre><code># 修改 .env 文件
+MYSQL_VERSION=5.7 # 默认为 latest
+
+#停止mysql容器
+docker-compose stop mysql
+
+# 删除旧数据库数据
+rm -rf ~/.laradock/data/mysql
+
+# ！注意重启docker应用，然后再构建新 mysql
+docker-compose build mysql
+
+ # 重新创建容器
+docker-compose up -d nginx mysql
+
+# 查看现有 mysql 版本
+docker inspect laradock_mysql_1
+
+# 配置laravel中的.env文件
+DB_CONNECTION=mysql
+DB_HOST=mysql  //不能使用localhost和127.0.0.1
+DB_PORT=3306
+DB_DATABASE=自己的数据库名
+DB_USERNAME=root
+DB_PASSWORD=root
 </code></pre><h1 id="关于本地laravel应用上传到服务器"><a href="#关于本地laravel应用上传到服务器" class="headerlink" title="关于本地laravel应用上传到服务器"></a>关于本地laravel应用上传到服务器</h1><ul>
 <li><p>出现The stream or file “/storage/logs/laravel.log” could not be opened: failed to open stream: Permission denied错误的解决办法  </p>
 <pre><code>进入项目顶部文件，依次输入以下命令
@@ -156,7 +183,7 @@ composer dump-autoload
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2019/03/30/使用laradock快速部署laravel应用/" data-id="cjtvl2a2m000b30vs3g8m7czr" class="article-share-link">分享</a>
+      <a data-url="http://yoursite.com/2019/03/30/使用laradock快速部署laravel应用/" data-id="cjtvlpt1b000a2kvshn37198t" class="article-share-link">分享</a>
       
       
     </footer>
