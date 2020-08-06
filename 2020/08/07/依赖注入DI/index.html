@@ -1,0 +1,604 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5"><title>F1rry's blog</title><meta name="description"><meta name="author" content="f1rry"><meta name="copyright" content="f1rry"><meta name="format-detection" content="telephone=no"><link rel="shortcut icon" href="/img/favicon.ico"><link rel="preconnect" href="//cdn.jsdelivr.net"><link rel="preconnect" href="https://fonts.googleapis.com" crossorigin><link rel="preconnect" href="//busuanzi.ibruce.info"><meta name="twitter:card" content="summary"><meta name="twitter:title" content=""><meta name="twitter:description"><meta name="twitter:image" content="https://cdn.jsdelivr.net/gh/jerryc127/butterfly_cdn@2.1.0/top_img/default.png"><meta property="og:type" content="article"><meta property="og:title" content=""><meta property="og:url" content="http://yoursite.com/2020/08/07/依赖注入DI/"><meta property="og:site_name" content="F1rry's blog"><meta property="og:description"><meta property="og:image" content="https://cdn.jsdelivr.net/gh/jerryc127/butterfly_cdn@2.1.0/top_img/default.png"><meta http-equiv="Cache-Control" content="no-transform"><meta http-equiv="Cache-Control" content="no-siteapp"><script src="https://cdn.jsdelivr.net/npm/js-cookie/dist/js.cookie.min.js"></script><script>const autoChangeMode = 'false'
+var t = Cookies.get("theme");
+if (autoChangeMode == '1'){
+const isDarkMode = window.matchMedia("(prefers-color-scheme: dark)").matches
+const isLightMode = window.matchMedia("(prefers-color-scheme: light)").matches
+const isNotSpecified = window.matchMedia("(prefers-color-scheme: no-preference)").matches
+const hasNoSupport = !isDarkMode && !isLightMode && !isNotSpecified
+
+if (t === undefined){
+  if (isLightMode) activateLightMode()
+  else if (isDarkMode) activateDarkMode()
+  else if (isNotSpecified || hasNoSupport){
+    console.log('You specified no preference for a color scheme or your browser does not support it. I Schedule dark mode during night time.')
+    now = new Date();
+    hour = now.getHours();
+    isNight = hour < 6 || hour >= 18
+    isNight ? activateDarkMode() : activateLightMode()
+}
+} else if (t == 'light') activateLightMode()
+else activateDarkMode()
+
+
+} else if (autoChangeMode == '2'){
+  now = new Date();
+  hour = now.getHours();
+  isNight = hour < 6 || hour >= 18
+  if(t === undefined) isNight? activateDarkMode() : activateLightMode()
+  else if (t === 'light') activateLightMode()
+  else activateDarkMode() 
+} else {
+  if ( t == 'dark' ) activateDarkMode()
+  else if ( t == 'light') activateLightMode()
+}
+
+function activateDarkMode(){
+  document.documentElement.setAttribute('data-theme', 'dark')
+  if (document.querySelector('meta[name="theme-color"]') !== null){
+    document.querySelector('meta[name="theme-color"]').setAttribute('content','#000')
+  }
+}
+function activateLightMode(){
+  document.documentElement.setAttribute('data-theme', 'light')
+  if (document.querySelector('meta[name="theme-color"]') !== null){
+  document.querySelector('meta[name="theme-color"]').setAttribute('content','#fff')
+  }
+}</script><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/font-awesome@latest/css/font-awesome.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.css"><link rel="canonical" href="http://yoursite.com/2020/08/07/依赖注入DI/"><link rel="next" title="" href="http://yoursite.com/2020/08/07/保护Web应用/"><link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Titillium+Web"><script>var GLOBAL_CONFIG = { 
+  root: '/',
+  algolia: undefined,
+  localSearch: undefined,
+  translate: {"defaultEncoding":2,"translateDelay":0,"cookieDomain":"https://xxx/","msgToTraditionalChinese":"繁","msgToSimplifiedChinese":"简"},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  bookmark: {
+    title: 'Snackbar.bookmark.title',
+    message_prev: '按',
+    message_next: '键将本页加入书签'
+  },
+  runtime_unit: '天',
+  runtime: true,
+  copyright: undefined,
+  ClickShowText: undefined,
+  medium_zoom: false,
+  fancybox: true,
+  Snackbar: undefined,
+  baiduPush: false,
+  isHome: false,
+  isPost: true
+  
+}</script></head><body><header> <div id="page-header"><span class="pull_left" id="blog_name"><a class="blog_title" id="site-name" href="/">F1rry's blog</a></span><span class="toggle-menu pull_right close"><a class="site-page"><i class="fa fa-bars fa-fw" aria-hidden="true"></i></a></span><span class="pull_right menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fa fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fa fa-archive"></i><span> 时间轴</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fa fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fa fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fa fa-link"></i><span> 友链</span></a></div></div></span></div></header><div id="mobile-sidebar"><div id="menu_mask"></div><div id="mobile-sidebar-menus"><div class="mobile_author_icon"><img class="avatar-img" src="/img/avatar.png" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"></div><div class="mobile_post_data"><div class="mobile_data_item is-center"><div class="mobile_data_link"><a href="/archives/"><div class="headline">文章</div><div class="length_num">23</div></a></div></div><div class="mobile_data_item is-center">      <div class="mobile_data_link"><a href="/tags/"><div class="headline">标签</div><div class="length_num">8</div></a></div></div></div><hr><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fa fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fa fa-archive"></i><span> 时间轴</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fa fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fa fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fa fa-link"></i><span> 友链</span></a></div></div></div><div id="mobile-sidebar-toc"><div class="toc_mobile_headline">目录</div><div class="sidebar-toc__content"><ol class="toc_mobile_items"><li class="toc_mobile_items-item toc_mobile_items-level-1"><a class="toc_mobile_items-link" href="#Spring学习-依赖注入之自动化装配"><span class="toc_mobile_items-number">1.</span> <span class="toc_mobile_items-text">Spring学习 依赖注入之自动化装配</span></a><ol class="toc_mobile_items-child"><li class="toc_mobile_items-item toc_mobile_items-level-2"><a class="toc_mobile_items-link" href="#Been的三种装配机制"><span class="toc_mobile_items-number">1.1.</span> <span class="toc_mobile_items-text">Been的三种装配机制</span></a></li><li class="toc_mobile_items-item toc_mobile_items-level-2"><a class="toc_mobile_items-link" href="#隐式的bean发现机制和自动装配"><span class="toc_mobile_items-number">1.2.</span> <span class="toc_mobile_items-text">隐式的bean发现机制和自动装配</span></a></li><li class="toc_mobile_items-item toc_mobile_items-level-2"><a class="toc_mobile_items-link" href="#自动化装配之后的显示装配"><span class="toc_mobile_items-number">1.3.</span> <span class="toc_mobile_items-text">自动化装配之后的显示装配</span></a><ol class="toc_mobile_items-child"><li class="toc_mobile_items-item toc_mobile_items-level-3"><a class="toc_mobile_items-link" href="#基于JAVA的显示装配"><span class="toc_mobile_items-number">1.3.1.</span> <span class="toc_mobile_items-text">基于JAVA的显示装配</span></a></li><li class="toc_mobile_items-item toc_mobile_items-level-3"><a class="toc_mobile_items-link" href="#基于XML的显示装配"><span class="toc_mobile_items-number">1.3.2.</span> <span class="toc_mobile_items-text">基于XML的显示装配</span></a></li></ol></li><li class="toc_mobile_items-item toc_mobile_items-level-2"><a class="toc_mobile_items-link" href="#导入混合配置"><span class="toc_mobile_items-number">1.4.</span> <span class="toc_mobile_items-text">导入混合配置</span></a></li><li class="toc_mobile_items-item toc_mobile_items-level-2"><a class="toc_mobile_items-link" href="#高级装配"><span class="toc_mobile_items-number">1.5.</span> <span class="toc_mobile_items-text">高级装配</span></a><ol class="toc_mobile_items-child"><li class="toc_mobile_items-item toc_mobile_items-level-3"><a class="toc_mobile_items-link" href="#如何根据环境-开发环境，测试环境，生产环境-来自动切换生成的Bean"><span class="toc_mobile_items-number">1.5.1.</span> <span class="toc_mobile_items-text">如何根据环境(开发环境，测试环境，生产环境)来自动切换生成的Bean</span></a></li><li class="toc_mobile_items-item toc_mobile_items-level-3"><a class="toc_mobile_items-link" href="#如何根据相应条件来生成Bean-在满足某个特定的情况下才生成"><span class="toc_mobile_items-number">1.5.2.</span> <span class="toc_mobile_items-text">如何根据相应条件来生成Bean(在满足某个特定的情况下才生成)</span></a></li><li class="toc_mobile_items-item toc_mobile_items-level-3"><a class="toc_mobile_items-link" href="#如何解决自动装配的歧义性"><span class="toc_mobile_items-number">1.5.3.</span> <span class="toc_mobile_items-text">如何解决自动装配的歧义性</span></a></li><li class="toc_mobile_items-item toc_mobile_items-level-3"><a class="toc_mobile_items-link" href="#运行时值注入"><span class="toc_mobile_items-number">1.5.4.</span> <span class="toc_mobile_items-text">运行时值注入</span></a></li></ol></li><li class="toc_mobile_items-item toc_mobile_items-level-2"><a class="toc_mobile_items-link" href="#bean的作用域"><span class="toc_mobile_items-number">1.6.</span> <span class="toc_mobile_items-text">bean的作用域</span></a></li></ol></li></ol></div></div></div><div id="body-wrap"><div id="web_bg" data-type="photo"></div><i class="fa fa-arrow-right" id="toggle-sidebar" aria-hidden="true">     </i><div class="auto_open" id="sidebar"><div class="sidebar-toc"><div class="sidebar-toc__title">目录</div><div class="sidebar-toc__progress"><span class="progress-notice">你已经读了</span><span class="progress-num">0</span><span class="progress-percentage">%</span><div class="sidebar-toc__progress-bar">     </div></div><div class="sidebar-toc__content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#Spring学习-依赖注入之自动化装配"><span class="toc-number">1.</span> <span class="toc-text">Spring学习 依赖注入之自动化装配</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#Been的三种装配机制"><span class="toc-number">1.1.</span> <span class="toc-text">Been的三种装配机制</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#隐式的bean发现机制和自动装配"><span class="toc-number">1.2.</span> <span class="toc-text">隐式的bean发现机制和自动装配</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#自动化装配之后的显示装配"><span class="toc-number">1.3.</span> <span class="toc-text">自动化装配之后的显示装配</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#基于JAVA的显示装配"><span class="toc-number">1.3.1.</span> <span class="toc-text">基于JAVA的显示装配</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#基于XML的显示装配"><span class="toc-number">1.3.2.</span> <span class="toc-text">基于XML的显示装配</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#导入混合配置"><span class="toc-number">1.4.</span> <span class="toc-text">导入混合配置</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#高级装配"><span class="toc-number">1.5.</span> <span class="toc-text">高级装配</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#如何根据环境-开发环境，测试环境，生产环境-来自动切换生成的Bean"><span class="toc-number">1.5.1.</span> <span class="toc-text">如何根据环境(开发环境，测试环境，生产环境)来自动切换生成的Bean</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#如何根据相应条件来生成Bean-在满足某个特定的情况下才生成"><span class="toc-number">1.5.2.</span> <span class="toc-text">如何根据相应条件来生成Bean(在满足某个特定的情况下才生成)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#如何解决自动装配的歧义性"><span class="toc-number">1.5.3.</span> <span class="toc-text">如何解决自动装配的歧义性</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#运行时值注入"><span class="toc-number">1.5.4.</span> <span class="toc-text">运行时值注入</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#bean的作用域"><span class="toc-number">1.6.</span> <span class="toc-text">bean的作用域</span></a></li></ol></li></ol></div></div></div><main id="content-outer"><div id="top-container" style="background-image: url(https://cdn.jsdelivr.net/gh/jerryc127/butterfly_cdn@2.1.0/top_img/default.png)"><div id="post-info"><div id="post-title"><div class="posttitle">无题</div></div><div id="post-meta"><time class="post-meta__date"><i class="fa fa-calendar fa-fw" aria-hidden="true"></i> 发表于 2020-08-07<span class="post-meta__separator">|</span><i class="fa fa-history fa-fw" aria-hidden="true"></i> 更新于 2019-09-26</time><div class="post-meta-wordcount"><i class="fa fa-file-word-o post-meta__icon fa-fw" aria-hidden="true"></i><span>字数总计:</span><span class="word-count">4.4k</span><span class="post-meta__separator">|</span><i class="fa fa-clock-o post-meta__icon fa-fw" aria-hidden="true"></i><span>阅读时长: 16 分钟</span><div class="post-meta-pv-cv"><span class="post-meta__separator">|</span><span><i class="fa fa-eye post-meta__icon fa-fw" aria-hidden="true"> </i>阅读量:</span><span id="busuanzi_value_page_pv"></span></div></div></div></div></div><div class="layout layout_post" id="content-inner">   <article id="post"><div class="article-container" id="post-content"><h1 id="Spring学习-依赖注入之自动化装配"><a href="#Spring学习-依赖注入之自动化装配" class="headerlink" title="Spring学习 依赖注入之自动化装配"></a>Spring学习 依赖注入之自动化装配</h1><h2 id="Been的三种装配机制"><a href="#Been的三种装配机制" class="headerlink" title="Been的三种装配机制"></a>Been的三种装配机制</h2><ol>
+<li>在XML中进行显示装配</li>
+<li>在Java中进行显示装配</li>
+<li>隐式的bean发现机制和自动装配<h2 id="隐式的bean发现机制和自动装配"><a href="#隐式的bean发现机制和自动装配" class="headerlink" title="隐式的bean发现机制和自动装配"></a>隐式的bean发现机制和自动装配</h2>我们先来谈谈第三条。<br>Spring从两个角度来实现自动化装配</li>
+<li>组件扫描：Spring会自动发现应用上下文中所创建的bean</li>
+<li>自动装配：Spring自动满足bean之间的依赖 </li>
+</ol>
+<p>实现的流程如下，其中1,2步实现的是组件扫描，第三步则实现了自动装填</p>
+<ol>
+<li><p>首先需要创建可被发现的bean，方式如下<br> 基础版本  </p>
+<pre><code>package soundsystem;
+import org.springframework.stereotype.Component;
+@Component
+public class SgtPeppers {
+}
+</code></pre><p> 为bean命名的版本</p>
+<pre><code>package soundsystem;
+import org.springframework.stereotype.Component;
+@Component(&quot;SgtPeppers&quot;)
+public class SgtPeppers {
+}
+</code></pre></li>
+<li><p>由于组件扫描是默认不存在的，所以需要显示配置Spring,让他开启组件扫描的功能。有两种配置方式：</p>
+<ul>
+<li><p>基于java的配置，方式如下  </p>
+<p>  基础版本,该版本会扫描与配置类相同的包  </p>
+<pre><code>package soundsystem;
+import org.springframework.context.annotation.componentScan;
+import org.springframework.context.annotation.Con;
+
+@Configuration  //告诉Spring这个java类是配置文件
+@ComponentScan  //启动组件扫描器
+
+public class CDplayerConfig {
+}
+</code></pre><p>  设置组件扫描的基础包的版本，该版本会扫描指定的基础包及其子包  </p>
+<pre><code>package soundsystem;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.ComponentScan;
+import org.springframework.context.annotation.Configuration;
+
+@Configuration  //告诉Spring这个java类是配置文件
+
+/*可以扫描多个包，当扫描多个包时推荐这种方式，因为这是类型安全的*/
+@ComponentScan(basePackages={CDPlayer.class,DVDPlayer.class})
+
+/*可以扫描多个包，不推荐这种*/
+//@ComponentScan(basePackages={&quot;soundsystem&quot;,&quot;video&quot;})
+
+/*扫描一个包*/
+//@ComponentScan(basePackages=&quot;soundsystem&quot;)
+
+/*扫描一个包*/
+//@ComponentScan(&quot;soundsystem&quot;)
+public class CDplayerConfig {
+    @Bean
+    public CompactDisc sgtPeppers(){
+        return new SgtPeppers();
+    }
+
+    @Bean
+    public CDPlayer cdPlayer(CompactDisc compactDisc){
+        return new CDplayer(compactDisc);
+    }
+}    
+</code></pre></li>
+<li><p>基于xml的配置</p>
+</li>
+</ul>
+</li>
+<li><p>在创建完可被发现的Bean和配置好文件后，在运行时我们便可以进行自动装配了，简单来说，自动装配就是让Spring自动满足bean依赖的一种方法，在满足依赖的过程中，会在Spring应用上下文中寻找匹配某个bean需求的其他bean。其实现方法如下，需运用到注解@Autowired  </p>
+<pre><code>package soundsystem;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
+@Component
+public class CDplayer {
+    private CompactDisc cd;
+
+    /*
+        对cd参数进行自动装配,
+        如果没有匹配的bean的话，
+        Spring将会让这个bean处于未装配的状态，
+        且在装配时不抛出异常，
+        在运行时会抛出NullPointerException异常
+    */
+    //@Autowired(required=false)
+
+    /*对cd参数进行自动装配*/
+    @Autowired
+    public CDplayer(CompactDisc cd){
+        this.cd = cd;
+    }
+
+    /*不仅可以用在构造器上，还可以用于类的任何方法*/
+    @Autowired
+    public void setCompactDisc(CompactDisc cd) {
+        this.cd = cd;
+    }
+    public void play(){
+        cd.play();
+    }
+}  
+</code></pre></li>
+</ol>
+<h2 id="自动化装配之后的显示装配"><a href="#自动化装配之后的显示装配" class="headerlink" title="自动化装配之后的显示装配"></a>自动化装配之后的显示装配</h2><p>对于第三方类库等其他情况而言，你不能像对待自己创建的java类一样为其添上@Component注解，所以在此类情况下，你就需要用到显示装配了。<br>而显示配置有两种方式：  </p>
+<ol>
+<li>基于JAVA  </li>
+<li>基于XML  </li>
+</ol>
+<h3 id="基于JAVA的显示装配"><a href="#基于JAVA的显示装配" class="headerlink" title="基于JAVA的显示装配"></a>基于JAVA的显示装配</h3><p>要在JavaConfig中声明bean,我们需要编写一个方法，这个方法会创建所需要的实例，然后给这个方法添加@Bean注解（PS：该方法不必是构造器方法，其他能产生实例的方法均可，所以他比XML灵活得多）方法如下    </p>
+<p>基础版本  </p>
+<pre><code>@Bean
+Public CompactDisc sgtPeppers(){
+    return new SgtPeppers();
+}
+</code></pre><p>可以为bean取名的版本    </p>
+<pre><code>@Bean
+Public CompactDisc sgtPeppers(){
+    return new SgtPeppers();
+}
+</code></pre><p>以上版本的bean在创建时并没有其他bean的依赖，但如果有依赖呢，以下是一个基础版本</p>
+<pre><code>@Bean
+Public CDPlayer cdPlayer(){
+    return new CDplayer(sgtPeppers());
+}  
+</code></pre><p>可以看出这个基础版本给人一种很奇怪的感觉，在构造器方法里还调用了一个方法着实令人不舒服，(ps:由于sgtPeppers()方法上添加了@bean注解，Spring将会拦截所有对他的调用，并确保直接发返回该方法所创建的bean,而不是每次都对其进行实际的调用)<br>所以推荐第二种版本<br>通过参数来构造对象的版本  </p>
+<pre><code>@Bean
+Public CDPlayer cdPlayer(CompactDisc compactDisc){
+    return new CDplayer(compactDisc);
+}
+</code></pre><p>当Spring调用上述方法创建bean时，他会自动装配一个CompactiDisc到配置方法之中，方法体就可以按照合适的方法来使用他。而不需要调用类似sgtPeepers的@Bean方法来构造了。</p>
+<h3 id="基于XML的显示装配"><a href="#基于XML的显示装配" class="headerlink" title="基于XML的显示装配"></a>基于XML的显示装配</h3><h2 id="导入混合配置"><a href="#导入混合配置" class="headerlink" title="导入混合配置"></a>导入混合配置</h2><p>虽然Bean有三种装配方式，但他们彼此并不冲突，并且可以相互配合，一般有四种方式的混合。</p>
+<ol>
+<li>一个JavaConfig混合另一个JavaConfig(使用@import注解)</li>
+<li>一个JavaConfig混合另一个XML(使用@importResource注解)</li>
+<li>一个XML混合一个JavaConfig</li>
+<li>一个XML混合另一个XML  </li>
+</ol>
+<p>以下是这四个的示例  </p>
+<ol>
+<li><p>一个JavaConfig混合另一个JavaConfig  </p>
+<ul>
+<li><p>导入单个JavaConfig  </p>
+<pre><code>package soundsystem;
+
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Import;
+
+@Configuration
+@Import(CDplayerConfig.class)
+public class SoundSystemConfig {
+    @Bean
+    public CompactDisc sgtPeppers(){
+        return new SgtPeppers();
+    }
+}
+</code></pre></li>
+</ul>
+</li>
+</ol>
+<pre><code>* 导入多个JavaConfig  
+
+        package soundsystem;
+
+        import org.springframework.context.annotation.Bean;
+        import org.springframework.context.annotation.Configuration;
+        import org.springframework.context.annotation.Import;
+
+        @Configuration
+        @Import({CDplayerConfig.class,CDConfig.class})
+        public class SoundSystemConfig {
+            @Bean
+            public CompactDisc sgtPeppers(){
+                return new SgtPeppers();
+            }
+        }
+</code></pre><ol start="2">
+<li><p>一个JavaConfig混合另一个XML  </p>
+<pre><code>package soundsystem;
+
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Import;
+import org.springframework.context.annotation.ImportResource;
+
+@Configuration
+@Import(CDplayerConfig.class)
+@ImportResource(&quot;classpath:cd-config.xml&quot;)
+public class SoundSystemConfig {
+    @Bean
+    public CompactDisc sgtPeppers(){
+        return new SgtPeppers();
+    }
+}
+</code></pre></li>
+<li><p>一个XML混合一个JavaConfig  </p>
+</li>
+<li><p>一个XML混合另一个XML  </p>
+</li>
+</ol>
+<h2 id="高级装配"><a href="#高级装配" class="headerlink" title="高级装配"></a>高级装配</h2><p>只使用以上的普通装配，可能会遇上一些问题，例如：</p>
+<ol>
+<li>如何根据环境(开发环境，测试环境，生产环境)来自动切换生成的Bean</li>
+<li>如何根据相应条件来生成Bean(在满足某个特定的情况下才生成)</li>
+<li>如何解决自动装配的歧义性</li>
+<li>如何在运行时值注入</li>
+</ol>
+<p>以下是四个对应的高级装配技巧  </p>
+<h3 id="如何根据环境-开发环境，测试环境，生产环境-来自动切换生成的Bean"><a href="#如何根据环境-开发环境，测试环境，生产环境-来自动切换生成的Bean" class="headerlink" title="如何根据环境(开发环境，测试环境，生产环境)来自动切换生成的Bean"></a>如何根据环境(开发环境，测试环境，生产环境)来自动切换生成的Bean</h3><p>解决这个情景需要两步，一步是配置Bean，一步是激活相应环境(激活profile)</p>
+<ol>
+<li>配置Bean(分别有两种方法，一种是基于JavaConfig,一种是基于XML的)  <ul>
+<li>基于JavaConfig(使用@Profile注解)<br>  将@Profile注解运用在配置类上</li>
+</ul>
+</li>
+</ol>
+<pre><code>        package soundsystem;
+        import org.springframework.context.annotation.Bean;
+        import org.springframework.context.annotation.Configuration;
+        import org.springframework.context.annotation.Profile;
+
+        @Configuration
+        @Profile(&quot;dev&quot;)  //用于开发环境
+        //@Profile(&quot;prod&quot;) 用于生产环境
+        //@Profile(&quot;qa&quot;) 用于测试环境
+        public class DevelopmentProfileConfig {
+            @Bean
+            public CompactDisc sgtPeppers(){
+                return new SgtPeppers();
+            }
+
+        }  
+
+    将@Profile注解运用在方法上(单个Bean上)  
+
+        package soundsystem;
+        import org.springframework.context.annotation.Bean;
+        import org.springframework.context.annotation.Configuration;
+        import org.springframework.context.annotation.Profile;
+
+        @Configuration
+        public class DevelopmentProfileConfig {
+            @Bean
+            @Profile(&quot;dev&quot;)
+            public CompactDisc sgtPeppers(){
+                return new SgtPeppers();
+            }
+
+            @Bean
+            //@Profile(&quot;prod&quot;)
+            public CDPlayer cdPlayer(CompactDisc compactDisc){
+                return new CDplayer(compactDisc);
+            }
+        }
+
+
+
+* 基于XML
+</code></pre><ol start="2">
+<li><p>激活profile<br>Spring在确定那个profile处于激活状态是，会依赖两个独立的属性  </p>
+<ul>
+<li>spring.profiles.active  </li>
+<li><p>spring.profiles.default </p>
+<p>Spring会优先查看active，然后查看default，如果两者均没有设置的话，那就没有激活的profile,因此只会创建没有定义在profile中的bean<br>有多种方式来设置这两个属性： </p>
+</li>
+<li>作为DispatcherServlet的初始化参数</li>
+<li>作为Web应用的上下文参数</li>
+<li>作为JNDI条目</li>
+<li>作为环境变量</li>
+<li>作为JVM的系统属性</li>
+<li><p>在集成测试类上，使用@ActiveProfiles注解设置  </p>
+<p>介绍一下第一种和最后一种，<br>第一种：在Web应用的web.xml文件中设置默认的profile(注意context-param和servlet元素)</p>
+<p>  &lt;?xml version=”1.0” encoding=”UTF-8”?&gt;<br>  &lt;web-app xmlns=”<a href="http://xmlns.jcp.org/xml/ns/javaee&quot;" target="_blank" rel="noopener">http://xmlns.jcp.org/xml/ns/javaee&quot;</a></p>
+<pre><code>xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot;
+xsi:schemaLocation=&quot;http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_4_0.xsd&quot;
+version=&quot;4.0&quot;&gt;
+</code></pre><p>  <context-param></context-param></p>
+<pre><code>&lt;param-name&gt;contextConfigLocation&lt;/param-name&gt;
+&lt;param-value&gt;/WEB-INF/spring/root-context.xml&lt;/param-value&gt;
+</code></pre><p>  </p>
+<p>  <context-param></context-param></p>
+<pre><code>&lt;param-name&gt;spring.profiles.default&lt;/param-name&gt;
+&lt;param-value&gt;dev&lt;/param-value&gt;
+</code></pre><p>  </p>
+<p>  <listener></listener></p>
+<pre><code>&lt;listener-class&gt;org.springframework.web.context.ContextLoaderListener&lt;/listener-class&gt;
+</code></pre><p>  <br>  <servlet></servlet></p>
+<pre><code>&lt;servlet-name&gt;appServlet&lt;/servlet-name&gt;
+&lt;servlet-class&gt;org.springframework.web.servlet.DispatcherServlet&lt;/servlet-class&gt;
+&lt;init-param&gt;
+    &lt;param-name&gt;spring.profiles.default&lt;/param-name&gt;
+    &lt;param-value&gt;dev&lt;/param-value&gt;
+&lt;/init-param&gt;
+</code></pre><p>  <br>  <servlet-mapping></servlet-mapping></p>
+<pre><code>&lt;servlet-name&gt;appServlet&lt;/servlet-name&gt;
+&lt;url-pattern&gt;/&lt;/url-pattern&gt;
+</code></pre><p>  <br></p>
+<p>最后一种：在测试类中使用@ActiveProfiles(“dev”)注解来表示激活dev环境  </p>
+</li>
+</ul>
+</li>
+</ol>
+<h3 id="如何根据相应条件来生成Bean-在满足某个特定的情况下才生成"><a href="#如何根据相应条件来生成Bean-在满足某个特定的情况下才生成" class="headerlink" title="如何根据相应条件来生成Bean(在满足某个特定的情况下才生成)"></a>如何根据相应条件来生成Bean(在满足某个特定的情况下才生成)</h3><p>在Spring4之前，很难实现这种级别的条件化配置，但是Spring 4引入了一个新的@conditional注解，它可以用到带有@Bean注解的方法上，如果给定的条件计算结果为true，就会创建这个bean,否则的话，这个bean会被忽略。例子如下  </p>
+<pre><code>@Bean
+@Conditional(MagicExistsCondition.class)
+public MagicBean magicBean{
+    return new MagicBean();
+}
+</code></pre><p>可见其为@Conditional注解传入了一个class对象，该对象要求实现Condition接口，以完成条件的检查<br>Condition接口的定义如下</p>
+<pre><code>public interface Condition{
+    boolean matches(ConditionContext ctxt, AnnotatedTypeMetadata metadata);
+}
+</code></pre><p>而实现该接口的检查类如下  </p>
+<pre><code>package soundsystem;
+
+import org.springframework.context.annotation.Condition;
+import org.springframework.context.annotation.ConditionContext;
+import org.springframework.core.env.Environment;
+import org.springframework.core.type.AnnotatedTypeMetadata;
+import org.springframework.util.ClassUtils;
+
+public class MagicExistsCondition implements Condition {
+    public boolean matches(ConditionContext context, AnnotatedTypeMetadata metadata){
+        Environment env = context.getEnvironment();
+        return env.containsProperty(&quot;magic&quot;); //检查magic属性
+    }
+}
+</code></pre><h3 id="如何解决自动装配的歧义性"><a href="#如何解决自动装配的歧义性" class="headerlink" title="如何解决自动装配的歧义性"></a>如何解决自动装配的歧义性</h3><p>如果有多个Bean能够匹配结果的话，这种歧义性会阻碍Spring自动装配属性、构造器参数或方法参数。例如当一个Bean的某个方法需要传入一个实现了某接口的Bean，但有多个Bean实现了该接口，那么自动装配便会出现歧义性，并且会抛出noUniqueBeanDefinitionException异常。<br>解决的办法是使用</p>
+<ol>
+<li>标示首选的bean(使用@Primary注解)</li>
+<li>限定自动装配的bean(使用@Qualifier注解)  </li>
+</ol>
+<p>以下是对应的示例  </p>
+<ol>
+<li><p>标示首选的bean(使用@Primary注解)  </p>
+<pre><code>@Component
+@Primary
+public class Cake implements Dessrt{ ... }
+
+@Component
+public class Cookies implements Dessrt{ ... }
+
+@Component
+public class IceCream implements Dessrt{ ... }
+</code></pre><p> 这样在某个方法需要传入某个实现了Dessrt的Bean时，会首选第一个 Cake Bean。<br> 但这里也有个问题，当上述的例子出现2个或更多@Primary注解时，依旧会出现歧义性，<br> 所以有了第二种方法  </p>
+</li>
+<li><p>限定自动装配的bean(使用@Qualifier注解)<br> 而这里又有三种方法来实现  </p>
+<ol>
+<li><p>普通方式<br> 该方法是将注解放在需要自动装配的地方。例子如下  </p>
+<pre><code>@Autowired
+@Qualifier(&quot;iceCream&quot;) //传入想要注入的bean的限定符
+public void setDessert(Dessert dessert) {
+    tis.dessert = dessert;
+}
+</code></pre><p> 上例所引用的bean要具有String类型的”iceCream”作为限定符。如果没有指定其他的限定符的话，所有的bean都会给顶一个默认的限定符，这个限定符与bean的ID相同。<br> 基于默认的限定符虽然非常简单，但如果你重构了该类，例如重命名该类，则传入的@Qualifier注解的字符串限定符也需要改<br> 所以建议在创建bean时自己定义它的限定符.且最好是该类的特征而不是随意取名，这是个最佳实践，而这就是第二个方法，创建自己的限定符  </p>
+</li>
+<li><p>创建自定义的限定符<br> 该方法是将@Component与@Qualifier注解组合使用<br> 定义bean文件  </p>
+<pre><code>@Component
+@Qualifier(&quot;cold&quot;)
+public class IceCream implements Dessert { ... }  
+</code></pre><p> 使用 </p>
+<pre><code>@Autowired
+@Qualifier(&quot;cold&quot;) //传入想要注入的bean的限定符
+public void setDessert(Dessert dessert) {
+    tis.dessert = dessert;
+}  
+</code></pre><p> 但这里依然有个问题，基于特征来描述限定符往往不能精确到一个bean。例如你可以为<br> drink been、ice been都给予@Qualifier(“cold”)注解，但这时在自动装配时又会产生歧义性。你也许考虑在一个bean中运用多个@Qualifier注解，如 </p>
+<pre><code>@Component
+@Qualifier(&quot;cold&quot;)
+@Qualifier(&quot;sweet&quot;)
+public class IceCream implements Dessert { ... } 
+</code></pre><p> 但不幸的是，<em>Java不允许在同一个条目上重复出现相同类型的多个注解</em>，所以有了第三种方法  </p>
+</li>
+<li><p>使用自定义的限定符注解<br> 创建一个@Cold注解  </p>
+<pre><code>import org.springframework.beans.factory.annotation.Qualifier;
+
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
+
+@Target({ElementType.CONSTRUCTOR,ElementType.FIELD,
+        ElementType.METHOD,ElementType.TYPE})
+@Retention(RetentionPolicy.RUNTIME)
+@Qualifier
+public @interface Cold {}
+</code></pre><p> 创建另一个@Creamy注解</p>
+<pre><code>import org.springframework.beans.factory.annotation.Qualifier;
+
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
+
+@Target({ElementType.CONSTRUCTOR,ElementType.FIELD,
+        ElementType.METHOD,ElementType.TYPE})
+@Retention(RetentionPolicy.RUNTIME)
+@Qualifier
+public @interface Creamy {}
+</code></pre><p> 在定义bean的文件中使用注解  </p>
+<pre><code>@Component
+@Cold
+@Creamy
+public class IceCream implements Dessert { ... } 
+</code></pre><p> 在自动装配的地方使用注解 </p>
+<pre><code>@Autowired
+@Cold
+@Creamy
+public void setDessert(Dessert dessert) {
+    tis.dessert = dessert;
+} 
+</code></pre><p> 这样IceCream bean就可以自动注入该方法中。<br> 还需提一点，使用自定义的限定符注解相对于使用原始的@Qualifier并借助String类型来制定限定符，自定义的注解也更为类型安全。 </p>
+</li>
+</ol>
+</li>
+</ol>
+<h3 id="运行时值注入"><a href="#运行时值注入" class="headerlink" title="运行时值注入"></a>运行时值注入</h3><p>上面自动装配的技术都只是支持了自动装配bean，但如何让值在运行时注入呢？想让值在运行时再确定。为了实现这些功能，Spring提供 两种在运行时求值的方法：  </p>
+<ul>
+<li>属性占位符</li>
+<li>Spring表达式语言  </li>
+</ul>
+<p>其中由以Spring表达式功能更为强劲。<br>以下是针对上面两个方法的示例  </p>
+<ul>
+<li><p>属性占位符<br>  使用@PropertySource注解以及env环境变量</p>
+<pre><code>package soundsystem;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.PropertySource;
+import org.springframework.core.env.Environment;
+
+@Configuration
+@PropertySource(&quot;classpath:/com/soundsystem/app.properties&quot;) //声明属性源
+public class ExpressiveConfig {
+    @Autowired
+    Environment env;
+
+    @Bean
+    public BlackDisc disc(){
+        return new BlankDisc{
+            env.getProperty(&quot;disc.title&quot;),
+            env.getProperty(&quot;disc.artist&quot;)
+        };
+    }
+}
+</code></pre><p>  直接从Environment中检索属性是非常方便的，尤其是在jaca配置中配置bean的时候<br>  但是，Spring也提供了通过占位符装配属性的方法，这些占位符的值会来源一个属性域(占位符形式为${…})<br>  使用${ … } 以及一个PropertySourcesPlaceholderConfigurer(推荐使用，因为其基于Spring Environment及其属性元来解析占位符)或者一个PropertyPlaceholderConfigurer  </p>
+<p>  在java配置类中定义一个 PropertySourcesPlaceholderConfigurer    </p>
+<pre><code>@Bean
+public static PropertySourcesPlaceholderConfigurer placeholderConfigurer(){
+    return new PropertySourcesPlaceholderConfigurer();
+}
+</code></pre><p>  运行时值注入  </p>
+<pre><code>public BlankDisc(
+        @Value(&quot;${disc.title}&quot;) String title,
+        @Value(&quot;${disc.artisit}&quot;) String artist){
+    this.title = title;
+    this.artist = artist;
+}
+</code></pre></li>
+<li><p>Spring表达式语言(SpEL)<br>  上述的占位符还是不够灵活，例如你想运用一个bean的属性加上另一个常量，将这个值动态注入时，就会很棘手，所有此时出现了Spring表达式语言，他更加强大，更加灵活。  </p>
+<p>  SpEL有很多特性，包括：</p>
+<ul>
+<li>使用bean的ID来应用bean;</li>
+<li>调用方法和访问对象的属性；</li>
+<li>对峙进行算数、关系和逻辑运算；</li>
+<li>正则表达式匹配；</li>
+<li><p>集合操作；</p>
+<p>SpEL将表达式放入#{ … }中<br>举几个例子  </p>
+</li>
+<li><p>引用bean、属性和方法：通过ID引用其他的bean</p>
+<pre><code>//引用artist属性
+#{sgtPeppers.artist}
+
+//引用selectArtist()方法
+#{sgtPeppers.selectArtist()}
+</code></pre></li>
+</ul>
+</li>
+</ul>
+<pre><code>* 在表达式中使用类型：依赖T()运算符
+
+        #{T(java.lang.Math).random()}
+
+* 使用正则表达式  
+
+        #{admin.email mathes &apos;www.admin@email.com&apos;}
+
+* 计算集合  
+
+        //获取元素
+        #{&quot;This is a test&quot;[3]}
+
+        //提供查询运算符(.?[])用来对集合进行过滤  
+        #{jukebox.songs.?[artist eq &apos;Aerosmith&apos;]}
+
+        //提供另外两个查询运算符：&quot;.^[]&quot;和&quot;.$[]&quot;分别用来在集合中查询第一个匹配项和最后一个匹配项
+        #{jukebox.songs.$[artist eq &apos;Aerosmith&apos;]}
+
+        //提供投影运算符(.![]),他会从集合的每个成员中选择特定的属性放到另外一个集合中
+</code></pre><h2 id="bean的作用域"><a href="#bean的作用域" class="headerlink" title="bean的作用域"></a>bean的作用域</h2><p>默认情况下，Spring应用上下文忠所有bean都是作为以单利的形式创建的。也就是说，无论注入多少次，每次所注入的都是同一个实例  </p>
+<p>但这样会造成对象被污染，所以需要考虑bean的作用域问题  </p>
+<p>Spring定义了多种作用域，可以基于这些作用域创建bean,包括：  </p>
+<ul>
+<li>单例：在整个应用中，只创建bean的一个实例</li>
+<li>原型：每次注入或者通过Spring应用上下文获取的时候，都会创建一个新的bean实例</li>
+<li>会话：为每个会话创建一个bean实例</li>
+<li>请求：为每个请求创建一个bean实例</li>
+</ul>
+<p>为bean指定作用域，使用@Scope注解，其中需要注入两个参数，先写个模型  </p>
+<pre><code>@Bean
+@Scope {
+    value = WebApplicationContext.SCOPE_SESSION,
+            proxyMode = ScopedProxyMode.INTERFACES
+}
+public ShoppingCart cart(){}
+</code></pre><p>先说value属性，他指定了bean的作用域</p>
+<ul>
+<li>单例:ConfigurableBeanFactory.SCOPE_SINGLETON</li>
+<li>原型:ConfigurableBeanFactory.SCOPE_PROTOTYPE</li>
+<li>会话:WebApplicationContext.SCOPE_SESSION</li>
+<li>请求:WebApplicationContext.SCOPE_REQUEST  </li>
+</ul>
+<p>然后再说说proxyMode属性,他解决了将会话或请求作用域的bean注入到单例bean中所遇到的问题。 </p>
+<p>因为Spring并不会将实际的会话、请求作用域bean注入到一个单例bean(以防对象污染)，而是将他们的代理注入到这个单例bean,当单例调用这些bean的方法时，代理会对齐进行懒解析，并将调用委托给真实具体的bean.   </p>
+<p>proxyMode属性,指定了代理是基于接口的，还是基于类的</p>
+<ul>
+<li>基于接口:ScopedProxyMode.INTERFACES</li>
+<li>基于类:ScopedProxyMode.TARGET_CLASS  </li>
+</ul>
+<p>例如因为ShoppingCart是一个接口，所以使用proxyMode = ScopedProxyMode.INTERFACES表明这个代理要实现ShoppingCart接口，并将调用委托给实现bean。<br>但如果ShoppingCart是一个类，则需要使用proxyMode = ScopedProxyMode.TARGET_CLASS</p>
+</div></article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">文章作者: </span><span class="post-copyright-info"><a href="mailto:undefined">f1rry</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">文章链接: </span><span class="post-copyright-info"><a href="http://yoursite.com/2020/08/07/依赖注入DI/">http://yoursite.com/2020/08/07/依赖注入DI/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="http://yoursite.com">F1rry's blog</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"></div><div class="post_share"><div class="social-share" data-image="https://cdn.jsdelivr.net/gh/jerryc127/butterfly_cdn@2.1.0/top_img/default.png" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/social-share.js/dist/css/share.min.css"><script src="https://cdn.jsdelivr.net/npm/social-share.js/dist/js/social-share.min.js"></script></div></div><nav class="pagination_post" id="pagination"><div class="next-post pull-full"><a href="/2020/08/07/保护Web应用/"><img class="next_cover lazyload" data-src="https://cdn.jsdelivr.net/gh/jerryc127/butterfly_cdn@2.1.0/top_img/default.png" onerror="onerror=null;src='/img/404.jpg'"><div class="label">下一篇</div><div class="next_info"><span></span></div></a></div></nav></div></main><footer id="footer" data-type="color"><div id="footer-wrap"><div class="copyright">&copy;2019 - 2020 By f1rry</div><div class="framework-info"><span>驱动 </span><a href="http://hexo.io"><span>Hexo</span></a><span class="footer-separator">|</span><span>主题 </span><a href="https://github.com/jerryc127/hexo-theme-butterfly"><span>Butterfly</span></a></div></div></footer></div><section class="rightside" id="rightside"><div id="rightside-config-hide"><i class="fa fa-book" id="readmode" title="阅读模式"></i><i class="fa fa-plus" id="font_plus" title="放大字体"></i><i class="fa fa-minus" id="font_minus" title="缩小字体"></i><a class="translate_chn_to_cht" id="translateLink" href="javascript:translatePage();" title="简繁转换" target="_self">繁</a><i class="darkmode fa fa-moon-o" id="darkmode" title="夜间模式"></i></div><div id="rightside-config-show"><div id="rightside_config" title="设置"><i class="fa fa-cog" aria-hidden="true"></i></div><i class="fa fa-list-ul close" id="mobile-toc-button" title="目录" aria-hidden="true"></i><i class="fa fa-arrow-up" id="go-up" title="回到顶部" aria-hidden="true"></i></div></section><script src="https://cdn.jsdelivr.net/npm/jquery@latest/dist/jquery.min.js"></script><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="/js/tw_cn.js"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.js"></script><script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script><script src="https://cdn.jsdelivr.net/npm/instant.page@latest/instantpage.min.js" type="module"></script><script src="https://cdn.jsdelivr.net/npm/lazysizes@latest/lazysizes.min.js" async=""></script><script src="https://cdn.jsdelivr.net/gh/jerryc127/butterfly_cdn@2.1.0/js/click_heart.js"></script></body></html>

@@ -1,0 +1,356 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5"><title>F1rry's blog</title><meta name="description"><meta name="author" content="f1rry"><meta name="copyright" content="f1rry"><meta name="format-detection" content="telephone=no"><link rel="shortcut icon" href="/img/favicon.ico"><link rel="preconnect" href="//cdn.jsdelivr.net"><link rel="preconnect" href="https://fonts.googleapis.com" crossorigin><link rel="preconnect" href="//busuanzi.ibruce.info"><meta name="twitter:card" content="summary"><meta name="twitter:title" content=""><meta name="twitter:description"><meta name="twitter:image" content="https://cdn.jsdelivr.net/gh/jerryc127/butterfly_cdn@2.1.0/top_img/default.png"><meta property="og:type" content="article"><meta property="og:title" content=""><meta property="og:url" content="http://yoursite.com/2020/08/07/Spring MVC+ REST API/"><meta property="og:site_name" content="F1rry's blog"><meta property="og:description"><meta property="og:image" content="https://cdn.jsdelivr.net/gh/jerryc127/butterfly_cdn@2.1.0/top_img/default.png"><meta http-equiv="Cache-Control" content="no-transform"><meta http-equiv="Cache-Control" content="no-siteapp"><script src="https://cdn.jsdelivr.net/npm/js-cookie/dist/js.cookie.min.js"></script><script>const autoChangeMode = 'false'
+var t = Cookies.get("theme");
+if (autoChangeMode == '1'){
+const isDarkMode = window.matchMedia("(prefers-color-scheme: dark)").matches
+const isLightMode = window.matchMedia("(prefers-color-scheme: light)").matches
+const isNotSpecified = window.matchMedia("(prefers-color-scheme: no-preference)").matches
+const hasNoSupport = !isDarkMode && !isLightMode && !isNotSpecified
+
+if (t === undefined){
+  if (isLightMode) activateLightMode()
+  else if (isDarkMode) activateDarkMode()
+  else if (isNotSpecified || hasNoSupport){
+    console.log('You specified no preference for a color scheme or your browser does not support it. I Schedule dark mode during night time.')
+    now = new Date();
+    hour = now.getHours();
+    isNight = hour < 6 || hour >= 18
+    isNight ? activateDarkMode() : activateLightMode()
+}
+} else if (t == 'light') activateLightMode()
+else activateDarkMode()
+
+
+} else if (autoChangeMode == '2'){
+  now = new Date();
+  hour = now.getHours();
+  isNight = hour < 6 || hour >= 18
+  if(t === undefined) isNight? activateDarkMode() : activateLightMode()
+  else if (t === 'light') activateLightMode()
+  else activateDarkMode() 
+} else {
+  if ( t == 'dark' ) activateDarkMode()
+  else if ( t == 'light') activateLightMode()
+}
+
+function activateDarkMode(){
+  document.documentElement.setAttribute('data-theme', 'dark')
+  if (document.querySelector('meta[name="theme-color"]') !== null){
+    document.querySelector('meta[name="theme-color"]').setAttribute('content','#000')
+  }
+}
+function activateLightMode(){
+  document.documentElement.setAttribute('data-theme', 'light')
+  if (document.querySelector('meta[name="theme-color"]') !== null){
+  document.querySelector('meta[name="theme-color"]').setAttribute('content','#fff')
+  }
+}</script><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/font-awesome@latest/css/font-awesome.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.css"><link rel="canonical" href="http://yoursite.com/2020/08/07/Spring MVC+ REST API/"><link rel="prev" title="" href="http://yoursite.com/2020/08/07/Spring Security/"><link rel="next" title="" href="http://yoursite.com/2020/08/07/Spring MVC高级技术/"><link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Titillium+Web"><script>var GLOBAL_CONFIG = { 
+  root: '/',
+  algolia: undefined,
+  localSearch: undefined,
+  translate: {"defaultEncoding":2,"translateDelay":0,"cookieDomain":"https://xxx/","msgToTraditionalChinese":"繁","msgToSimplifiedChinese":"简"},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  bookmark: {
+    title: 'Snackbar.bookmark.title',
+    message_prev: '按',
+    message_next: '键将本页加入书签'
+  },
+  runtime_unit: '天',
+  runtime: true,
+  copyright: undefined,
+  ClickShowText: undefined,
+  medium_zoom: false,
+  fancybox: true,
+  Snackbar: undefined,
+  baiduPush: false,
+  isHome: false,
+  isPost: true
+  
+}</script></head><body><header> <div id="page-header"><span class="pull_left" id="blog_name"><a class="blog_title" id="site-name" href="/">F1rry's blog</a></span><span class="toggle-menu pull_right close"><a class="site-page"><i class="fa fa-bars fa-fw" aria-hidden="true"></i></a></span><span class="pull_right menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fa fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fa fa-archive"></i><span> 时间轴</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fa fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fa fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fa fa-link"></i><span> 友链</span></a></div></div></span></div></header><div id="mobile-sidebar"><div id="menu_mask"></div><div id="mobile-sidebar-menus"><div class="mobile_author_icon"><img class="avatar-img" src="/img/avatar.png" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"></div><div class="mobile_post_data"><div class="mobile_data_item is-center"><div class="mobile_data_link"><a href="/archives/"><div class="headline">文章</div><div class="length_num">23</div></a></div></div><div class="mobile_data_item is-center">      <div class="mobile_data_link"><a href="/tags/"><div class="headline">标签</div><div class="length_num">8</div></a></div></div></div><hr><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fa fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fa fa-archive"></i><span> 时间轴</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fa fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fa fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fa fa-link"></i><span> 友链</span></a></div></div></div><div id="mobile-sidebar-toc"><div class="toc_mobile_headline">目录</div><div class="sidebar-toc__content"><ol class="toc_mobile_items"><li class="toc_mobile_items-item toc_mobile_items-level-1"><a class="toc_mobile_items-link" href="#Spring-学习-Spring-MVC-REST-API"><span class="toc_mobile_items-number">1.</span> <span class="toc_mobile_items-text">Spring 学习 Spring MVC+ REST API</span></a><ol class="toc_mobile_items-child"><li class="toc_mobile_items-item toc_mobile_items-level-2"><a class="toc_mobile_items-link" href="#了解REST"><span class="toc_mobile_items-number">1.1.</span> <span class="toc_mobile_items-text">了解REST</span></a><ol class="toc_mobile_items-child"><li class="toc_mobile_items-item toc_mobile_items-level-3"><a class="toc_mobile_items-link" href="#REST基础知识"><span class="toc_mobile_items-number">1.1.1.</span> <span class="toc_mobile_items-text">REST基础知识</span></a></li><li class="toc_mobile_items-item toc_mobile_items-level-3"><a class="toc_mobile_items-link" href="#Spring是如何支持REST的"><span class="toc_mobile_items-number">1.1.2.</span> <span class="toc_mobile_items-text">Spring是如何支持REST的</span></a></li></ol></li><li class="toc_mobile_items-item toc_mobile_items-level-2"><a class="toc_mobile_items-link" href="#创建第一个-REST-端点"><span class="toc_mobile_items-number">1.2.</span> <span class="toc_mobile_items-text">创建第一个 REST 端点</span></a><ol class="toc_mobile_items-child"><li class="toc_mobile_items-item toc_mobile_items-level-3"><a class="toc_mobile_items-link" href="#协商资源表述"><span class="toc_mobile_items-number">1.2.1.</span> <span class="toc_mobile_items-text">协商资源表述</span></a></li></ol></li><li class="toc_mobile_items-item toc_mobile_items-level-2"><a class="toc_mobile_items-link" href="#使用HTTP信息转换器"><span class="toc_mobile_items-number">1.3.</span> <span class="toc_mobile_items-text">使用HTTP信息转换器</span></a><ol class="toc_mobile_items-child"><li class="toc_mobile_items-item toc_mobile_items-level-3"><a class="toc_mobile_items-link" href="#在响应体中返回资源状态"><span class="toc_mobile_items-number">1.3.1.</span> <span class="toc_mobile_items-text">在响应体中返回资源状态</span></a></li><li class="toc_mobile_items-item toc_mobile_items-level-3"><a class="toc_mobile_items-link" href="#在请求中接受资源状态"><span class="toc_mobile_items-number">1.3.2.</span> <span class="toc_mobile_items-text">在请求中接受资源状态</span></a></li><li class="toc_mobile_items-item toc_mobile_items-level-3"><a class="toc_mobile_items-link" href="#为控制器默认设置消息转换"><span class="toc_mobile_items-number">1.3.3.</span> <span class="toc_mobile_items-text">为控制器默认设置消息转换</span></a></li></ol></li><li class="toc_mobile_items-item toc_mobile_items-level-2"><a class="toc_mobile_items-link" href="#提供资源之外的其他内容"><span class="toc_mobile_items-number">1.4.</span> <span class="toc_mobile_items-text">提供资源之外的其他内容</span></a><ol class="toc_mobile_items-child"><li class="toc_mobile_items-item toc_mobile_items-level-3"><a class="toc_mobile_items-link" href="#发送错误消息到客户端"><span class="toc_mobile_items-number">1.4.1.</span> <span class="toc_mobile_items-text">发送错误消息到客户端</span></a></li><li class="toc_mobile_items-item toc_mobile_items-level-3"><a class="toc_mobile_items-link" href="#在响应中设置头部信息"><span class="toc_mobile_items-number">1.4.2.</span> <span class="toc_mobile_items-text">在响应中设置头部信息</span></a></li></ol></li><li class="toc_mobile_items-item toc_mobile_items-level-2"><a class="toc_mobile_items-link" href="#编写-REST-客户端"><span class="toc_mobile_items-number">1.5.</span> <span class="toc_mobile_items-text">编写 REST 客户端</span></a><ol class="toc_mobile_items-child"><li class="toc_mobile_items-item toc_mobile_items-level-3"><a class="toc_mobile_items-link" href="#了解-RestTemplate-的操作"><span class="toc_mobile_items-number">1.5.1.</span> <span class="toc_mobile_items-text">了解 RestTemplate 的操作</span></a></li><li class="toc_mobile_items-item toc_mobile_items-level-3"><a class="toc_mobile_items-link" href="#GET-资源"><span class="toc_mobile_items-number">1.5.2.</span> <span class="toc_mobile_items-text">GET 资源</span></a></li><li class="toc_mobile_items-item toc_mobile_items-level-3"><a class="toc_mobile_items-link" href="#检索资源"><span class="toc_mobile_items-number">1.5.3.</span> <span class="toc_mobile_items-text">检索资源</span></a></li><li class="toc_mobile_items-item toc_mobile_items-level-3"><a class="toc_mobile_items-link" href="#抽取响应的元数据"><span class="toc_mobile_items-number">1.5.4.</span> <span class="toc_mobile_items-text">抽取响应的元数据</span></a></li><li class="toc_mobile_items-item toc_mobile_items-level-3"><a class="toc_mobile_items-link" href="#PUT-资源"><span class="toc_mobile_items-number">1.5.5.</span> <span class="toc_mobile_items-text">PUT 资源</span></a></li><li class="toc_mobile_items-item toc_mobile_items-level-3"><a class="toc_mobile_items-link" href="#DELETE-资源"><span class="toc_mobile_items-number">1.5.6.</span> <span class="toc_mobile_items-text">DELETE 资源</span></a></li><li class="toc_mobile_items-item toc_mobile_items-level-3"><a class="toc_mobile_items-link" href="#POST-资源数据"><span class="toc_mobile_items-number">1.5.7.</span> <span class="toc_mobile_items-text">POST 资源数据</span></a></li><li class="toc_mobile_items-item toc_mobile_items-level-3"><a class="toc_mobile_items-link" href="#交换资源"><span class="toc_mobile_items-number">1.5.8.</span> <span class="toc_mobile_items-text">交换资源</span></a></li></ol></li></ol></li></ol></div></div></div><div id="body-wrap"><div id="web_bg" data-type="photo"></div><i class="fa fa-arrow-right" id="toggle-sidebar" aria-hidden="true">     </i><div class="auto_open" id="sidebar"><div class="sidebar-toc"><div class="sidebar-toc__title">目录</div><div class="sidebar-toc__progress"><span class="progress-notice">你已经读了</span><span class="progress-num">0</span><span class="progress-percentage">%</span><div class="sidebar-toc__progress-bar">     </div></div><div class="sidebar-toc__content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#Spring-学习-Spring-MVC-REST-API"><span class="toc-number">1.</span> <span class="toc-text">Spring 学习 Spring MVC+ REST API</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#了解REST"><span class="toc-number">1.1.</span> <span class="toc-text">了解REST</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#REST基础知识"><span class="toc-number">1.1.1.</span> <span class="toc-text">REST基础知识</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Spring是如何支持REST的"><span class="toc-number">1.1.2.</span> <span class="toc-text">Spring是如何支持REST的</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#创建第一个-REST-端点"><span class="toc-number">1.2.</span> <span class="toc-text">创建第一个 REST 端点</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#协商资源表述"><span class="toc-number">1.2.1.</span> <span class="toc-text">协商资源表述</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#使用HTTP信息转换器"><span class="toc-number">1.3.</span> <span class="toc-text">使用HTTP信息转换器</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#在响应体中返回资源状态"><span class="toc-number">1.3.1.</span> <span class="toc-text">在响应体中返回资源状态</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#在请求中接受资源状态"><span class="toc-number">1.3.2.</span> <span class="toc-text">在请求中接受资源状态</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#为控制器默认设置消息转换"><span class="toc-number">1.3.3.</span> <span class="toc-text">为控制器默认设置消息转换</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#提供资源之外的其他内容"><span class="toc-number">1.4.</span> <span class="toc-text">提供资源之外的其他内容</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#发送错误消息到客户端"><span class="toc-number">1.4.1.</span> <span class="toc-text">发送错误消息到客户端</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#在响应中设置头部信息"><span class="toc-number">1.4.2.</span> <span class="toc-text">在响应中设置头部信息</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#编写-REST-客户端"><span class="toc-number">1.5.</span> <span class="toc-text">编写 REST 客户端</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#了解-RestTemplate-的操作"><span class="toc-number">1.5.1.</span> <span class="toc-text">了解 RestTemplate 的操作</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#GET-资源"><span class="toc-number">1.5.2.</span> <span class="toc-text">GET 资源</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#检索资源"><span class="toc-number">1.5.3.</span> <span class="toc-text">检索资源</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#抽取响应的元数据"><span class="toc-number">1.5.4.</span> <span class="toc-text">抽取响应的元数据</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#PUT-资源"><span class="toc-number">1.5.5.</span> <span class="toc-text">PUT 资源</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#DELETE-资源"><span class="toc-number">1.5.6.</span> <span class="toc-text">DELETE 资源</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#POST-资源数据"><span class="toc-number">1.5.7.</span> <span class="toc-text">POST 资源数据</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#交换资源"><span class="toc-number">1.5.8.</span> <span class="toc-text">交换资源</span></a></li></ol></li></ol></li></ol></div></div></div><main id="content-outer"><div id="top-container" style="background-image: url(https://cdn.jsdelivr.net/gh/jerryc127/butterfly_cdn@2.1.0/top_img/default.png)"><div id="post-info"><div id="post-title"><div class="posttitle">无题</div></div><div id="post-meta"><time class="post-meta__date"><i class="fa fa-calendar fa-fw" aria-hidden="true"></i> 发表于 2020-08-07<span class="post-meta__separator">|</span><i class="fa fa-history fa-fw" aria-hidden="true"></i> 更新于 2019-10-10</time><div class="post-meta-wordcount"><i class="fa fa-file-word-o post-meta__icon fa-fw" aria-hidden="true"></i><span>字数总计:</span><span class="word-count">5.5k</span><span class="post-meta__separator">|</span><i class="fa fa-clock-o post-meta__icon fa-fw" aria-hidden="true"></i><span>阅读时长: 18 分钟</span><div class="post-meta-pv-cv"><span class="post-meta__separator">|</span><span><i class="fa fa-eye post-meta__icon fa-fw" aria-hidden="true"> </i>阅读量:</span><span id="busuanzi_value_page_pv"></span></div></div></div></div></div><div class="layout layout_post" id="content-inner">   <article id="post"><div class="article-container" id="post-content"><h1 id="Spring-学习-Spring-MVC-REST-API"><a href="#Spring-学习-Spring-MVC-REST-API" class="headerlink" title="Spring 学习 Spring MVC+ REST API"></a>Spring 学习 Spring MVC+ REST API</h1><p>近年来，以信息魏忠贤的表述性状态转移(Representational State Transfer) 已成为替换传统 SOAP WEB 服务的流行方案。 SOAP 一般会关注行为和处理，而REST关注的是要处理的数据。  </p>
+<p>从Spring 3.0 开始，Spring 为创建 REST API 提供了良好的支持。 Spring 的 REST 实现在 Spring 3.1、3.2 和如今的4.0中不断得到发展。  </p>
+<p>Spring 对 REST 的支持是构建在 Spring MVC 之上的，我们将基于以了解的 Spring MVC 知识来开发处理 RESTful 资源的控制器。  </p>
+<h2 id="了解REST"><a href="#了解REST" class="headerlink" title="了解REST"></a>了解REST</h2><h3 id="REST基础知识"><a href="#REST基础知识" class="headerlink" title="REST基础知识"></a>REST基础知识</h3><p>REST是什么，我们将它的首字母缩写拆分为不同的构成部分：  </p>
+<ul>
+<li>表述性(Representational):REST资源实际上可以用各种形式来进行表述，包括XML、JSON甚至HTML——最适合资源使用者的任意形式  </li>
+<li>状态(State):当使用REST的时候，我们更关注资源的状态而不是对资源采取的行为  </li>
+<li>转移(Transfer):REST涉及到转移资源数据，它以某种表述性形式从一个应用转移到另一个应用  </li>
+</ul>
+<p>更简洁地讲，REST就是将资源的状态以最适合客户端或服务端的形式从服务器端转移到客户端(或者反过来)。  </p>
+<p>在REST中，资源通过URL进行识别和定位。至于 RESTful URL的结构并没有严格的规则，但是URL应该能够识别资源，而不是简单的发一条命令到服务器上。  </p>
+<p>REST 中会有行为，它们是通过 HTTP 方法来定义的。这些HTTP方法通常会匹配为如下的CURD动作：  </p>
+<ul>
+<li>Create:POST</li>
+<li>Read:GET  </li>
+<li>Update:PUT 或 PATCH  </li>
+<li>Delete: DELETE  </li>
+</ul>
+<h3 id="Spring是如何支持REST的"><a href="#Spring是如何支持REST的" class="headerlink" title="Spring是如何支持REST的"></a>Spring是如何支持REST的</h3><p>Spring 很早就有导出 REST 资源的需求。从3.0版本开始，Spring 针对 Spring MVC的一些增强功能对REST提供了良好的支持。当前4.0版本中，Spring 支持以下方式来创建 REST 资源：  </p>
+<ul>
+<li>控制器可以处理所有的HTTP方法，包含四个主要的REST方法：GET、PUT、DELETE、POST。Spring 3.2及以上版本还支持PATCH方法  </li>
+<li>借助@PathVariable注解，控制器能够处理参数化的URL(将变量输入作为URL的一部分)  </li>
+<li>借助Spring 的视图和视图解析器，资源能够以多种方式进行表述，包括将模型数据渲染为 XML、JSON、Atom以及RSS的 View 实现  </li>
+<li>可以使用 ContentNegotiatingViewResolver 来选择最适合客户端的表述  </li>
+<li>借助@ResponseBody注解以及 HttpMethodConverter 实现可以将转入的HTTP数据转化为传入控制器处理方法的 Java对象 ；</li>
+<li>借助 RestTemplate ,Spring应用能够方便地使用 REST 资源。  </li>
+</ul>
+<h2 id="创建第一个-REST-端点"><a href="#创建第一个-REST-端点" class="headerlink" title="创建第一个 REST 端点"></a>创建第一个 REST 端点</h2><p>控制器本身通常并不关心资源如何表述。控制器以Java对象的方式来处理资源。控制器完成了它的工作之后，资源才会被转化成最适合客户端的形式。  </p>
+<p>Spring 提供了两种方法将资源的 Java 表述形式转化为发送给客户端的表述形式 ：  </p>
+<ul>
+<li>内容协商(Content negotiation): 选择一个视图，它能将模型渲染为呈现给客户端的表述形式;</li>
+<li>信息转换器(Message conversion): 通过一个消息转换器将控制器所返回的对象转换为呈现给客户端的形式。  </li>
+</ul>
+<h3 id="协商资源表述"><a href="#协商资源表述" class="headerlink" title="协商资源表述"></a>协商资源表述</h3><p>当控制器的处理方法完成时，通常会返回一个逻辑视图名。如果方法不直接返回逻辑视图名，那么逻辑视图名会根据请求的URL判断得出。 DispatcherServlet 接下来会将视图的名字传递给一个视图解析器，要求它来帮助确定应该用哪个视图来渲染请求结果。  </p>
+<p>在面向人类访问的 Web应用程序中，选择的视图通常来讲都会渲染为 HTML.视图解析方案是个简单的一维获得。如果根据视图名匹配上了视图，那这就是我们要用的视图了。  </p>
+<p>当要将视图名解析为能够产生资源表述的视图时，我们就有另外一个维度需要考虑了。视图不仅要<strong>匹配视图名</strong>，而且所选择的视图要<strong>适合客户端</strong>  </p>
+<p>Spring的ContentNegotiatingViewResolver 是一个特殊的视图解析器，它考虑到了客户端所需要的内容类型。按照最简单的形式，ContentNegotiatingViewResolver 可以按照下述形式进行配置：  </p>
+<pre><code>@Bean
+public ViewResolver cnViewResolver() {
+    return new ContentNegotiatingViewResolver();
+}  
+</code></pre><p>在这个简单的 bean 声明背后会涉及到很多事情。要理解 ContentNegotiatingViewResolver 是如何工作的，这涉及内容协商的两个步骤:  </p>
+<ol>
+<li>确定请求的媒体类型  </li>
+<li>找到适合请求媒体类型的最佳视图    </li>
+</ol>
+<p><strong>确定请求的媒体类型</strong><br>在内容协商两步骤中，第一步是确定客户端想要什么类型的内容表述。<br>它按如下优先级依次确定(越前优先级越高)(在不配置ContentNegotiatingManager的默认策略) </p>
+<ol>
+<li>查看URL的文件拓展名(如文件拓展名为.json，那么所需的内容必须是”application/json”)</li>
+<li>Accept头部信息  </li>
+<li>以上都不行时，将会使用”/“作为默认的内容类型，这就意味着客户端必须要接受服务器发生的任何形式的表述  </li>
+</ol>
+<p>一旦内容类型确定之后，ContentNegotiatingViewResolver 就将该逻辑视图名解析为渲染模型的View。与Spring 的其他视图解析器不同， ContentNegotiatingViewResolver 本身不会解析视图。而是委托给其他的视图解析器，让它们来解析视图。  </p>
+<p>ContentNegotiatingViewResolver 要求其他的视图解析器将逻辑视图名解析为视图。解析得到的每个视图都会放到一个列表中。这个列表装配完成后， ContentNegotiatingViewResolver 会循环客户端请求的所有媒体类型，在候选的视图中查找能够产生对应内容类型的视图。第一个匹配的视图会用来渲染模型。 </p>
+<p><strong>影响媒体类型的选择</strong><br>在上述的选择过程中，我们阐述了确定所请求媒体类型的默认策略。但是通过为其设置一个 ContentNegotiatingManager，我们能够改变它的行为。借助 ContentNegotiatingManager 我们所能做到的时期如下所示  </p>
+<ul>
+<li>指定默认的内容类型，如果根据请求无法得到内容类型的话，将会使用默认值  </li>
+<li>通过请求参数指定内容类型  </li>
+<li>误识请求的Accept头部信息  </li>
+<li>将请求的拓展名映射为特定的媒体类型  </li>
+<li>将JAF作为根据拓展名查找媒体类型的备用方案。 </li>
+</ul>
+<p>有三种配置 ContentNegotiatingManager 的方法： </p>
+<ul>
+<li>直接声明一个 ContentNegotiatingManager 类型的bean  </li>
+<li>通过 ContentNegotiatingManagerFactoryBean 间接创建 bean  </li>
+<li>重载 WebMvcConfigurerAdapter 的 configureContentNegotiation()方法  </li>
+</ul>
+<p>直接创建 ContentNegotiatingManager 有一些复杂，除非有充分的原因，否则我们不会愿意这样做。后两种方案能够让创建 ContentNegotiatingManager 更加坚定。</p>
+<p>ContentNegotiatingManager 是在 Spring 3.2中加入的，在这之前，是直接设置 ContentNegotiatingResolver 的属性来进行配置的。而 ContentNegotiatingManager 简化了这些配置。  </p>
+<ul>
+<li><p>如果使用XML配置 ContentNegotiatingManager 的话，那最有用的将会是 ContentNegotiatingManagerFactoryBean。   </p>
+<p>  例如我们可能希望在 XML中配置 ContentNegotiatingManager 使用 “application/json” 作为默认的内容类型：  </p>
+<p>  <a href="http://ww1.sinaimg.cn/large/006buNqily1g7owp5ikhej30l6035gm0.jpg" data-fancybox="group" data-caption="QQ截图20191006233849.png" class="fancybox"><img alt="QQ截图20191006233849.png" data-src="http://ww1.sinaimg.cn/large/006buNqily1g7owp5ikhej30l6035gm0.jpg" class="lazyload" title="QQ截图20191006233849.png"></a>  </p>
+<p>  因为 ContentNegotiatingManagerFactoryBean 是 FactoryBean 的实现， 所以它会创建一个 ContentNegotiatingManager bean。 这个 ContentNegotiatingManager 能够注入到 ContentNegotiatingViewResolver 的 ContentNegotiatingManager 属性中。  </p>
+</li>
+<li><p>如果使用 Java 配置的话，获得 ContentNegotiatingManager 的最简便方法就是拓展 WebMvcConfigureAdapter 并重载 configureContentNegotiation() 方法。 </p>
+<p>  在创建 Spring MVC 应用的时候，我们很可能已经拓展了 WebMvcConfigurerAdapter ，所以需要做的就是重载 configureContentNegotiation() 方法。  </p>
+<p>  如下就是 configureContentNegotiation() 的一个实现，它设置了默认的内容类型:  </p>
+<pre><code>@override
+public void configureContentNegotiation(ContentNegotiationConfigurer configurer) {
+    configurer.defaultContentType(MediaType.APPLICATION_JSON);
+}
+</code></pre><p>  ContentNegotiationConfigurer 对象中的一些方法对应于 ContentNegotiationManager 的 Setter 方法 ，这样我们就能在 ContentNegotiationManager 创建时 ，设置任意内容协商相关的属性。  </p>
+</li>
+</ul>
+<p>当我们有了 ContentNegotiationManager 并使用它调用了 setContentNegotiationManager()。这样的结果就是 ContentNegotiatingViewResolver 将会使用 ContentNegotiationManager 所定义的行为。  </p>
+<p>以下是基础配置的示例  </p>
+<pre><code>@Bean
+public ViewResolver cnViewResolver(ContentNegotiationManager cnm) {
+    ContentNegotiatingViewResolver cnvr = new ContentNegotiatingViewResolver();  
+    cnvr.setContentNegotiatingManager(cnm);
+    return cnvr;
+}
+
+@override
+public void configureContentNegotiation(ContentNegotiationConfigurer configurer) {
+    configurer.defaultContentType(MediaType.TEXT_HTML);  //默认为HTML
+}  
+
+@Bean
+public ViewResolver beanNameViewResolver() {
+    return new BeanNameViewResolver();      //以bean的形式查找视图
+}
+
+@Bean
+public View spittles() {
+    return new MappingJackson2JsonView();   //将&quot;spittles&quot;定义为JSON视图
+}
+</code></pre><p>如果客户端指定了它想要JSON的话，那么 ContentNegotiatingViewResolver 将会查找能够处理 JSON 视图的视图解析器  </p>
+<p>如果逻辑视图的名称为 “spittles” ,那么我们所配置的 beanNameViewResolver 将会解析 Spittles() 方法中所声明的 View。 这是因为 bean 名称匹配逻辑视图的名称。 如果没有匹配的 View 的话， ContentNegotiatingViewResolver 将会采用默认的行为，将其输出为 HTML.</p>
+<p>ContentNegotiatingViewResolver 的优势与限制<br>优势  </p>
+<ul>
+<li><p>在 Spring MVC 之上构建了REST 资源表述层，控制器代码无需修改。    </p>
+</li>
+<li><p>如果面向人类用户的接口(产生HTML) 与 面向非人类客户端的接口 (产生JSON、XML等) 之间有许多重叠的话，那么内容协商是一种遍历的方案  </p>
+</li>
+</ul>
+<p>劣势  </p>
+<ul>
+<li><p>ContentNegotiatingViewResolver 作为 ViewResolver 的实现，它只能决定资源该如何渲染到客户端，并没有涉及到客户端要发送什么样的表述给控制器使用。如果客户端发送JSON 或 XML 的话， 那么 ContentNegotiatingViewResolver 就无法提供帮助了。  </p>
+</li>
+<li><p>所选中的 View 会渲染模型给客户端，而不是资源  </p>
+<p>  例如，你想返回的是如下格式  </p>
+<p>  <a href="http://ww1.sinaimg.cn/large/006buNqily1g7sczk29e3j30cu0cwq48.jpg" data-fancybox="group" data-caption="QQ截图20191009231721.png" class="fancybox"><img alt="QQ截图20191009231721.png" data-src="http://ww1.sinaimg.cn/large/006buNqily1g7sczk29e3j30cu0cwq48.jpg" class="lazyload" title="QQ截图20191009231721.png"></a></p>
+<p>  但是，使用 ContentNegotiatingViewResolver 却会返回如下格式   </p>
+<p>   <a href="http://ww1.sinaimg.cn/large/006buNqily1g7sd0ibc7yj30dq0cvwfq.jpg" data-fancybox="group" data-caption="QQ截图20191009231747.png" class="fancybox"><img alt="QQ截图20191009231747.png" data-src="http://ww1.sinaimg.cn/large/006buNqily1g7sd0ibc7yj30dq0cvwfq.jpg" class="lazyload" title="QQ截图20191009231747.png"></a>  </p>
+</li>
+</ul>
+<p>由于上述的劣势，我们可能更倾向于使用 HTTP 信息转换器  </p>
+<h2 id="使用HTTP信息转换器"><a href="#使用HTTP信息转换器" class="headerlink" title="使用HTTP信息转换器"></a>使用HTTP信息转换器</h2><p>消息转换提供了一种更为直接的方式，它能够将控制器产生的数据转换为服务于客户端的表述形式。 当使用消息转换功能是， DispatcherServlet 不再需要那么麻烦地将模型数据传送到视图中。实际上，这里根本没有模型，也没有视图，只有控制器产生的数据，以及消息转换器转换数据之后所产生的的资源表述。  </p>
+<p>Spring 自带了各种各样的转换器，如下<br><a href="http://ww1.sinaimg.cn/large/006buNqily1g7sddllzz3j30t00lfq9c.jpg" data-fancybox="group" data-caption="QQ截图20191009233226.png" class="fancybox"><img alt="QQ截图20191009233226.png" data-src="http://ww1.sinaimg.cn/large/006buNqily1g7sddllzz3j30t00lfq9c.jpg" class="lazyload" title="QQ截图20191009233226.png"></a><br><a href="http://ww1.sinaimg.cn/large/006buNqily1g7sddy9h0mj30t00ngdoe.jpg" data-fancybox="group" data-caption="QQ截图20191009233241.png" class="fancybox"><img alt="QQ截图20191009233241.png" data-src="http://ww1.sinaimg.cn/large/006buNqily1g7sddy9h0mj30t00ngdoe.jpg" class="lazyload" title="QQ截图20191009233241.png"></a>  </p>
+<p>例如，假设客户端通过请求的 Accept 头信息表明它能接受 “application/json”,标签 Jackson Json 在类路径下，那么处理方法返回的对象将交给 MappingJacksonHttpMessageConverter ，并由它转换为返回客户端的JSON表述形式。  </p>
+<p>另外，除了上表的其中五个以外都是自动注册的，所以要使用它们的话，不需要 Spring 配置。但是为了支持它们，你需要添加一些库到应用程序的类路径下。<br>例如，要使用 MappingJacksonHttpMessageConverter 来实现 JSON 消息和 Java 对象的互相转换，那么需要将 Jackson JSON Processor 库添加到类路径中。  </p>
+<h3 id="在响应体中返回资源状态"><a href="#在响应体中返回资源状态" class="headerlink" title="在响应体中返回资源状态"></a>在响应体中返回资源状态</h3><p>正常情况下，当处理方法返回 Java 对象时，这个对象会在模型中并在视图中渲染使用。 但是，如果使用了 消息转换功能的话，我们需要告诉 Spring 跳过正常的模型/视图流程，并使用消息转换器。有多种方式可以实现，而最简单的方法是为控制器方法添加 @ResponseBody 注解   </p>
+<pre><code>@RequestMapping(method = RequestMethod.GET,produces=&quot;application/json&quot;)
+public @ResponseBody List&lt;Spittle&gt; spittles{
+    @RequestParam(value=&quot;max&quot;,defaultValue = MAX_LONG_AS_STRING) long max,
+    @RequestParam(value=&quot;count&quot;,defaultValue=&quot;20&quot;) int count} {
+        return spittleRepository.findSpittles(max,count);
+    }  
+</code></pre><p>produces 属性会关注请求的 Accept 头部信息,在这里表明这个方法只处理预期输出为 JSON 的请求<br>@ResponseBody 注解会告知 Spring ，我们要将返回的对象作为资源发送给客户端，并将其转换为客户端可接受的表述形式。更具体地将， DispatcherServlet 将会考虑到请求中 Accept 头部信息，并查找能够为客户端提供所需表述形式的消息转换器。  </p>
+<p>例如，客户端的Accept头部信息表名它接受 “application/json” ，并且 Jackson JSON 位于应用的类路径下，那么将会选择 MappingJacksonHttpMessageConverter 或 MappingJackson2HttpMessageConverter ,将控制器返回的数据转换为 json 。 </p>
+<p>注意！ Jackson 默认会使用反射<br>如果你重构了 Java 类型，比如添加、移除、重命名属性，那么所产生的 JSON 也会发生变化。 但是。我们可以在 Java 类型上使用 Jackson 的映射注解，从而改变产生 JSON 的行为。  </p>
+<h3 id="在请求中接受资源状态"><a href="#在请求中接受资源状态" class="headerlink" title="在请求中接受资源状态"></a>在请求中接受资源状态</h3><p>使用@RequestBody 注解，它也能告诉 Spring 查找一个消息转换器，将来自客户端的资源表述转换为对象。</p>
+<pre><code>@RequestMapping(method = RequestMethod.GET,consumes =&quot;application/json&quot;)
+public @ResponseBody saveSpittle( @RequestBody Spittle spittle) {
+    return spittleRepository.save(spittle);
+}
+</code></pre><p>consumes 属性会关注请求的 Content-Type 头部信息。  </p>
+<h3 id="为控制器默认设置消息转换"><a href="#为控制器默认设置消息转换" class="headerlink" title="为控制器默认设置消息转换"></a>为控制器默认设置消息转换</h3><p>Spring 4.0 引入了@RestController 注解，能够减少@ResponseBody 和 @RequestBody 的重复使用。  </p>
+<p>如果在控制器类上使用 @RestController 来代替 @Controller 的话， Spring 将会为该控制器的所有处理方法应用消息转换功能，我们不必为每个方法都添加 @ResponseBody 了。但是我们依然需要使用 @RequestBody 注解  </p>
+<h2 id="提供资源之外的其他内容"><a href="#提供资源之外的其他内容" class="headerlink" title="提供资源之外的其他内容"></a>提供资源之外的其他内容</h2><h3 id="发送错误消息到客户端"><a href="#发送错误消息到客户端" class="headerlink" title="发送错误消息到客户端"></a>发送错误消息到客户端</h3><p>有时你想在程序发生异常时返回给客户端错误信息，以指明是哪里出现了错误时，例如当你在数据库查找不到某记录时，你需要把未查到的错误消息返回给客户端  </p>
+<p>Spring 提供了多种方式来处理这样的场景：  </p>
+<ul>
+<li>使用 @ResponseStatus 注解可以指定状态码  </li>
+<li>控制器方法可以返回 ResponseEntity 对象，该对象能够包含更多响应相关的元数据  </li>
+<li>异常处理器能够应对错误场景，这样处理器方法就能关注与正常的状况  </li>
+</ul>
+<p>下面分别来介绍  </p>
+<ul>
+<li><p>使用 @ResponseStatus 注解<br>  该注解很简单，只需要在方法上添加这个注解即可  </p>
+<pre><code>@ExceptionHandler(SpittleNotFoundException.class)
+@ResponseStatus(HttpStatus.NOT_FOUND)
+public @ResponseBody Error SpittleNotFound(...){
+    ...
+}
+</code></pre></li>
+<li><p>使用 ResponseEntity<br>  作为@ResponseBody 的替代方案，控制器方法可以返回一个 ResponseEntity 对象。<br>  ResponseEntity 中可以包含响应相关的元数据(如头部信息和状态码)以及要转换成资源表述的对象。  </p>
+<p>  下面是使用示例  </p>
+<pre><code>@RequestMapping(value=&quot;/{id}&quot;,method=RequestMethod.GET) 
+public ResponseEntity&lt;Spittle&gt; spittleById(@PathVariable long id) {
+    Spittle spittle = spittleRepository.findOne(id);
+    HttpStatus status = spittle != null ? HttpStatus.OK : HttpStatus.NOT_FOUND;  
+    return new ResponseEntity&lt;Spittle&gt;(spittle, status);
+}  
+</code></pre><p>  可以看到这个构造函数接受两个参数，一个是返回的对象，一个是HttpStatus用来返回状态码，但在这里，如果未找到对象，那么返回的响应体依然为空  </p>
+<p>  我们可以自己写一个 Error 对象，以此来返回错误消息，修改后如下  </p>
+<pre><code>@RequestMapping(value=&quot;/{id}&quot;,method=RequestMethod.GET) 
+public ResponseEntity&lt;Spittle&gt; spittleById(@PathVariable long id) {
+    Spittle spittle = spittleRepository.findOne(id);
+    if (spittle ==null) {
+        Error error = new Error(4,&quot;Spittle [&quot; + id + &quot;] not found&quot;);
+        return new ResponseEntity&lt;Error&gt;(error,HttpStatus,NOT_FOUND);
+    }
+    return new ResponseEntity&lt;Spittle&gt;(spittle, HttpStatus.OK);
+}
+</code></pre></li>
+<li><p>使用错误处理器处理错误<br>  当我们涉及到更多的逻辑来处理异常时，ResponseEntity 有可能就不太管用了，而且它的泛型为它的解析或出现错误留下了太多的空间。<br>  这时候我们就需要用到错误处理器来处理错误了<br>  错误处理器能够处理导致问题的场景，这样常规的处理器方法就能只关心正常的逻辑处理路径了。  </p>
+<p>  我们重构以下代码来使用错误处理器。<br>  首先，定义能够对应 SpittleNotFoundException 的 错误处理器:  </p>
+<pre><code>@ExceptionHandler(SpittleNotFoundException.class)
+public ResponseEntity&lt;Error&gt; spittleNotFound(SpittleNotFoundException e){
+    long spittleId = e.getSpittleId();
+    Error error = new Error(4,&quot;Spittle [&quot; + id + &quot;] not found&quot;);
+    return new ResponseEntity&lt;Error&gt;(error,HttpStatus,NOT_FOUND);
+}  
+</code></pre><p>  @ExceptionHandler 注解能够用到控制器方法中，用来处理特定的异常。它表明如果在控制器的任意处理方法中抛出 SpittleNotFoundException 异常，就会调用 spittleNotFound() 方法来处理异常  </p>
+<p>  现在，我们可以移除掉 spittleById() 方法中大多数的错误处理代码：  </p>
+<pre><code>@RequestMapping(value=&quot;/{id}&quot;,method=RequestMethod.GET) 
+public ResponseEntity&lt;Spittle&gt; spittleById(@PathVariable long id) {
+    Spittle spittle = spittleRepository.findOne(id);
+    if (spittle ==null) { throw new SpittleNotFoundException(id);}
+    return new ResponseEntity&lt;Spittle&gt;(spittle, HttpStatus.OK);
+}
+</code></pre><p>  当然，我们可以将错误处理器集中编写到一个类文件中，并且该类文件使用@ControllerAdvice 注解，这样所有使用 @RequestMapping 注解的方法抛出的异常都会由该类里面的 错误处理方法来解决。</p>
+</li>
+</ul>
+<h3 id="在响应中设置头部信息"><a href="#在响应中设置头部信息" class="headerlink" title="在响应中设置头部信息"></a>在响应中设置头部信息</h3><p>有时候，我们需要设置头部信息来提供给客户端，例如在创建了一个新资源后，你可能需要提供 “Location” 头部信息来让客户端重定向到新资源的地址 。<br>这时我们就需要在像一种设置头部信息了<br>而经过上面的学习，我们可以发现 ResponseEntity 可以很好地提供帮助。  </p>
+<pre><code>@RequestMapping(method=RequestMethod.POST, consumes=&quot;application/json&quot;) 
+public ResponseEntity&lt;Spittle&gt; saveSpittle(@RequestBody Spittle spittle) {
+    Spittle spittle = spittleRepository.save(spittle);
+
+    //设置响应头
+    HttpHeaders headers = new HttpHeaders();
+    URI locationUri = URI.create( &quot;http://localhost:8080/spittr/spittles/&quot; + spittle.getId() );
+    headers.setLocation(locationUri);
+
+    return new ResponseEntity&lt;Spittle&gt;(spittle, headers , HttpStatus.CREATED);
+}  
+</code></pre><p>可以发现 ResponseEntity\<spittle>(spittle, headers , HttpStatus.CREATED) 是一个重载方法，第二个参数接受一个设置好的响应头参数。  </spittle></p>
+<p>但是我们发现里面的 uri 被硬编码了，Spring 通过了 UriComponentsBuilder 来帮助我们构建 URL 。它通过逐步指定 URL 的各种组成部分(host、端口、路径以及查询)来组件url<br>以下是示例  </p>
+<pre><code>@RequestMapping(method=RequestMethod.POST, consumes=&quot;application/json&quot;) 
+public ResponseEntity&lt;Spittle&gt; saveSpittle(@RequestBody Spittle spittle， UriComponentsBuilder ucb) {
+    Spittle spittle = spittleRepository.save(spittle);
+
+    //设置响应头
+    HttpHeaders headers = new HttpHeaders();
+    URI locationUri = ucb.path(&quot;/spittles/&quot;)
+                         .path(String.valueOf(spittle.getId()))
+                         .build()
+                         .toUri();
+
+    headers.setLocation(locationUri);
+
+    return new ResponseEntity&lt;Spittle&gt;(spittle, headers , HttpStatus.CREATED);
+}  
+</code></pre><p>在处理器方法所得到的 UriComponentsBuilder 中，会预先配置已知的信息如 host、端口以及 Servlet 内容。它会从处理器方法所对应的请求中获取这些基础信息。基于这些信息，代码通过设置路径的方法构建了 UriComponentsBuilder 其余的部分  </p>
+<h2 id="编写-REST-客户端"><a href="#编写-REST-客户端" class="headerlink" title="编写 REST 客户端"></a>编写 REST 客户端</h2><p>Spring 的 RestTemplate 为编写 REST 客户端提供了方便，就像 JdbcTemplate 处理了JDBC数据访问是的重复部分(建立、断开连接，处理错误),RestTemplate 让我们在使用 RESTful资源时免于编写哪些乏味的代码。  </p>
+<h3 id="了解-RestTemplate-的操作"><a href="#了解-RestTemplate-的操作" class="headerlink" title="了解 RestTemplate 的操作"></a>了解 RestTemplate 的操作</h3><p>RestTemplate 定义了36 个与 REST 资源交互的方法，其中的大多数都对应于 HTTP 的方法。但是。这里面只有11个独立的方法，其中有10个有三种重载形式，而第十一个则重载了6次。<br><a href="http://ww1.sinaimg.cn/large/006buNqily1g7t77cszjwj30p60kmwjk.jpg" data-fancybox="group" data-caption="QQ截图20191010164303.png" class="fancybox"><img alt="QQ截图20191010164303.png" data-src="http://ww1.sinaimg.cn/large/006buNqily1g7t77cszjwj30p60kmwjk.jpg" class="lazyload" title="QQ截图20191010164303.png"></a><br><a href="http://ww1.sinaimg.cn/large/006buNqily1g7t781zn6fj30p305qmy6.jpg" data-fancybox="group" data-caption="QQ截图20191010164527.png" class="fancybox"><img alt="QQ截图20191010164527.png" data-src="http://ww1.sinaimg.cn/large/006buNqily1g7t781zn6fj30p305qmy6.jpg" class="lazyload" title="QQ截图20191010164527.png"></a>  </p>
+<h3 id="GET-资源"><a href="#GET-资源" class="headerlink" title="GET 资源"></a>GET 资源</h3><p>有两种执行GET 请求的方法  </p>
+<ul>
+<li><p>getForObject()<br>  它的三个方法签名如下<br>  <a href="http://ww1.sinaimg.cn/large/006buNqily1g7t85i6slij30nw05bwfx.jpg" data-fancybox="group" data-caption="QQ截图20191010171453.png" class="fancybox"><img alt="QQ截图20191010171453.png" data-src="http://ww1.sinaimg.cn/large/006buNqily1g7t85i6slij30nw05bwfx.jpg" class="lazyload" title="QQ截图20191010171453.png"></a></p>
+</li>
+<li><p>getForEntity()<br>  它的三个方法签名如下<br>  <a href="http://ww1.sinaimg.cn/large/006buNqily1g7t85zgu17j30nz056abs.jpg" data-fancybox="group" data-caption="QQ截图20191010171507.png" class="fancybox"><img alt="QQ截图20191010171507.png" data-src="http://ww1.sinaimg.cn/large/006buNqily1g7t85zgu17j30nz056abs.jpg" class="lazyload" title="QQ截图20191010171507.png"></a>  </p>
+</li>
+</ul>
+<p>这两个方法除了返回类型，它们的工作方式大同小异。它们都执行根据URL检索资源的GET请求，它们都将资源根据 responseType 参数匹配为一定的类型。唯一的区别在于 getForObject() 只返回请求类型的对象，而 getForEntity() 方法会返回请求的对象以及响应相关的额外信息。  </p>
+<h3 id="检索资源"><a href="#检索资源" class="headerlink" title="检索资源"></a>检索资源</h3><p>getForObject() 方法是检索资源的合适选择。我们请求一个资源并按照所选择的Java 类型接受该资源。<br>下面是一个示例   </p>
+<pre><code>public Profile fetchFacebookProfile(String id) {
+    RestTemplate rest = new RestTemplate();
+    return rest.getForObject(&quot;http://graph.facebook.com/{spitter}&quot;,profile.class,id);
+}  
+</code></pre><p>其中的第二个参数指定了要返回的对象的类型。<br>另外一种替代方案是将 id 参数放到 Map 中，并以id作为key，然后将这个Map作为最后一个参数传递给 getForObject()  </p>
+<p>getForObject 有两个值得注意的地方  </p>
+<ul>
+<li>没有任何形式的JSON解析和对象映射<br>  在表面之下，getForObject() 为我们将响应体转换为对象。它实现这些需要依赖 HTTP消息转换器，与带有 @ResponseBody 注解的 Spring MVC 处理方法所使用的一样。需要把依赖放在类路径下。</li>
+<li>没有任何异常处理<br>  因为它抛出的异常都是非检查型的，但是你依旧可以捕获并处理它。  </li>
+</ul>
+<h3 id="抽取响应的元数据"><a href="#抽取响应的元数据" class="headerlink" title="抽取响应的元数据"></a>抽取响应的元数据</h3><p>使用 getForObject() 方法<br>例如下面的例子我们会通过读取请求头来提取资源的最后修改时间  </p>
+<pre><code>Date lastModified = new Date(response.getHeaders().getLastModified());  
+</code></pre><p>除了上述方法，它HttpHeaders还包含如下的方法来获取头信息:    </p>
+<p><a href="http://ww1.sinaimg.cn/large/006buNqily1g7thppisn5j30fn0bfgob.jpg" data-fancybox="group" data-caption="QQ截图20191010224653.png" class="fancybox"><img alt="QQ截图20191010224653.png" data-src="http://ww1.sinaimg.cn/large/006buNqily1g7thppisn5j30fn0bfgob.jpg" class="lazyload" title="QQ截图20191010224653.png"></a>  </p>
+<p>为了实现更通用的 HTTP 头信息访问，HttpHeader 提供了 get() 方法和 getFirst() 方法。两个方法都接受 String 参数来表示所需要的头信息。  </p>
+<h3 id="PUT-资源"><a href="#PUT-资源" class="headerlink" title="PUT 资源"></a>PUT 资源</h3><p>为了队数据进行 PUT 操作， RestTemplate 提供了三个简单的 put 方法。  </p>
+<p><a href="http://ww1.sinaimg.cn/large/006buNqily1g7thuarprdj30ki04tjsc.jpg" data-fancybox="group" data-caption="QQ截图20191010225251.png" class="fancybox"><img alt="QQ截图20191010225251.png" data-src="http://ww1.sinaimg.cn/large/006buNqily1g7thuarprdj30ki04tjsc.jpg" class="lazyload" title="QQ截图20191010225251.png"></a>  </p>
+<h3 id="DELETE-资源"><a href="#DELETE-资源" class="headerlink" title="DELETE 资源"></a>DELETE 资源</h3><p>使用 delete() 方法<br>方法签名如下  </p>
+<p><a href="http://ww1.sinaimg.cn/large/006buNqily1g7ti1o837ej30ft04o3z6.jpg" data-fancybox="group" data-caption="QQ截图20191010225956.png" class="fancybox"><img alt="QQ截图20191010225956.png" data-src="http://ww1.sinaimg.cn/large/006buNqily1g7ti1o837ej30ft04o3z6.jpg" class="lazyload" title="QQ截图20191010225956.png"></a>  </p>
+<h3 id="POST-资源数据"><a href="#POST-资源数据" class="headerlink" title="POST 资源数据"></a>POST 资源数据</h3><ul>
+<li>postForObject()<br>  <a href="http://ww1.sinaimg.cn/large/006buNqily1g7ti7nixkzj30l004ngmx.jpg" data-fancybox="group" data-caption="QQ截图20191010230540.png" class="fancybox"><img alt="QQ截图20191010230540.png" data-src="http://ww1.sinaimg.cn/large/006buNqily1g7ti7nixkzj30l004ngmx.jpg" class="lazyload" title="QQ截图20191010230540.png"></a></li>
+<li>postForEntity()<br>  <a href="http://ww1.sinaimg.cn/large/006buNqily1g7ti8jcw82j30j7063abm.jpg" data-fancybox="group" data-caption="QQ截图20191010230627.png" class="fancybox"><img alt="QQ截图20191010230627.png" data-src="http://ww1.sinaimg.cn/large/006buNqily1g7ti8jcw82j30j7063abm.jpg" class="lazyload" title="QQ截图20191010230627.png"></a></li>
+<li><p>postForLocation()<br>  它会在 POST 请求的请求体中发送一个资源到服务器端。但是，相应不再是相同的资源对象。而是新创建资源的位置  </p>
+<p>  <a href="http://ww1.sinaimg.cn/large/006buNqily1g7tibzau9qj30la04cjse.jpg" data-fancybox="group" data-caption="QQ截图20191010230925.png" class="fancybox"><img alt="QQ截图20191010230925.png" data-src="http://ww1.sinaimg.cn/large/006buNqily1g7tibzau9qj30la04cjse.jpg" class="lazyload" title="QQ截图20191010230925.png"></a>  </p>
+<p>  <a href="http://ww1.sinaimg.cn/large/006buNqily1g7ticf4o77j30jk04nt9f.jpg" data-fancybox="group" data-caption="QQ截图20191010230939.png" class="fancybox"><img alt="QQ截图20191010230939.png" data-src="http://ww1.sinaimg.cn/large/006buNqily1g7ticf4o77j30jk04nt9f.jpg" class="lazyload" title="QQ截图20191010230939.png"></a>  </p>
+</li>
+</ul>
+<h3 id="交换资源"><a href="#交换资源" class="headerlink" title="交换资源"></a>交换资源</h3><p>若你想在发送给服务端的请求中设置头信息的话，你可以使用 RestTemplate 的 exchange() 方法。<br>exchage 的 三个签名格式如下<br><a href="http://ww1.sinaimg.cn/large/006buNqily1g7tigzeoflj30l806j0va.jpg" data-fancybox="group" data-caption="QQ截图20191010231423.png" class="fancybox"><img alt="QQ截图20191010231423.png" data-src="http://ww1.sinaimg.cn/large/006buNqily1g7tigzeoflj30l806j0va.jpg" class="lazyload" title="QQ截图20191010231423.png"></a>  </p>
+<p>exchage() 不同于 getForEntity() 或 getForObject() 该方法允许在请求中设置头信息。</p>
+<pre><code>MultiValueMap&lt;String,String&gt; headers =
+    new LinkedMultiValueMap&lt;String, String&gt;();
+headers.add(&quot;Accept&quot;,&quot;application/json&quot;);
+HttpEntity&lt;Object&gt; requestEntity = new HttpEntity&lt;Object&gt;(headers);  
+
+ResponseEntity&lt;Spitter&gt; response = rest.exchange(&quot;http://localhost:8080/spittr/spittles/{spittleId}&quot;, HttpMethod.GET , requestEntity ,Spitter.class, spitterId);  
+spitter spitter = response.getBody(); 
+</code></pre></div></article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">文章作者: </span><span class="post-copyright-info"><a href="mailto:undefined">f1rry</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">文章链接: </span><span class="post-copyright-info"><a href="http://yoursite.com/2020/08/07/Spring MVC+ REST API/">http://yoursite.com/2020/08/07/Spring MVC+ REST API/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="http://yoursite.com">F1rry's blog</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"></div><div class="post_share"><div class="social-share" data-image="https://cdn.jsdelivr.net/gh/jerryc127/butterfly_cdn@2.1.0/top_img/default.png" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/social-share.js/dist/css/share.min.css"><script src="https://cdn.jsdelivr.net/npm/social-share.js/dist/js/social-share.min.js"></script></div></div><nav class="pagination_post" id="pagination"><div class="prev-post pull_left"><a href="/2020/08/07/Spring Security/"><img class="prev_cover lazyload" data-src="https://cdn.jsdelivr.net/gh/jerryc127/butterfly_cdn@2.1.0/top_img/default.png" onerror="onerror=null;src='/img/404.jpg'"><div class="label">上一篇</div><div class="prev_info"><span></span></div></a></div><div class="next-post pull_right"><a href="/2020/08/07/Spring MVC高级技术/"><img class="next_cover lazyload" data-src="https://cdn.jsdelivr.net/gh/jerryc127/butterfly_cdn@2.1.0/top_img/default.png" onerror="onerror=null;src='/img/404.jpg'"><div class="label">下一篇</div><div class="next_info"><span></span></div></a></div></nav></div></main><footer id="footer" data-type="color"><div id="footer-wrap"><div class="copyright">&copy;2019 - 2020 By f1rry</div><div class="framework-info"><span>驱动 </span><a href="http://hexo.io"><span>Hexo</span></a><span class="footer-separator">|</span><span>主题 </span><a href="https://github.com/jerryc127/hexo-theme-butterfly"><span>Butterfly</span></a></div></div></footer></div><section class="rightside" id="rightside"><div id="rightside-config-hide"><i class="fa fa-book" id="readmode" title="阅读模式"></i><i class="fa fa-plus" id="font_plus" title="放大字体"></i><i class="fa fa-minus" id="font_minus" title="缩小字体"></i><a class="translate_chn_to_cht" id="translateLink" href="javascript:translatePage();" title="简繁转换" target="_self">繁</a><i class="darkmode fa fa-moon-o" id="darkmode" title="夜间模式"></i></div><div id="rightside-config-show"><div id="rightside_config" title="设置"><i class="fa fa-cog" aria-hidden="true"></i></div><i class="fa fa-list-ul close" id="mobile-toc-button" title="目录" aria-hidden="true"></i><i class="fa fa-arrow-up" id="go-up" title="回到顶部" aria-hidden="true"></i></div></section><script src="https://cdn.jsdelivr.net/npm/jquery@latest/dist/jquery.min.js"></script><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="/js/tw_cn.js"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.js"></script><script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script><script src="https://cdn.jsdelivr.net/npm/instant.page@latest/instantpage.min.js" type="module"></script><script src="https://cdn.jsdelivr.net/npm/lazysizes@latest/lazysizes.min.js" async=""></script><script src="https://cdn.jsdelivr.net/gh/jerryc127/butterfly_cdn@2.1.0/js/click_heart.js"></script></body></html>

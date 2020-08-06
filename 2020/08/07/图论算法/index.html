@@ -1,0 +1,340 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5"><title>F1rry's blog</title><meta name="description"><meta name="author" content="f1rry"><meta name="copyright" content="f1rry"><meta name="format-detection" content="telephone=no"><link rel="shortcut icon" href="/img/favicon.ico"><link rel="preconnect" href="//cdn.jsdelivr.net"><link rel="preconnect" href="https://fonts.googleapis.com" crossorigin><link rel="preconnect" href="//busuanzi.ibruce.info"><meta name="twitter:card" content="summary"><meta name="twitter:title" content=""><meta name="twitter:description"><meta name="twitter:image" content="https://cdn.jsdelivr.net/gh/jerryc127/butterfly_cdn@2.1.0/top_img/default.png"><meta property="og:type" content="article"><meta property="og:title" content=""><meta property="og:url" content="http://yoursite.com/2020/08/07/图论算法/"><meta property="og:site_name" content="F1rry's blog"><meta property="og:description"><meta property="og:image" content="https://cdn.jsdelivr.net/gh/jerryc127/butterfly_cdn@2.1.0/top_img/default.png"><meta http-equiv="Cache-Control" content="no-transform"><meta http-equiv="Cache-Control" content="no-siteapp"><script src="https://cdn.jsdelivr.net/npm/js-cookie/dist/js.cookie.min.js"></script><script>const autoChangeMode = 'false'
+var t = Cookies.get("theme");
+if (autoChangeMode == '1'){
+const isDarkMode = window.matchMedia("(prefers-color-scheme: dark)").matches
+const isLightMode = window.matchMedia("(prefers-color-scheme: light)").matches
+const isNotSpecified = window.matchMedia("(prefers-color-scheme: no-preference)").matches
+const hasNoSupport = !isDarkMode && !isLightMode && !isNotSpecified
+
+if (t === undefined){
+  if (isLightMode) activateLightMode()
+  else if (isDarkMode) activateDarkMode()
+  else if (isNotSpecified || hasNoSupport){
+    console.log('You specified no preference for a color scheme or your browser does not support it. I Schedule dark mode during night time.')
+    now = new Date();
+    hour = now.getHours();
+    isNight = hour < 6 || hour >= 18
+    isNight ? activateDarkMode() : activateLightMode()
+}
+} else if (t == 'light') activateLightMode()
+else activateDarkMode()
+
+
+} else if (autoChangeMode == '2'){
+  now = new Date();
+  hour = now.getHours();
+  isNight = hour < 6 || hour >= 18
+  if(t === undefined) isNight? activateDarkMode() : activateLightMode()
+  else if (t === 'light') activateLightMode()
+  else activateDarkMode() 
+} else {
+  if ( t == 'dark' ) activateDarkMode()
+  else if ( t == 'light') activateLightMode()
+}
+
+function activateDarkMode(){
+  document.documentElement.setAttribute('data-theme', 'dark')
+  if (document.querySelector('meta[name="theme-color"]') !== null){
+    document.querySelector('meta[name="theme-color"]').setAttribute('content','#000')
+  }
+}
+function activateLightMode(){
+  document.documentElement.setAttribute('data-theme', 'light')
+  if (document.querySelector('meta[name="theme-color"]') !== null){
+  document.querySelector('meta[name="theme-color"]').setAttribute('content','#fff')
+  }
+}</script><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/font-awesome@latest/css/font-awesome.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.css"><link rel="canonical" href="http://yoursite.com/2020/08/07/图论算法/"><link rel="prev" title="" href="http://yoursite.com/2020/08/07/AOP/"><link rel="next" title="" href="http://yoursite.com/2020/08/07/不相交集类/"><link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Titillium+Web"><script>var GLOBAL_CONFIG = { 
+  root: '/',
+  algolia: undefined,
+  localSearch: undefined,
+  translate: {"defaultEncoding":2,"translateDelay":0,"cookieDomain":"https://xxx/","msgToTraditionalChinese":"繁","msgToSimplifiedChinese":"简"},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  bookmark: {
+    title: 'Snackbar.bookmark.title',
+    message_prev: '按',
+    message_next: '键将本页加入书签'
+  },
+  runtime_unit: '天',
+  runtime: true,
+  copyright: undefined,
+  ClickShowText: undefined,
+  medium_zoom: false,
+  fancybox: true,
+  Snackbar: undefined,
+  baiduPush: false,
+  isHome: false,
+  isPost: true
+  
+}</script></head><body><header> <div id="page-header"><span class="pull_left" id="blog_name"><a class="blog_title" id="site-name" href="/">F1rry's blog</a></span><span class="toggle-menu pull_right close"><a class="site-page"><i class="fa fa-bars fa-fw" aria-hidden="true"></i></a></span><span class="pull_right menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fa fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fa fa-archive"></i><span> 时间轴</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fa fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fa fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fa fa-link"></i><span> 友链</span></a></div></div></span></div></header><div id="mobile-sidebar"><div id="menu_mask"></div><div id="mobile-sidebar-menus"><div class="mobile_author_icon"><img class="avatar-img" src="/img/avatar.png" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"></div><div class="mobile_post_data"><div class="mobile_data_item is-center"><div class="mobile_data_link"><a href="/archives/"><div class="headline">文章</div><div class="length_num">23</div></a></div></div><div class="mobile_data_item is-center">      <div class="mobile_data_link"><a href="/tags/"><div class="headline">标签</div><div class="length_num">8</div></a></div></div></div><hr><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fa fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fa fa-archive"></i><span> 时间轴</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fa fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fa fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fa fa-link"></i><span> 友链</span></a></div></div></div><div id="mobile-sidebar-toc"><div class="toc_mobile_headline">目录</div><div class="sidebar-toc__content"><ol class="toc_mobile_items"><li class="toc_mobile_items-item toc_mobile_items-level-1"><a class="toc_mobile_items-link" href="#图论算法"><span class="toc_mobile_items-number">1.</span> <span class="toc_mobile_items-text">图论算法</span></a><ol class="toc_mobile_items-child"><li class="toc_mobile_items-item toc_mobile_items-level-2"><a class="toc_mobile_items-link" href="#一些概念和数据结构"><span class="toc_mobile_items-number">1.1.</span> <span class="toc_mobile_items-text">一些概念和数据结构</span></a><ol class="toc_mobile_items-child"><li class="toc_mobile_items-item toc_mobile_items-level-3"><a class="toc_mobile_items-link" href="#一些概念的简单理解"><span class="toc_mobile_items-number">1.1.1.</span> <span class="toc_mobile_items-text">一些概念的简单理解</span></a></li><li class="toc_mobile_items-item toc_mobile_items-level-3"><a class="toc_mobile_items-link" href="#一些表示图的数据结构"><span class="toc_mobile_items-number">1.1.2.</span> <span class="toc_mobile_items-text">一些表示图的数据结构</span></a></li></ol></li><li class="toc_mobile_items-item toc_mobile_items-level-2"><a class="toc_mobile_items-link" href="#拓扑排序"><span class="toc_mobile_items-number">1.2.</span> <span class="toc_mobile_items-text">拓扑排序</span></a><ol class="toc_mobile_items-child"><li class="toc_mobile_items-item toc_mobile_items-level-3"><a class="toc_mobile_items-link" href="#实现算法"><span class="toc_mobile_items-number">1.2.1.</span> <span class="toc_mobile_items-text">实现算法</span></a></li></ol></li><li class="toc_mobile_items-item toc_mobile_items-level-2"><a class="toc_mobile_items-link" href="#最短路径算法"><span class="toc_mobile_items-number">1.3.</span> <span class="toc_mobile_items-text">最短路径算法</span></a><ol class="toc_mobile_items-child"><li class="toc_mobile_items-item toc_mobile_items-level-3"><a class="toc_mobile_items-link" href="#无权最短路径"><span class="toc_mobile_items-number">1.3.1.</span> <span class="toc_mobile_items-text">无权最短路径</span></a></li><li class="toc_mobile_items-item toc_mobile_items-level-3"><a class="toc_mobile_items-link" href="#有权最短路径"><span class="toc_mobile_items-number">1.3.2.</span> <span class="toc_mobile_items-text">有权最短路径</span></a></li><li class="toc_mobile_items-item toc_mobile_items-level-3"><a class="toc_mobile_items-link" href="#具有负边值的单源最短路径问题（无负值圈）"><span class="toc_mobile_items-number">1.3.3.</span> <span class="toc_mobile_items-text">具有负边值的单源最短路径问题（无负值圈）</span></a></li><li class="toc_mobile_items-item toc_mobile_items-level-3"><a class="toc_mobile_items-link" href="#无权图的单元最短路径问题"><span class="toc_mobile_items-number">1.3.4.</span> <span class="toc_mobile_items-text">无权图的单元最短路径问题</span></a></li></ol></li><li class="toc_mobile_items-item toc_mobile_items-level-2"><a class="toc_mobile_items-link" href="#网络流问题"><span class="toc_mobile_items-number">1.4.</span> <span class="toc_mobile_items-text">网络流问题</span></a><ol class="toc_mobile_items-child"><li class="toc_mobile_items-item toc_mobile_items-level-3"><a class="toc_mobile_items-link" href="#一种简单算法的实现"><span class="toc_mobile_items-number">1.4.1.</span> <span class="toc_mobile_items-text">一种简单算法的实现</span></a></li></ol></li><li class="toc_mobile_items-item toc_mobile_items-level-2"><a class="toc_mobile_items-link" href="#最小生成树问题"><span class="toc_mobile_items-number">1.5.</span> <span class="toc_mobile_items-text">最小生成树问题</span></a><ol class="toc_mobile_items-child"><li class="toc_mobile_items-item toc_mobile_items-level-3"><a class="toc_mobile_items-link" href="#Prim-算法"><span class="toc_mobile_items-number">1.5.1.</span> <span class="toc_mobile_items-text">Prim 算法</span></a></li><li class="toc_mobile_items-item toc_mobile_items-level-3"><a class="toc_mobile_items-link" href="#Kruskal-算法"><span class="toc_mobile_items-number">1.5.2.</span> <span class="toc_mobile_items-text">Kruskal 算法</span></a></li></ol></li><li class="toc_mobile_items-item toc_mobile_items-level-2"><a class="toc_mobile_items-link" href="#深度优先搜索的应用"><span class="toc_mobile_items-number">1.6.</span> <span class="toc_mobile_items-text">深度优先搜索的应用</span></a><ol class="toc_mobile_items-child"><li class="toc_mobile_items-item toc_mobile_items-level-3"><a class="toc_mobile_items-link" href="#判断无向图是否连通以及生成深度优先生成树"><span class="toc_mobile_items-number">1.6.1.</span> <span class="toc_mobile_items-text">判断无向图是否连通以及生成深度优先生成树</span></a></li><li class="toc_mobile_items-item toc_mobile_items-level-3"><a class="toc_mobile_items-link" href="#判断有向图是否连通且是否为无圈图"><span class="toc_mobile_items-number">1.6.2.</span> <span class="toc_mobile_items-text">判断有向图是否连通且是否为无圈图</span></a></li><li class="toc_mobile_items-item toc_mobile_items-level-3"><a class="toc_mobile_items-link" href="#查找无向连通图的所有割点"><span class="toc_mobile_items-number">1.6.3.</span> <span class="toc_mobile_items-text">查找无向连通图的所有割点</span></a></li><li class="toc_mobile_items-item toc_mobile_items-level-3"><a class="toc_mobile_items-link" href="#查找强分支"><span class="toc_mobile_items-number">1.6.4.</span> <span class="toc_mobile_items-text">查找强分支</span></a></li><li class="toc_mobile_items-item toc_mobile_items-level-3"><a class="toc_mobile_items-link" href="#欧拉回路"><span class="toc_mobile_items-number">1.6.5.</span> <span class="toc_mobile_items-text">欧拉回路</span></a></li></ol></li><li class="toc_mobile_items-item toc_mobile_items-level-2"><a class="toc_mobile_items-link" href="#NP-完全性介绍"><span class="toc_mobile_items-number">1.7.</span> <span class="toc_mobile_items-text">NP-完全性介绍</span></a><ol class="toc_mobile_items-child"><li class="toc_mobile_items-item toc_mobile_items-level-3"><a class="toc_mobile_items-link" href="#NP类"><span class="toc_mobile_items-number">1.7.1.</span> <span class="toc_mobile_items-text">NP类</span></a></li><li class="toc_mobile_items-item toc_mobile_items-level-3"><a class="toc_mobile_items-link" href="#NP-完全问题"><span class="toc_mobile_items-number">1.7.2.</span> <span class="toc_mobile_items-text">NP-完全问题</span></a></li></ol></li></ol></li></ol></div></div></div><div id="body-wrap"><div id="web_bg" data-type="photo"></div><i class="fa fa-arrow-right" id="toggle-sidebar" aria-hidden="true">     </i><div class="auto_open" id="sidebar"><div class="sidebar-toc"><div class="sidebar-toc__title">目录</div><div class="sidebar-toc__progress"><span class="progress-notice">你已经读了</span><span class="progress-num">0</span><span class="progress-percentage">%</span><div class="sidebar-toc__progress-bar">     </div></div><div class="sidebar-toc__content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#图论算法"><span class="toc-number">1.</span> <span class="toc-text">图论算法</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#一些概念和数据结构"><span class="toc-number">1.1.</span> <span class="toc-text">一些概念和数据结构</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#一些概念的简单理解"><span class="toc-number">1.1.1.</span> <span class="toc-text">一些概念的简单理解</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#一些表示图的数据结构"><span class="toc-number">1.1.2.</span> <span class="toc-text">一些表示图的数据结构</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#拓扑排序"><span class="toc-number">1.2.</span> <span class="toc-text">拓扑排序</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#实现算法"><span class="toc-number">1.2.1.</span> <span class="toc-text">实现算法</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#最短路径算法"><span class="toc-number">1.3.</span> <span class="toc-text">最短路径算法</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#无权最短路径"><span class="toc-number">1.3.1.</span> <span class="toc-text">无权最短路径</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#有权最短路径"><span class="toc-number">1.3.2.</span> <span class="toc-text">有权最短路径</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#具有负边值的单源最短路径问题（无负值圈）"><span class="toc-number">1.3.3.</span> <span class="toc-text">具有负边值的单源最短路径问题（无负值圈）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#无权图的单元最短路径问题"><span class="toc-number">1.3.4.</span> <span class="toc-text">无权图的单元最短路径问题</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#网络流问题"><span class="toc-number">1.4.</span> <span class="toc-text">网络流问题</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#一种简单算法的实现"><span class="toc-number">1.4.1.</span> <span class="toc-text">一种简单算法的实现</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#最小生成树问题"><span class="toc-number">1.5.</span> <span class="toc-text">最小生成树问题</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Prim-算法"><span class="toc-number">1.5.1.</span> <span class="toc-text">Prim 算法</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Kruskal-算法"><span class="toc-number">1.5.2.</span> <span class="toc-text">Kruskal 算法</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#深度优先搜索的应用"><span class="toc-number">1.6.</span> <span class="toc-text">深度优先搜索的应用</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#判断无向图是否连通以及生成深度优先生成树"><span class="toc-number">1.6.1.</span> <span class="toc-text">判断无向图是否连通以及生成深度优先生成树</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#判断有向图是否连通且是否为无圈图"><span class="toc-number">1.6.2.</span> <span class="toc-text">判断有向图是否连通且是否为无圈图</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#查找无向连通图的所有割点"><span class="toc-number">1.6.3.</span> <span class="toc-text">查找无向连通图的所有割点</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#查找强分支"><span class="toc-number">1.6.4.</span> <span class="toc-text">查找强分支</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#欧拉回路"><span class="toc-number">1.6.5.</span> <span class="toc-text">欧拉回路</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#NP-完全性介绍"><span class="toc-number">1.7.</span> <span class="toc-text">NP-完全性介绍</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#NP类"><span class="toc-number">1.7.1.</span> <span class="toc-text">NP类</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#NP-完全问题"><span class="toc-number">1.7.2.</span> <span class="toc-text">NP-完全问题</span></a></li></ol></li></ol></li></ol></div></div></div><main id="content-outer"><div id="top-container" style="background-image: url(https://cdn.jsdelivr.net/gh/jerryc127/butterfly_cdn@2.1.0/top_img/default.png)"><div id="post-info"><div id="post-title"><div class="posttitle">无题</div></div><div id="post-meta"><time class="post-meta__date"><i class="fa fa-calendar fa-fw" aria-hidden="true"></i> 发表于 2020-08-07<span class="post-meta__separator">|</span><i class="fa fa-history fa-fw" aria-hidden="true"></i> 更新于 2020-02-13</time><div class="post-meta-wordcount"><i class="fa fa-file-word-o post-meta__icon fa-fw" aria-hidden="true"></i><span>字数总计:</span><span class="word-count">7.2k</span><span class="post-meta__separator">|</span><i class="fa fa-clock-o post-meta__icon fa-fw" aria-hidden="true"></i><span>阅读时长: 22 分钟</span><div class="post-meta-pv-cv"><span class="post-meta__separator">|</span><span><i class="fa fa-eye post-meta__icon fa-fw" aria-hidden="true"> </i>阅读量:</span><span id="busuanzi_value_page_pv"></span></div></div></div></div></div><div class="layout layout_post" id="content-inner">   <article id="post"><div class="article-container" id="post-content"><h1 id="图论算法"><a href="#图论算法" class="headerlink" title="图论算法"></a>图论算法</h1><h2 id="一些概念和数据结构"><a href="#一些概念和数据结构" class="headerlink" title="一些概念和数据结构"></a>一些概念和数据结构</h2><h3 id="一些概念的简单理解"><a href="#一些概念的简单理解" class="headerlink" title="一些概念的简单理解"></a>一些概念的简单理解</h3><ul>
+<li><p>简单路径<br>  一条路径上的点均<strong>互异</strong>（起点和终点可以一样）</p>
+</li>
+<li><p>圈<br>  一条路径上起点与终点一样，且路径长至少为1的路径</p>
+</li>
+<li><p>无向图<br>  点与点之间的边没有方向</p>
+</li>
+<li><p>有向图<br>  点与点之间的边具有方向  </p>
+</li>
+<li><p>连通性<br>  <strong>无向图</strong>中每个顶点到其他顶点都存在至少一条路径，那么该无向图就是连通的 </p>
+</li>
+<li><p>强连通性<br>  <strong>有向图</strong>中每个顶点到其他顶点都存在至少一条路径，那么该有向图就是强连通的  </p>
+</li>
+<li><p>弱连通性<br>  如果一个<strong>有向图</strong>不是强连通的，但它的基础图(有向图上的边去掉方向形成的)是连通的，那么该有向图就是弱连通的  </p>
+</li>
+<li><p>完全图<br>  每一对顶点都存在一条边的图  </p>
+</li>
+</ul>
+<h3 id="一些表示图的数据结构"><a href="#一些表示图的数据结构" class="headerlink" title="一些表示图的数据结构"></a>一些表示图的数据结构</h3><ul>
+<li><p>邻接矩阵<br>  它是一个二维数组，对于每条边 $(u,v)$ ，置$A[u][v]$为 $true$ 或置为 $k$ ($k$为该边的权值)，不存在的边则置为 $false$ 或置为$-\infty$ 或 $\infty$</p>
+<p>  其缺点在于只能表示顶点较少的图，因为其占用空间为 $\Theta(|V|^2)$，一旦顶点较多，其占用内存将很大  </p>
+<p>  该数据结构对于<strong>稠密图</strong>比较适用，对于<strong>稀疏图</strong>就采取下面的数据结构即邻接表</p>
+</li>
+<li><p>邻接表<br>  该数据结构对于 <strong>稀疏图</strong> 以及 <strong>顶点数较多</strong> 的图比较适用，因为它的空间需求仅为 $O(|E|+|V|)$  </p>
+<p>  邻接表是表示图的标准方法。<br>  该表首先将图上的各个顶点映射为该邻接表上的具体位置，例如 $v_1$ 就映射在该邻接表的第二个位置上。<br>  而存储在该位置上的信息则是<strong>与该顶点存在一条边的其他顶点</strong>所对应的位置的集合，例如，顶点1与顶点2,3,4有边连接，那么 $V[1] = [2,3,4]$<br>  具体如下图所示   </p>
+<p>  <a href="http://ww1.sinaimg.cn/large/006buNqily1gbtrk73vbnj307s0c1glm.jpg" data-fancybox="group" data-caption="QQ截图20200212174907.jpg" class="fancybox"><img alt="QQ截图20200212174907.jpg" data-src="http://ww1.sinaimg.cn/large/006buNqily1gbtrk73vbnj307s0c1glm.jpg" class="lazyload" title="QQ截图20200212174907.jpg"></a></p>
+<p>  而无向图也可以类似的表示，只不过一条边会出现在两个表项之中（因为是无向的）  </p>
+</li>
+</ul>
+<h2 id="拓扑排序"><a href="#拓扑排序" class="headerlink" title="拓扑排序"></a>拓扑排序</h2><p>拓扑排序是对<strong>有向无圈图</strong>的顶点的一种排序，使得如果存在一条从 $v_i$ 到 $v_j$ 的路径，那么在排序中 $v_j$ 就出现在 $v_i$ 的后面  </p>
+<h3 id="实现算法"><a href="#实现算法" class="headerlink" title="实现算法"></a>实现算法</h3><p>其基本思路为每次找到一个入度为0且尚未编号的顶点，删除它，并更新邻接顶点的入度，重复这个操作，直到没有尚未编号的顶点。<br>它可以有两种实现</p>
+<ul>
+<li><p>基于顺序扫描邻接表的实现<br>  该算法的主要缺点在于运行时间过长，由于是顺序扫描邻接表来找到入度为0且尚未编号的顶点的，所以它的一趟查找需要 $O(|V|)$ 的时间，而又需要执行 $|V|$ 趟排序，所以总共需要 $O(|V|^2)$ 的运行时间</p>
+</li>
+<li><p>基于栈或队列的实现<br>  为了优化上述简单算法，才有了基于栈或队列的实现，如果使用邻接表，执行这个算法使用的时间为$O(|E|+|V|)$<br>  首先，对每个顶点计算它的入度，把入度为0的顶点放入队列中<br>  每次操作，如果队列非空，则从队列中取出队首元素，为其编号，并更新邻接顶点的入度，同时把更新过后入度为0的顶点放入队列中。如果队列为空，则拓扑排序完成，其拓扑排序就是元素出队的顺序  </p>
+</li>
+</ul>
+<h2 id="最短路径算法"><a href="#最短路径算法" class="headerlink" title="最短路径算法"></a>最短路径算法</h2><p>首先明确两种路径长</p>
+<ul>
+<li><p>赋权路径长<br>  对于有权图，我们设边 $(v_i,v_j)$ 的权值为 $c_{i,j}$，一条路径 $v_1v_2v_3…v_n$ 的赋权路径长为 $\sum_{i=1}^{N-1}c_{i,i+1}$</p>
+</li>
+<li><p>无权路径长<br>  对于无权图，它的路径长即为无权路径长  </p>
+</li>
+</ul>
+<p>而最短路径算法可以分为  </p>
+<ul>
+<li><p>单源最短路径算法  </p>
+</li>
+<li><p>所有点对最短路径算法 </p>
+</li>
+</ul>
+<p>其中所有点对最短路径算法可以通过对每个点执行一次单元最短路径算法来完成  </p>
+<p>所有下面我们要介绍的是都是 <strong>单源最短路径问题</strong> ，它值的是给定一个赋权图 $G=(V,E)$ 和一个特定顶点 $s$ 作为输入，找出从 $s$ 到 $G$ 中每一个其他顶点的最短赋权路径<br>ps: 当遇到负值圈时（含有负值边的圈），最短路径问题就是不确定的，因为我们可以重复结果该负值圈来使得整条路径的权值降低。  </p>
+<p>以下是 <strong>单源最短路径问题</strong> 的各个子问题  </p>
+<h3 id="无权最短路径"><a href="#无权最短路径" class="headerlink" title="无权最短路径"></a>无权最短路径</h3><p>显然，这是赋权最短路径问题的特殊情况，因为我们可以为所有的边都赋权值为1，此时我们只关注路径长，即经过的边数。 </p>
+<p>解决 <strong>无权最短路径问题</strong> 的一个好的思路是使用 <strong>广度优先搜索</strong> ，该方法按层处理：距离起始点最近的顶点最先被处理（即将该顶点标记为已访问，且记录起始点到该顶点的最短路径），最远的顶点最后被处理。  </p>
+<p>而实现 <strong>广度优先搜素</strong> 也有两种实现  </p>
+<ul>
+<li><p>基于顺序扫描邻接表的实现<br>  我们设置一个变量 $d$ 来记录路径长 </p>
+<ol>
+<li><p>初始化 $d$ 为 $0$ ，初始化所有顶点，使它们都表示未标记，且最短路径均为 $\infty$ （除起始点设置为已标记，且最短路径为 $0$ ） </p>
+</li>
+<li><p>遍历所有顶点，取出每个顶点 $v$ ，检查它是否已被标记且最短路径为 $d$，</p>
+<ul>
+<li><p>如果是，则遍历他的邻接点，判断它们的最短路径长是否为 $\infty$ </p>
+<ul>
+<li><p>如果是，则更新邻接点的最短路径长为 $d + 1$，以及更新邻接点在最短路径中前一个顶点为 $v$</p>
+</li>
+<li><p>如果不是就忽略  </p>
+</li>
+</ul>
+</li>
+<li><p>如果不是就忽略  </p>
+</li>
+</ul>
+</li>
+<li><p>更新 $d$ 为 $d+1$ ，重新执行步骤2，直到所有顶点设置为已标记。 </p>
+<p>该算法的主要缺点也在于运行时间，在步骤2中我们不仅遍历了所有顶点，还遍历了与未标记顶点相邻的邻接点，这导致了运行时间变为了 $O(|V|^2)$</p>
+</li>
+</ol>
+</li>
+<li><p>基于栈或队列的实现<br>  该实现基于一种这样的想法。假设我们有两个盒子，第一个盒子装有最短路径为 $d$ 的顶点，第二个盒子装有最短路径为 $d+1$的顶点，每次我们从第一个盒子中取出一个顶点，然后将与该顶点相邻且未标记的邻接点放入第二个盒子，直到第一个盒子取完，我们用第二个盒子取代第一个盒子，循环往复，直到所有顶点均被标记。</p>
+<ol>
+<li>初始化 $d = 0$，将起始点的最短路径设置为 $d$ ，并放入一个空队列中</li>
+<li>取出队列中的队首元素，并根据邻接表分别取出他们的邻接点，如果它们的最短路径为 $\infty$ ，则将它们的最短路径设置为 $d + 1$,并更新它的前置元素，放入队列中  </li>
+<li><p>重复步骤2，直到队列为空  </p>
+<p>使用与对拓扑排序一样的分析，我们可以得到如果使用邻接表那么他的运行时间即为 $O(|E|+|V|)$</p>
+</li>
+</ol>
+</li>
+</ul>
+<h3 id="有权最短路径"><a href="#有权最短路径" class="headerlink" title="有权最短路径"></a>有权最短路径</h3><p>解决 <strong>有权最短路径</strong> 的一个好思路是使用 $Dijkstra$ 算法（迪杰斯特拉算法），它是贪婪算法中的一个经典算法，即分阶段处理问题，且在每个阶段它都把出现的当做是最好的去处理。</p>
+<p>在 $Dijkstra$ 算法解决有权最短路径问题时，它每次取出当前最短路径长最小的顶点$v$，标记该顶点为已访问，然后取出该顶点的邻接点$w$，如果$d_v+c_{v,w}$路径长 &lt; 该邻接点的最短路径长且该顶点未被标记为已访问，那么更新该邻接点最短路径长为 $d_v+c_{v,w}$。   </p>
+<p>同样它也有两种实现  </p>
+<ul>
+<li><p>基于顺序扫描邻接表的实现<br>  其实现思路跟上述无权最短路径的基于顺序扫描邻接表的实现大同小异，不同点只不过是每次取得都是最短路径长最小的顶点 $v$ 。 </p>
+<p>  由于每次查找最小值需要花费 $O(|V|)$ 的运行时间，因此整个算法过程中查找最小值需要花费的总时间为 $O(|V|^2)$，而更新 $d_w$ 需要花费常数时间，每条边最多更新一次，所有用于更新 $d_w$ 的总时间为 $O(|E|)$，所以算法总运行时间为 $O(|E|+|V|^2)=O(|V|^2)$   </p>
+<p>  对于稠密图来说 $E = \Theta(|V|^2)$，则该算法不仅简单而且基本上是最优的，而对于稀疏图，可以采用基于优先队列的实现。</p>
+</li>
+<li><p>基于优先队列（堆）的实现<br>  其实现思路如下  </p>
+<ol>
+<li><p>将起始点设置为最短路径长为0的点，其他顶点最大路径长为 $\infty$，他们一同构造一个最小堆（按照最短路径长来构造），此时起始点在根部。</p>
+</li>
+<li><p>执行一次 deleteMin 操作取出根元素，并用 decreaseKey 操作更新根元素的邻接顶点的最短路径长（如果新值比旧值要小的话）和它的前置元素，此时需要重构一次堆。</p>
+</li>
+<li><p>重复执行步骤2，直到堆空为止。  </p>
+<p>由于每次 deleteMin 所花时间为 $O(log|V|)$ ,且每条边也最多更新一次。故其运行时间为 $O(|E|log|V|+|V|log|V|) = O(|E|log|V|)$  </p>
+</li>
+</ol>
+</li>
+</ul>
+<h3 id="具有负边值的单源最短路径问题（无负值圈）"><a href="#具有负边值的单源最短路径问题（无负值圈）" class="headerlink" title="具有负边值的单源最短路径问题（无负值圈）"></a>具有负边值的单源最短路径问题（无负值圈）</h3><p>其算法思路如下  </p>
+<ol>
+<li>将起始点最短路径$d_v$初始化为$0$，并将它放入队列中  </li>
+<li>取出队首元素，并遍历队首元素的邻接点$w$，如果$d_w + c_{v,w} &lt; d_w$，则更新 $d_w = d_w + c_{v,w}$ 和它的前置元素，如果此时 $w$ 不在队列中，则将其插入队列  </li>
+<li>重复步骤二直到队列为空  </li>
+</ol>
+<p>由于<strong>每个顶点</strong>最多可以出队$|V|$次，而每次出队遍历邻接点的次数为 $|E|$ 次，所以其使用邻接表时的运行时间为 $O(|E||V|)$。  </p>
+<p>为了防止出现负值圈的情况，可以把出队次数限定在 $|V|+1$ 次内来解决  </p>
+<h3 id="无权图的单元最短路径问题"><a href="#无权图的单元最短路径问题" class="headerlink" title="无权图的单元最短路径问题"></a>无权图的单元最短路径问题</h3><p>如果知道图是无圈的，那么我们可以通过改变顶点选择的方法来改进迪杰斯特拉算法。新的顶点选择法用以<strong>拓扑顺序</strong>选择顶点。由于选择和更新可以在<strong>拓扑排序</strong>执行的时候进行，因此算法能够一趟完成。这种方法不需要优先队列，且运行时间为 $O(|E|+|V|)$  </p>
+<p>无圈图的一个重要应用是 <strong>关键路径分析法</strong>  </p>
+<p>当给出一个动作节点图时，我们首先将它转换为一个事件节点图。<br>为了找出方案的<strong>最早完成时间</strong>$EC_i$，我们只要找到从第一个事件到最后一个事件的最长路径的长。其中</p>
+<ul>
+<li>$EC_1 = 0$  </li>
+<li>$EC_i = max_{(v,w) \in E}(EC_v + c_{v,w})$  </li>
+</ul>
+<p>而我们也可以计算事件的<strong>最晚完成时间</strong>$LC_i$为</p>
+<ul>
+<li>$LC_n = EC_n$</li>
+<li>$LC_v = min_{(v,w) \in E}(LC_w - c_{v,w})$  </li>
+</ul>
+<p>事件节点图中每条边（对应于动作节点的每个动作）的<strong>松弛时间</strong> $Slack_{v,w} = LC_w - EC_v - c_{v,w}$  </p>
+<p>松弛时间为0的一些动作称为关键动作。至少存在一条完全由关键动作组成的路径，我们称为 <strong>关键路径</strong>  </p>
+<h2 id="网络流问题"><a href="#网络流问题" class="headerlink" title="网络流问题"></a>网络流问题</h2><p>设给定有向图 $G = (V,E)$,其边容量为 $c_{v,w}$。这些容量可以代表通过该边的流量。同时有两个顶点，一个叫发点(顶点$s$)，一个叫收点(顶点$t$)。在既不是发点，又不是接点的其他顶点 $v$ ，总的进入的流必须等于总的发出的流。<br>而<strong>最大流问题</strong>就是确定从发点到接点可以通过的最大流量  </p>
+<h3 id="一种简单算法的实现"><a href="#一种简单算法的实现" class="headerlink" title="一种简单算法的实现"></a>一种简单算法的实现</h3><p>我们通过给定的有向图 $G$ ，构造一个流图 $G_f$ ，一个残余图 $G_r$。  </p>
+<p>其中残余图表示对于每条边它还能再添加上多少流，它可以通过 $G - G_f$ 得到。同时，为了让算法能改变它的意向，对于流图中具有容量 $f_{v,w}$的每一边 $(v,w)$，我们在残余图上添加容量同为 $f_{v,w}$ 但方向相反的残余边 $(w,v)$ </p>
+<p>下面是这三种图的例子(注意红色箭头所指出的方向相反的残余边)  </p>
+<p><a href="http://ww1.sinaimg.cn/large/006buNqily1gbu1hdlktfj30l608mgly.jpg" data-fancybox="group" data-caption="QQ截图20200212233333.jpg" class="fancybox"><img alt="QQ截图20200212233333.jpg" data-src="http://ww1.sinaimg.cn/large/006buNqily1gbu1hdlktfj30l608mgly.jpg" class="lazyload" title="QQ截图20200212233333.jpg"></a>  </p>
+<p>现在开始算法思路的描述  </p>
+<ol>
+<li><p>寻找图 $G_r$ 从 $s$ 到 $t$ 的一条路径，这条路径叫<strong>增长通路</strong>。这条路径上的最小边值 $f_{min}$ 就是可以添加到路径每一条边上的流量。  </p>
+</li>
+<li><p>使用 $f_{min}$ 更新流图中这条路径上的所有边，即$f_{v,w} = f_{origin} + f_{min}$，同时更新残余图中对应的残余边，如果更新后某一残余边 $f_{v,w} = 0$ ，那么删除该残余边  </p>
+</li>
+<li><p>重复步骤二，直到没有一条从 $s$ 到 $t$ 的路径，结束算法  </p>
+</li>
+</ol>
+<p>如果容量都是整数，且最大容量为 $f$ ，那么由于每条增长通路使流的值至少增1，故 $f$ 个阶段足以，又因为通过无权最短路径算法找到一个增长通路的运行时间为 $O(|E|)$，从而总的运行时间为 $O(f|E|)$  </p>
+<p>而这个运行时间是坏的，例如下图，如果增长通路通过由 $a$ 和 $b$ 连接的边的路径而连续增长，那么他就需要 $2000000$ 条增长通路</p>
+<p><a href="http://ww1.sinaimg.cn/large/006buNqily1gbu2mz1pwej30c307wglm.jpg" data-fancybox="group" data-caption="QQ截图20200213000151.jpg" class="fancybox"><img alt="QQ截图20200213000151.jpg" data-src="http://ww1.sinaimg.cn/large/006buNqily1gbu2mz1pwej30c307wglm.jpg" class="lazyload" title="QQ截图20200213000151.jpg"></a></p>
+<p>为了避免这种情况，有两种方法  </p>
+<ul>
+<li><p>总选择容许在流中最大增长的增长通路<br>可以通过类似迪杰斯特拉算法的思路来实现<br>如果 $cap_{max}$ 为最大边容量。那么对于通路的每一次计算都需要 $O(|E|\log cap_{max})$ ,所以总的运行时间为 $O(|E|^2 <em> \log |V| </em>\log cap_{max})$ ,如果最大边容量为小整数时，则可以将运行时间减为 $O(|E|\log |V|)$</p>
+</li>
+<li><p>总选择具有最少边数的路径<br>运行时间界为 $O(|E|^2|V|)$</p>
+</li>
+</ul>
+<h2 id="最小生成树问题"><a href="#最小生成树问题" class="headerlink" title="最小生成树问题"></a>最小生成树问题</h2><p>一个无向图$G$的最小生成树就是该图的那些连接 $G$ 的所有顶点的边构成的树，且其总价值最低。<br>最小生成树是无圈的，且它的边数为 $|V|-1$<br>对于解决最小生成树问题，有两种解法</p>
+<h3 id="Prim-算法"><a href="#Prim-算法" class="headerlink" title="Prim 算法"></a>Prim 算法</h3><p>Prim 算法的简单描述如下<br>在算法的开始我们选取一条权值最小的边，然后将该边连接的两个顶点添加到树上，然后执行下面的操作<br>每次选取一条边 $(u,v)$ ，该边需要满足的条件如下  </p>
+<ul>
+<li>顶点 $u$ 在树上  </li>
+<li>顶点 $v$ 不在树上  </li>
+<li>边 $(u,v)$ 在<strong>未被添加到树上的所有边</strong>中权值最小  </li>
+</ul>
+<p>当选中该边时，就将顶点 $v$ 添加到树上，重复以上步骤，直到所有顶点被添加到树上。  </p>
+<p>其具体实现如下  </p>
+<p>我们规定 $d_v$ 表示顶点距离树的最短距离， $p_v$ 表示使得 $d_v$ 最后一次改变的顶点  </p>
+<ol>
+<li><p>初始化，将所有顶点都标记为未访问，且所有边距离树的最短距离 $d_v$ 都设为 $\infty$  </p>
+</li>
+<li><p>选取一条最短边，将该边的两个顶点标记为已访问，且设置他们距离树的最短距离 $d_v$ 为 $0$，然后更新他们邻接点中 $d_v$ 为 该连接边的权值$c_{v,u}$ ,以及更新他们的 $p_v$  </p>
+</li>
+<li><p>选取 $d_v$ 最小的点，把它标记为已访问，并且如果它邻接点的 $d_v$ 值为 $min{d_v,d_v+c_{v,u}}$,并更新他们的 $p_v$</p>
+</li>
+<li><p>重复执行步骤三直到所有点被标记完成  </p>
+</li>
+</ol>
+<p>倘若不使用堆的数据结构，它对稠密图来说是个好算法，其运行时间为 $O(|V|^2)$ ，如果使用堆结构，则适用于稀疏图，其运行时间为 $O(|E| \log |V|)$  </p>
+<h3 id="Kruskal-算法"><a href="#Kruskal-算法" class="headerlink" title="Kruskal 算法"></a>Kruskal 算法</h3><p>其算法的简单描述如下<br>我们每次选取权值最短的边，如果该选取的边不会使现有的数变成<strong>有圈图</strong>，那么我们就接受它，否则放弃它，进行下一轮选择，直到所有的顶点构成一颗树。  </p>
+<p>可想而知，该算法处理的是一个森林——树的集合，在这里，我们可以使用不相交集合的数据结构，即等价类。当两个顶点在同一颗树时，他们便是等价的。  </p>
+<p>我们可以使用 find 操作来判断它们是否处于同一颗树，而使用 union 操作来让两个顶点处于同一颗树。</p>
+<p>我们可以用最小堆来存储各个边，这样该算法的最坏情形运行时间为 $O(|E|\log|E|)$，由于 $|E| = O(|V|^2)$，所以该算法的最坏情形运行时间也为 $O(|E|\log|V|)$  </p>
+<h2 id="深度优先搜索的应用"><a href="#深度优先搜索的应用" class="headerlink" title="深度优先搜索的应用"></a>深度优先搜索的应用</h2><p>深度优先搜索是对先序遍历的一种推广，用简单的话来说，深度优先搜索每次选取的顶点是更深一层次的顶点（子节点），它不同于广度优先搜索（每次选取的顶点是同一层次的顶点（兄弟节点））  </p>
+<p>对于深度优先搜索，我们可以通过递归调用来实现。  </p>
+<p>因为该方法保证每条边只访问一次，因此总共需要访问 $|E|$ 次调用，但不能保证图是连通的，故最坏情况是有|V|个连通分图（即每个点都不相连），因此我们需要保证执行 $|V|$ 次遍历，所以只要使用邻接表，则执行遍历的总时间就是 $O(|E|+|V|)$</p>
+<h3 id="判断无向图是否连通以及生成深度优先生成树"><a href="#判断无向图是否连通以及生成深度优先生成树" class="headerlink" title="判断无向图是否连通以及生成深度优先生成树"></a>判断无向图是否连通以及生成深度优先生成树</h3><p>深度优先搜索在无向图中的一种应用是可以判断无向图是否是连通的。<br>无向图是连通的，当且仅当从任一节点开始的深度优先搜索访问到每一个节点。<br>无向图的深度优先搜索($dfs()$)实现算法也很简单：<br>遍历每个节点，对每个节点判断它是否已被访问  </p>
+<ul>
+<li>若未被访问，则将该节点 $w$ 标记为已被访问，其前置顶点为传进来的顶点 $v$，传递给 $dfs(w)$ 函数，即递归调用深度优先搜索  </li>
+<li>若已被访问，则跳过    </li>
+</ul>
+<p>该算法直到所有顶点被访问为止。<br>可想而知，如果无向图是连通的，那么他将会生成一棵树，我们叫做<strong>深度优先生成树</strong><br>而如果无向图是不连通的，那么他将会生成一个由深度优先生成树组成的<strong>深度优先生成森林</strong>  </p>
+<p>由于我们在实行深度优先搜索的时候，我们会遇到这样一种情况，在调用 $dfs(v)$ 的时候，我们发现其邻接点 $w$ 已被访问，此时边 $(v,w)$ 在深度优先生成树中就被称为 <strong>背向边</strong></p>
+<h3 id="判断有向图是否连通且是否为无圈图"><a href="#判断有向图是否连通且是否为无圈图" class="headerlink" title="判断有向图是否连通且是否为无圈图"></a>判断有向图是否连通且是否为无圈图</h3><p>其实现算法与无向图的相同<br>但还是有所区别，即无向图中只有一种类型的边——<strong>背向边</strong>不通向于新的顶点，但有向图存在三种不同类型的边不通向于新的顶点，他们分别是  </p>
+<ul>
+<li>背向边</li>
+<li><p>前向边<br>  他们从树的一个节点通向它的一个后裔（至少为孙子节点）  </p>
+</li>
+<li><p>交叉边<br>  他们把不直接相关的两个树节点连接起来  </p>
+</li>
+</ul>
+<p>三种边的示例图如下  </p>
+<p><a href="http://ww1.sinaimg.cn/large/006buNqily1gbv4vgcjv2j30he0a03ym.jpg" data-fancybox="group" data-caption="QQ截图20200213221609.jpg" class="fancybox"><img alt="QQ截图20200213221609.jpg" data-src="http://ww1.sinaimg.cn/large/006buNqily1gbv4vgcjv2j30he0a03ym.jpg" class="lazyload" title="QQ截图20200213221609.jpg"></a></p>
+<p>而深度优先搜索在有向图中的一种应用就是<strong>检查是否是无圈图</strong>，如果它是无圈图，那么它就<strong>不存在背向边</strong> </p>
+<h3 id="查找无向连通图的所有割点"><a href="#查找无向连通图的所有割点" class="headerlink" title="查找无向连通图的所有割点"></a>查找无向连通图的所有割点</h3><p>一个连通的 <strong>无向图</strong> 如果不存在被删除之后使得剩下的图不再连通的顶点，那么这样的<strong>无向连通图</strong>就称为双连通的<br>如果存在这样的顶点，那么该顶点叫做割点。<br>而深度优先搜索提供一种找出连通图中所有割点的线性时间算法。<br>它主要分为三个步骤：</p>
+<ol>
+<li>计算 $Num$ ，通过生成一个深度优先生成树得到  </li>
+<li>计算 $Low$ </li>
+<li>检验哪些顶点满足割点的标准 </li>
+</ol>
+<p>其算法的简单描述如下所示，它是基于深度优先生成树而来的 </p>
+<p><strong>计算 $Num$</strong><br>从任一一点开始，执行深度优先搜索算法并在顶点被访问时给他们编号，对于每一个顶点 $v$ 我们称其先序编号为 $Num(v)$。</p>
+<p><strong>计算 $Low$</strong><br>对于深度优先生成树上的每个顶点$v$，我们计算编号最低的顶点$w$，我们称之为 $Low(v)$<br>    该 $w$ 是这样的：我们可以从顶点 $v$ 开始经过数的 $0$ 条或多条边，且可能还经过<strong>至多</strong>一条背向边，到达某个顶点，而$w$是满足这些条件中编号最小的顶点  </p>
+<p>根据 $Low(v)$ 的定义可知 $Low(v)$ 是以下三者中的最小者  </p>
+<ul>
+<li><p>$Num(v)$<br>  不选取任何边  </p>
+</li>
+<li><p>所有背向边 $(v,w)$ 中的最低 $Num(w)$<br>  不选取树的任何边，而只选取一条背向边  </p>
+</li>
+<li><p>树的所有边 $(v,w)$ 的最低 $Low(w)$<br>  选取树的某些边，包括一条背向边，它可以通过递归调用来实现  </p>
+</li>
+</ul>
+<p>由于我们需要对 $v$ 的所有儿子计算出 $Low$ 值后才能计算 $Low(v)$ ,因此这是一个后序遍历。我们只需要扫描 $v$ 的邻接表，应用适当的法则，并记住最小值。所有的计算花费 $O(|E|+|V|)$ 的运行时间。  </p>
+<p><strong>检验哪些顶点满足割点的标准</strong><br>找割点的标准，它基于这样一种判断，如果根节点只有一个儿子，那么该根节点就不是割点，如果多于一个儿子，那么删除该根，就会使得不同子树上的节点不相连。  </p>
+<p>所以我们可以这样判定一个顶点是否为割点<br>对于任何其他顶点 $v$ ，当且仅当它有某个儿子 $w$ 使得 $Low(w)\geq Num(v)$。注意这个条件在根节点总是满足的，所以根节点需要特殊判定  </p>
+<p><strong>对这三个步骤的合并</strong><br>我们可以用一趟先序遍历来执行步骤1，然后再用一趟后序遍历执行步骤2，最后再通过一趟遍历来执行步骤三来完成整个算法  </p>
+<p>当然我们可以通过一趟遍历来同时完成三个步骤</p>
+<h3 id="查找强分支"><a href="#查找强分支" class="headerlink" title="查找强分支"></a>查找强分支</h3><p>如果一个有向图不是强连通的，那么我们其实可以得到一些顶点的子集，使它们到自身是强连通的。<br>其实现算法如下  </p>
+<ol>
+<li>输入有向图$G$执行一次深度优先搜索，得到一颗深度优先生成树</li>
+<li>对该树进行一次后序遍历将有向图 $G$ 各个顶点编号  </li>
+<li>将有向图 $G$ 各个边反向，得到 $G_r$  </li>
+<li>我们总是从编号最大且未被访问的顶点开始，将该顶点传入深度优先搜索算法中，即 $dfs(v)$  </li>
+<li>当所有的顶点被访问完毕，得到 $n$ 个子集，子集里面的各个顶点是强连通的，即每个子集是一个强分支</li>
+</ol>
+<h3 id="欧拉回路"><a href="#欧拉回路" class="headerlink" title="欧拉回路"></a>欧拉回路</h3><p>欧拉回路类似于我们以前玩的一笔画，它需要我们找到一个圈，使得每条边恰好经过一次。<br>有欧拉回路的图的充分必要条件如下  </p>
+<ul>
+<li>每个顶点的度为偶数</li>
+<li>图是连通的</li>
+</ul>
+<p>而与欧拉回路类似的还有一种叫做欧拉环游，它的路径不需要回到起点，但必须经过每一条边。  </p>
+<p>有欧拉环游的图有以下特点  </p>
+<ul>
+<li>每个顶点的度为偶数（允许存在一种含有2个奇数度顶点的情况）</li>
+<li>图是连通的  </li>
+</ul>
+<p>但我们这里讲述的是欧拉回路的算法，它的思路大致如下  </p>
+<ol>
+<li>传入一个顶点 $v$ ，以该顶点为起点执行一次深度优先搜索（下一次找到该顶点为止），同时在执行深度优先搜索时，删除经历过的边（即在邻接表中删除对应项），此时我们得到一个圈。  </li>
+<li>大多数情况下，这个圈还不包含所有的边，所以此时我们传入顶点 $v$ 在该圈中的下一个顶点 $w$，执行第一步里面的操作  </li>
+<li>如果此时该圈还没有包含所有的边，那么我们重复执行步骤2，直到该圈包含所有的边，该圈就是我们要找的欧拉回路  </li>
+</ol>
+<p>使用适当的数据结构时，其运行时间为 $O(|E|+|V|)$  </p>
+<p>示例图如下  </p>
+<p><a href="http://ww1.sinaimg.cn/large/006buNqily1gbv4wylu0pj30jv0e8wey.jpg" data-fancybox="group" data-caption="QQ截图20200213221755.jpg" class="fancybox"><img alt="QQ截图20200213221755.jpg" data-src="http://ww1.sinaimg.cn/large/006buNqily1gbv4wylu0pj30jv0e8wey.jpg" class="lazyload" title="QQ截图20200213221755.jpg"></a></p>
+<h2 id="NP-完全性介绍"><a href="#NP-完全性介绍" class="headerlink" title="NP-完全性介绍"></a>NP-完全性介绍</h2><p>对于上述所有问题的某些变化，将会形成新的问题，我们在这里称之为 <strong>变种问题</strong>，对于一些糟糕的变种问题，我们不仅不知道线性算法，而且不存在保证以多项式时间运行的已知算法。这些问题的一些熟知算法对于某些输入可能要花费指数时间  </p>
+<p>而我们存在大量重要问题，它们在复杂性上大体是相同的。这些问题形成一个类，叫做 NP-完全（NP-complete）问题。这些 NP-完全 问题精确的复杂度任然需要确定并且在计算机理论科学方面仍然是最重要的开放性问题。或者它们都有多项式时间解法，或者它们都没有多项式时间解法  </p>
+<p>在现实生活中，存在一类不可能解决的问题，它们叫做<strong>不可判定问题</strong>,例如停机问题<br>而 <strong>NP 类问题</strong> 是仅次于 <strong>不可判定问题</strong>的一类问题  </p>
+<h3 id="NP类"><a href="#NP类" class="headerlink" title="NP类"></a>NP类</h3><p>NP(nondeterministic-polynomial-time) 代表非确定型多项式时间 </p>
+<p>这里有两个模型  </p>
+<ul>
+<li><p>确定型机器<br>  每一个时刻都在执行一条指令，根据这条指令再去执行某条接下来的指令，这是唯一确定的。  </p>
+</li>
+<li><p>非确定型机器<br>  自我感觉它类似于人脑，它对其后的步骤是有选择的，它可以自由的进行它想要的选择。如果这些步骤中有一条导致问题的解，那么它将总是选择这个正确的步骤 </p>
+</li>
+</ul>
+<p>检测一个问题是否属于 NP 的简单方法是将该问题转换为一个用“是/否”来描述的问题。如果我们在多项式时间内能够证明一个问题的任意“是”的实例是正确的，那么该问题就属于 NP 类。</p>
+<p>如我们可以判断哈密尔顿圈问题是否是一个 NP 问题，其判断如下<br>首先将哈密尔顿问题转换为一个“是/否”来描述的问题 “图中任意一个包含所有顶点的简单的回路是否是哈密尔顿圈？”<br>该问题的一个“是”的实例为 图中任意一个包含所有顶点的简单的回路是哈密尔顿圈。<br>而验证这个实例正确是十分简单的。所以哈密尔顿圈问题时应该 NP 问题  </p>
+<h3 id="NP-完全问题"><a href="#NP-完全问题" class="headerlink" title="NP-完全问题"></a>NP-完全问题</h3><p><strong>NP-完全问题</strong> 是 NP 问题的一个<strong>子集</strong>，它包含了 NP 中最难的问题。<br>它有一个性质即 NP 中的任意一个问题都能以多项式时间规约成 NP-完全问题，这也使得它可以用作 NP 中任何问题的子例程<br>证明一个问题是否是 NP-完全问题，需要证明是否能将某个 NP-完全问题规约成为该问题，如果能，则该问题就是 NP-完全问题 </p>
+</div></article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">文章作者: </span><span class="post-copyright-info"><a href="mailto:undefined">f1rry</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">文章链接: </span><span class="post-copyright-info"><a href="http://yoursite.com/2020/08/07/图论算法/">http://yoursite.com/2020/08/07/图论算法/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="http://yoursite.com">F1rry's blog</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"></div><div class="post_share"><div class="social-share" data-image="https://cdn.jsdelivr.net/gh/jerryc127/butterfly_cdn@2.1.0/top_img/default.png" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/social-share.js/dist/css/share.min.css"><script src="https://cdn.jsdelivr.net/npm/social-share.js/dist/js/social-share.min.js"></script></div></div><nav class="pagination_post" id="pagination"><div class="prev-post pull_left"><a href="/2020/08/07/AOP/"><img class="prev_cover lazyload" data-src="https://cdn.jsdelivr.net/gh/jerryc127/butterfly_cdn@2.1.0/top_img/default.png" onerror="onerror=null;src='/img/404.jpg'"><div class="label">上一篇</div><div class="prev_info"><span></span></div></a></div><div class="next-post pull_right"><a href="/2020/08/07/不相交集类/"><img class="next_cover lazyload" data-src="https://cdn.jsdelivr.net/gh/jerryc127/butterfly_cdn@2.1.0/top_img/default.png" onerror="onerror=null;src='/img/404.jpg'"><div class="label">下一篇</div><div class="next_info"><span></span></div></a></div></nav></div></main><footer id="footer" data-type="color"><div id="footer-wrap"><div class="copyright">&copy;2019 - 2020 By f1rry</div><div class="framework-info"><span>驱动 </span><a href="http://hexo.io"><span>Hexo</span></a><span class="footer-separator">|</span><span>主题 </span><a href="https://github.com/jerryc127/hexo-theme-butterfly"><span>Butterfly</span></a></div></div></footer></div><section class="rightside" id="rightside"><div id="rightside-config-hide"><i class="fa fa-book" id="readmode" title="阅读模式"></i><i class="fa fa-plus" id="font_plus" title="放大字体"></i><i class="fa fa-minus" id="font_minus" title="缩小字体"></i><a class="translate_chn_to_cht" id="translateLink" href="javascript:translatePage();" title="简繁转换" target="_self">繁</a><i class="darkmode fa fa-moon-o" id="darkmode" title="夜间模式"></i></div><div id="rightside-config-show"><div id="rightside_config" title="设置"><i class="fa fa-cog" aria-hidden="true"></i></div><i class="fa fa-list-ul close" id="mobile-toc-button" title="目录" aria-hidden="true"></i><i class="fa fa-arrow-up" id="go-up" title="回到顶部" aria-hidden="true"></i></div></section><script src="https://cdn.jsdelivr.net/npm/jquery@latest/dist/jquery.min.js"></script><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="/js/tw_cn.js"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.js"></script><script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script><script src="https://cdn.jsdelivr.net/npm/instant.page@latest/instantpage.min.js" type="module"></script><script src="https://cdn.jsdelivr.net/npm/lazysizes@latest/lazysizes.min.js" async=""></script><script src="https://cdn.jsdelivr.net/gh/jerryc127/butterfly_cdn@2.1.0/js/click_heart.js"></script></body></html>
